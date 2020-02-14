@@ -1,4 +1,4 @@
-# front
+# TextPrint (Front)
 
 ## Project setup
 ```
