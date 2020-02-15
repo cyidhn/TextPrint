@@ -1,8 +1,9 @@
 <template>
     <v-container>
         <ul>
-            <li v-for="(eco, i) in ecosystem" :key="i">
+            <li v-for="(eco) in ecosystem" :key="eco.id">
                 <a :href="eco.href" target="_blank"> {{eco.text}}</a>
+                <button @click="supprimer(eco.id)">Supprimer</button>
             </li>
         </ul>
     <v-form>
@@ -24,14 +25,14 @@
       class="mr-4"
       @click="add"
     >
-      Valider
+      Ajouter à la liste
     </v-btn>
   </v-form>
     </v-container>
 </template>
 
 <script>
-  import { MenuData, Add_MenuData } from "../flux/Menu";
+  import { MenuData, Add_MenuData, Delete_MenuData } from "../flux/Menu";
 
   export default {
 
@@ -46,6 +47,9 @@
         Add_MenuData(this.myText, this.myLink);
         this.myText = '';
         this.myLink = '';
+      },
+      supprimer(param) {
+        Delete_MenuData(param);
       }
     },
 
