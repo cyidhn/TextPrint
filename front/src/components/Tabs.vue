@@ -8,6 +8,7 @@
       <v-tab
         v-for="n in contentTabs"
         :key="n.id"
+        @click="callEvent(n.id)"
       >
         {{ n.title }}
         <button @click="removeTab(n.id)">__X</button>
@@ -28,17 +29,18 @@
 <script>
   export default {
     data: () => ({
-      contentTabs: [{id: 1, title: "A. Freeman"}],
+      contentTabs: [{id: 1, title: "A. Freeman"}, {id: 2, title: "Abdel"}],
       textTitle: '',
-      id: 2,
+      id: 3,
       length: 2,
-      tab: null,
+      tab: 1,
     }),
 
     methods: {
       addTab() {
         this.contentTabs = [...this.contentTabs, {id: this.id, title: this.textTitle}];
         this.textTitle = "";
+        this.tab++;
         this.id++;
       },
 
@@ -48,7 +50,12 @@
                 this.contentTabs.splice(i, 1); 
             }
         }
+        this.tab--;
       },
+
+      callEvent(id) {
+          console.log("Clique sur ID " + id);
+      }
     },
   }
 </script>
