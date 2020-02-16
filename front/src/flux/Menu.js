@@ -32,7 +32,6 @@ export let MenuData = {
             href
         }];
         this.state.id = this.state.id + 1;
-        console.log("add", this.state.data)
     },
     delete(id) {
         let newData = [...this.state.data];
