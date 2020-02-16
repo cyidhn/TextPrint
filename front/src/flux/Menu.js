@@ -3,41 +3,45 @@
 // @DemangeJeremy
 // 
 
-// Déclaration de variables
-let Id_MenuData = 3;
-
-// Variable de sauvegarde de données
-export let MenuData = [{
-        id: 1,
-        text: 'vuetify-loader',
-        href: 'https://github.com/vuetifyjs/vuetify-loader',
+// Store MenuData
+export let MenuData = {
+    debug: true,
+    state: {
+        id: 4,
+        data: [{
+                id: 1,
+                text: 'vuetify-loader',
+                href: 'https://github.com/vuetifyjs/vuetify-loader',
+            },
+            {
+                id: 2,
+                text: 'github',
+                href: 'https://github.com/vuetifyjs/vuetify',
+            },
+            {
+                id: 3,
+                text: 'awesome-vuetify',
+                href: 'https://github.com/vuetifyjs/awesome-vuetify',
+            },
+        ]
     },
-    {
-        id: 2,
-        text: 'github',
-        href: 'https://github.com/vuetifyjs/vuetify',
+    add(text, href) {
+        this.state.data = [...this.state.data, {
+            id: this.state.id,
+            text,
+            href
+        }];
+        this.state.id = this.state.id + 1;
+        console.log("add", this.state.data)
     },
-    {
-        id: 3,
-        text: 'awesome-vuetify',
-        href: 'https://github.com/vuetifyjs/awesome-vuetify',
-    },
-];
-
-// Méthode pour ajouter une données au tableau
-export function Add_MenuData(text, href) {
-    MenuData.push({
-        id: ++Id_MenuData,
-        text,
-        href
-    });
-}
-
-// Méthode pour supprimer un objet du tableau
-export function Delete_MenuData(id) {
-    for (let i = 0; i < MenuData.length; i++) {
-        if (MenuData[i].id === id) {
-            MenuData.splice(i, 1);
+    delete(id) {
+        let newData = [...this.state.data];
+        console.log(newData);
+        for (let i = 0; i < this.state.data.length; i++) {
+            if (this.state.data[i].id === id) {
+                newData.splice(i, 1);
+            }
         }
+        this.state.data = newData;
     }
 }

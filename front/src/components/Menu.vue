@@ -1,39 +1,90 @@
 <template>
-  <v-container>
-    <ul>
-      <li v-for="(eco) in ecosystem" :key="eco.id">
-        <a :href="eco.href" target="_blank">{{eco.text}}</a>
-        <button @click="supprimer(eco.id)">Supprimer</button>
-      </li>
-    </ul>
-    <v-form>
-      <v-text-field v-model="myText" label="Texte" required></v-text-field>
+  <v-card height="100vh">
+    <v-navigation-drawer absolute permanent left width="100%">
+      <template v-slot:prepend>
+        <v-list-item two-line>
+          <h1>TextPrint</h1>
+        </v-list-item>
+      </template>
 
-      <v-text-field v-model="myLink" label="Lien" required></v-text-field>
+      <v-divider></v-divider>
 
-      <v-btn color="success" class="mr-4" @click="add">Ajouter à la liste</v-btn>
-    </v-form>
-  </v-container>
+      <v-list dense>
+        <v-list-item v-for="item in items" :key="item.title" @click="eventClick(item.link)">
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-html="item.title"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+  </v-card>
 </template>
 
 <script>
-import { MenuData, Add_MenuData, Delete_MenuData } from "../flux/Menu";
-
 export default {
-  name: "Menu",
   data: () => ({
-    ecosystem: MenuData,
-    myText: "",
-    myLink: ""
+    principal: [
+      { title: "Fichier", icon: "mdi-file", link: "fichier" },
+      { title: "Nouveau", icon: "mdi-pencil", link: "nouveau" },
+      { title: "Analyses", icon: "mdi-file-find", link: "analyses" },
+      { title: "Rapports", icon: "mdi-library-books", link: "rapports" },
+      { title: "Bases de données", icon: "mdi-database", link: "database" },
+      { title: "Paramètres", icon: "mdi-settings", link: "params" }
+    ],
+    fichier: [
+      {
+        title: "<b>Retour</b>",
+        icon: "mdi-keyboard-backspace",
+        link: "retour"
+      },
+      { title: "Ouvrir", icon: "mdi-file", link: "ouvrir" },
+      { title: "Importer", icon: "mdi-pencil", link: "importer" }
+    ],
+    nouveau: [
+      {
+        title: "<b>Retour</b>",
+        icon: "mdi-keyboard-backspace",
+        link: "retour"
+      },
+      { title: "Profil connu", icon: "mdi-account", link: "ouvrir" },
+      { title: "Profil anonyme", icon: "mdi-account", link: "ouvrir" },
+      { title: "Texte", icon: "mdi-file", link: "ouvrir" },
+      { title: "Dossier", icon: "mdi-folder", link: "ouvrir" },
+      {
+        title: "Collection",
+        icon: "mdi-folder-multiple",
+        link: "ouvrir"
+      }
+    ],
+    items: [
+      { title: "Fichier", icon: "mdi-file", link: "fichier" },
+      { title: "Nouveau", icon: "mdi-pencil", link: "nouveau" },
+      { title: "Analyses", icon: "mdi-file-find", link: "analyses" },
+      { title: "Rapports", icon: "mdi-library-books", link: "rapports" },
+      { title: "Bases de données", icon: "mdi-database", link: "database" },
+      { title: "Paramètres", icon: "mdi-settings", link: "params" }
+    ]
   }),
   methods: {
-    add() {
-      Add_MenuData(this.myText, this.myLink);
-      this.myText = "";
-      this.myLink = "";
+    hello() {
+      console.log("Hello");
     },
-    supprimer(param) {
-      Delete_MenuData(param);
+    back() {
+      this.principal = true;
+    },
+    eventClick(ref) {
+      if (ref === "retour") {
+        this.items = this.principal;
+      }
+      if (ref === "fichier") {
+        this.items = this.fichier;
+      }
+      if (ref === "nouveau") {
+        this.items = this.nouveau;
+      }
     }
   }
 };

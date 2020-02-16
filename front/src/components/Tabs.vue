@@ -3,7 +3,7 @@
     <v-tabs v-model="tab" background-color="black lighten-2" dark>
       <v-tab v-for="n in contentTabs" :key="n.id" @click="callEvent(n.id)">
         {{ n.title }}
-        <button @click="removeTab(n.id)">__X</button>
+        <button @click="removeTab(n.id)"></button>
       </v-tab>
     </v-tabs>
     <v-card-text class="text-center">
@@ -17,12 +17,9 @@
 <script>
 export default {
   data: () => ({
-    contentTabs: [
-      { id: 1, title: "A. Freeman" },
-      { id: 2, title: "Abdel" }
-    ],
+    contentTabs: [{ id: 1, title: "Recherche" }],
     textTitle: "",
-    id: 3,
+    id: 2,
     length: 2,
     tab: 1
   }),
