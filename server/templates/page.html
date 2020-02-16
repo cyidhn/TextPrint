@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Textprint</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="/static/script.js"></script>
+  <script src="/static/dossiers.js"></script>
+  <script src="/static/collections.js"></script>-->
+  <script src="/static/webpack.js"></script>
+  <style>
+  .ci-menu-header {
+      background-color: lightgrey;
+      padding: 10px;
+      padding-top: 14px;
+  }
+
+  .ci-menu-principal {
+      background-color: white;
+      height: 50px;
+      padding: 10px;
+      padding-top: 14px;
+  }
+
+  .ci-menu-header h3 {
+      font-size: 20px;
+      padding: 0;
+  }
+
+  label, input { display:block; }
+    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    fieldset { padding:0; border:0; margin-top:25px; }
+    h1 { font-size: 1.2em; margin: .6em 0; }
+    div#users-contain { width: 350px; margin: 20px 0; }
+    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+    .ui-dialog .ui-state-error { padding: .3em; }
+    .validateTips { border: 1px solid transparent; padding: 0.3em; }
+    #menu, #menu ul {background-color: lightgray;}
+    #recherche {
+      border: 1px solid lightgray;
+      padding: 5px;
+      width: 100%;
+    }
+    #recherche:focus {
+      outline: none;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+
+<div id="chargement-in-progress">
+  <h1>Chargement en cours...</h1>
+</div>
+
+<div id="chargement-content" class="d-none">
+
+<div class="ci-menu-header">
+    <h3>TEXTPRINT - MODULE MANAGER</h3>
+</div>
+
+<input id="file-import" type="file" class="d-none" accept=".txt" />
+<!--<div class="ci-menu-principal mb-3">
+  <button id="create-user">Créer un profil</button>
+</div>-->
+
+<!-- Créer un profil connu -->
+<div id="dialog-form-profil-connu" title="Créer un nouveau profil connu"> 
+    <fieldset>
+        <button id="btn-profil-anonyme" class="mb-4">Changer à profil anonyme</button>
+        <h5 class="mb-2"><b>Identification</b></h5>
+        <label for="alias">Alias</label>
+        <input type="text" name="alias" id="alias" placeholder="J Dupond" class="text ui-widget-content ui-corner-all">
+        <label for="name">Prénom</label>
+        <input type="text" name="name" id="prenom" placeholder="Jane" class="text ui-widget-content ui-corner-all">
+        <label for="nom">Nom</label>
+        <input type="text" name="nom" id="nom" placeholder="Doe" class="text ui-widget-content ui-corner-all">
+        <h5 class="mt-5 mb-2"><b>Profil Sociologique</b></h5>
+        <label for="password">Age (exemple : 50)</label>
+        <input type="number" name="password" pattern="[0-9]" min="1" max="120" id="age" placeholder="50" class="text ui-widget-content ui-corner-all" onkeydown="return event.keyCode !== 69">
+        <label for="sexe">Sexe</label>
+        <select name="sexe" id="sexe">
+          <option value="no">Non spécifié</option>
+          <option value="femme">Femme</option>
+          <option value="homme">Homme</option>
+        </select>
+        <label for="education">Niveau d'éducation</label>
+        <select name="education" id="education">
+          <option value="no">Non spécifié</option>
+          <option value="primaire">Primaire</option>
+          <option value="secondaire-1">Secondaire 1</option>
+          <option value="secondaire-2">Secondaire 2</option>
+          <option value="superieur">Supérieur</option>
+        </select>        
+        <label for="sociale">Classe sociale</label>
+        <select name="sociale" id="sociale">
+          <option value="no">Non spécifiée</option>
+          <option value="populaire">Classe populaire</option>
+          <option value="moyenne">Classe moyenne</option>
+          <option value="aisee">Classe aisée</option>
+        </select>     
+        <h5 class="mt-5 mb-2"><b>Informations complémentaires</b></h5>
+        <label for="commentaire">Commentaire</label>
+        <textarea name="commentaire" id="commentaire" class="text ui-widget-content ui-corner-all" style="width: 100%;" cols="30" rows="10"></textarea>
+        <!-- Allow form submission with keyboard without duplicating the dialog button -->
+        <div class="champs-persos"></div>
+        <!-- <button id="btn-ajouter-champs-connu" class="btn-ajout-champs">Ajouter un nouveau champs</button> -->
+        <button id="btn-creer-profil-connu">Créer</button>
+    </fieldset>
+</div>
+
+<!-- Créer un texte -->
+<div id="dialog-form-importer-texte" title="Importer un texte"> 
+  <fieldset>
+      <!-- Grand titre -->
+      <h5 class="mb-2"><b>Importation</b></h5>
+      <!-- Label -->
+      <form id="uploadForm" enctype="multipart/form-data" method="post" name="uploadForm" novalidate>
+        <label for="importer">Fichier texte</label>
+        <input id="importer-texte" name="importer-texte" type="file" class="text ui-widget-content ui-corner-all" accept=".txt" />
+      </form>
+      <p id="texte-chargement-b"></p>
+      <button id="btn-importer-texte">Importer le texte</button>
+
+      <!-- Label -->
+      <input type="hidden" name="nom-fichier" id="nom-fichier-b" value="">
+      <div id="affichage-suite-texte" class="d-none">
+      <label for="alias">Titre du texte*</label>
+      <input type="text" name="alias" id="titre-texte-b" placeholder="Texte de revendication B" class="text ui-widget-content ui-corner-all">
+      <!-- Type paternité -->
+      <label for="paternite">Type de paternité*</label>
+      <select name="paternite" id="paternite-b">
+        <option value="no">Non spécifié</option>
+        <option value="anonyme">Anonyme</option>
+        <option value="connu">Connu</option>
+      </select>
+
+      <!-- Grand titre -->
+      <h5 class="mt-5 mb-2"><b>Mise en forme</b></h5>
+      <!-- Type document -->
+      <label class="mt-4" for="type-document">Type de document</label>
+      <select name="type-document" id="type-document-1">
+        <option value="Non spécifié">Non spécifié</option>
+        <option value="bopt-1-1">Écriture personnelle</option>
+        <option value="bopt-1-2">Correspondance</option>
+        <option value="bopt-1-3">Messagerie</option>
+        <option value="bopt-1-4">Web et réseaux sociaux</option>
+        <option value="bopt-1-5">Presse</option>
+        <option value="bopt-1-6">Rédactions Scientifiques et Académiques</option>
+        <option value="bopt-1-7">Rédactions litéraires</option>
+        <option value="bopt-1-8">Rédactions judiciaires</option>
+        <option value="bopt-1-9">Documents à intêret judiciaire</option>
+        <option value="bopt-1-10">Autres</option>
+      </select>
+
+      <select class="mt-3 d-none" name="type-document" id="type-document-2">
+        <option value="Non spécifié">Non spécifié</option>
+      </select>
+
+      <input type="text" name="autre" id="type-document-3" placeholder="Saisir le type de document" class="text ui-widget-content ui-corner-all mt-3 d-none">
+
+
+      <!-- Specification (autre) -->
+      <label class="mt-4" for="autre">Spécification</label>
+      <input type="text" name="autre" id="specification-texte-b" placeholder="Autre" class="text ui-widget-content ui-corner-all">
+      <!-- Type d'écriture -->
+      <label class="mt-4" for="type-ecriture-b">Type d'écriture</label>
+      <select name="type-ecriture" id="type-ecriture-b">
+        <option value="Non spécifié">Non spécifié</option>
+        <option value="Manuscrite">Manuscrite</option>
+        <option value="Tapuscrite">Tapuscrite</option>
+        <option value="Dactylographié">Dactylographié</option>
+        <option value="Autre">Autre</option>
+      </select>
+
+      <!-- Segmentation -->
+      <label class="mt-4" for="segmentation-b">Segmentation</label>
+      <select name="segmentation" id="segmentation-b">
+        <option value="Non spécifiée">Non spécifiée</option>
+        <option value="Origine">D'origine</option>
+        <option value="Passage">Passage</option>
+        <option value="Compilation">Compilation</option>
+      </select>
+
+      <!-- Grand titre -->
+      <h5 class="mt-5 mb-2"><b>Description linguistique</b></h5>
+      <!-- Langue -->
+      <div id="check-langue">
+      <label for="langue-b">Langue (automatique)</label>
+      <select name="langue" id="langue-b" disabled>
+        <option value="Non spécifiée">Non spécifiée</option>
+        <option value="Français">Français</option>
+        <option value="Anglais">Anglais</option>
+        <option value="Espagnol">Espagnol</option>
+      </select><button id="btn-change-de-langue">Changer la langue</button>
+      </div>
+      <!-- Registre -->
+      <label for="registre">Registre</label>
+      <select name="registre" id="registre-b">
+        <option value="Non spécifié">Non spécifié</option>
+        <option value="Courant">Courant</option>
+        <option value="Familier">Familier</option>
+        <option value="Soutenu">Soutenu</option>
+      </select>
+      <label class="mt-4" for="commentaire-b">Commentaire</label>
+      <textarea name="commentaire" id="commentaire-b" class="text ui-widget-content ui-corner-all" style="width: 100%;" cols="30" rows="10"></textarea>
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <button id="btn-creer-nouveau-texte">Suivant</button>
+    </div>
+  </fieldset>
+</div>
+
+<!-- Créer un texte 2 -->
+<div id="dialog-form-importer-texte-2" title="Importer un texte"> 
+  <fieldset>
+      <!-- Grand titre -->
+      <h5 class="mb-4"><b>Association à un profil</b></h5>
+      <div>
+        <input type="radio" name="profil_texte" value="associer"
+              checked>
+        <label for="huey">Associer à un profil existant</label>
+      </div>
+
+      <div>
+        <input type="radio" name="profil_texte" value="connu">
+        <label for="dewey">Créer un nouveau profil connu</label>
+      </div>
+
+      <div>
+        <input type="radio" name="profil_texte" value="anonyme">
+        <label for="louie">Créer un nouveau profil anonyme</label>
+      </div>
+
+      <button id="btn-creer-nouveau-texte-2">Créer</button>
+  </fieldset>
+</div>
+
+<!-- Créer un profil anonyme -->
+<div id="dialog-form-profil-inconnu" title="Créer un nouveau profil anonyme"> 
+  <fieldset>
+      <button id="btn-profil-connu" class="mb-4">Changer à profil connu</button>
+      <h5 class="mb-2"><b>Identification</b></h5>
+      <label for="alias-a">Alias</label>
+      <input type="text" name="alias" id="alias-a" placeholder="J Dupond" class="text ui-widget-content ui-corner-all">
+      <input type="hidden" name="name" id="prenom-a" placeholder="Inconnu" class="text ui-widget-content ui-corner-all" disabled>
+      <input type="hidden" name="nom" id="nom-a" placeholder="Inconnu" class="text ui-widget-content ui-corner-all" disabled>
+      <h5 class="mt-5 mb-2"><b>Profil Sociologique</b></h5>
+      <label for="password">Age estimé (exemple : 25-30)</label>
+      <input type="text" name="password" id="age-a" placeholder="25-30" class="text ui-widget-content ui-corner-all">
+      <label for="sexe">Sexe</label>
+      <select name="sexe" id="sexe-a">
+        <option value="no">Non spécifié</option>
+        <option value="femme">Femme</option>
+        <option value="homme">Homme</option>
+      </select><br>
+      <label class="mt-4" for="education">Niveau d'éducation</label>
+      <select name="education" id="education-a">
+        <option value="no">Non spécifié</option>
+        <option value="primaire">Primaire</option>
+        <option value="secondaire-1">Secondaire 1</option>
+        <option value="secondaire-2">Secondaire 2</option>
+        <option value="superieur">Supérieur</option>
+      </select>   
+      <label class="mt-4" for="sociale">Classe sociale</label>
+      <select name="sociale" id="sociale-a">
+        <option value="no">Non spécifiée</option>
+        <option value="populaire">Classe populaire</option>
+        <option value="moyenne">Classe moyenne</option>
+        <option value="aisee">Classe aisée</option>
+      </select>
+      <h5 class="mt-5 mb-2"><b>Informations complémentaires</b></h5>
+      <label for="commentaire">Commentaire</label>
+      <textarea name="commentaire" id="commentaire-a" class="text ui-widget-content ui-corner-all" style="width: 100%;" cols="30" rows="10"></textarea>
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <div class="champs-persos"></div>
+      <!-- <button id="btn-ajouter-champs-anonyme" class="btn-ajout-champs">Ajouter un nouveau champs</button> -->
+      <button id="btn-creer-profil-anonyme">Créer</button>
+    </fieldset>
+</div>
+
+<!-- Association profil / texte -->
+<div id="dialog-association-profil-texte" title="Ajouter un profil"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-texte" value="">
+      <h3>Sélectionner un profil existant</h3>
+      <input type="text" id="recherche-profil" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-profil" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+
+<!-- Association dossiers / texte -->
+<div id="dialog-association-dossiers-profils" title="Ajouter un profil"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-profild" value="">
+      <h3>Sélectionner un profil existant</h3>
+      <input type="text" id="recherche-profild" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-dprofil" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+
+<!-- Association dossiers / profils -->
+<div id="dialog-association-dossiers-textes" title="Ajouter un texte"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-texted" value="">
+      <h3>Sélectionner un texte existant</h3>
+      <input type="text" id="recherche-texted" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-dtextes" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+
+<!-- Association dossiers / collection -->
+<div id="dialog-association-dossiers-collections" title="Ajouter une collection"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-texted" value="">
+      <h3>Sélectionner une collection existante</h3>
+      <input type="text" id="recherche-collectiond" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-dcollections" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+
+<!-- Association dossiers / analyses -->
+<div id="dialog-association-dossiers-analyses" title="Ajouter une analyse"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-analysed" value="">
+      <h3>Sélectionner une analyse existante</h3>
+      <input type="text" id="recherche-analysed" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-danalyse" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+
+<!-- Association dossiers / rapports -->
+<div id="dialog-association-dossiers-rapports" title="Ajouter un rapport"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-rapportd" value="">
+      <h3>Sélectionner un rapport existant</h3>
+      <input type="text" id="recherche-rapportd" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-drapport" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+
+<!-- ########### -->
+<!-- Collection -->
+<!-- ########### -->
+<!-- Association dossiers / texte -->
+<div id="dialog-association-collections-profils" title="Ajouter un profil"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-profilc" value="">
+      <h3>Sélectionner un profil existant</h3>
+      <input type="text" id="recherche-profilc" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-cprofil" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+
+<!-- Association dossiers / profils -->
+<div id="dialog-association-collections-textes" title="Ajouter un texte"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-textec" value="">
+      <h3>Sélectionner un texte existant</h3>
+      <input type="text" id="recherche-textec" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-ctextes" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+
+<!-- Association dossiers / collection -->
+<div id="dialog-association-collections-dossiers" title="Ajouter un dossier"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-dossiersc" value="">
+      <h3>Sélectionner un dossier existant</h3>
+      <input type="text" id="recherche-dossiersc" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-cdossiers" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+
+<!-- Association dossiers / analyses -->
+<div id="dialog-association-collections-analyses" title="Ajouter une analyse"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-analysed" value="">
+      <h3>Sélectionner une analyse existante</h3>
+      <input type="text" id="recherche-analysed" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-danalyse" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+
+<!-- Association dossiers / rapports -->
+<div id="dialog-association-collections-rapports" title="Ajouter un rapport"> 
+  <fieldset>
+      <input type="hidden" name="id-element-texte" id="id-element-rapportd" value="">
+      <h3>Sélectionner un rapport existant</h3>
+      <input type="text" id="recherche-rapportd" placeholder="Votre recherche...">
+      <div class="mt-4">
+        <div class="list-group list-profil" id="search-result-drapport" style="overflow-y: scroll; height:250px;">
+        </div>
+      </div>
+  </fieldset>
+</div>
+<!-- ########### -->
+<!-- /Collection -->
+<!-- ########### -->
+
+<!-- Dossiers -->
+<div id="dialog-dossiers" title="Créer un dossier"> 
+  <fieldset>
+    <h3>Créer un nouveau dossiers</h3>
+    <label for="titre-dossier">Titre du dossier*</label>
+    <input type="text" id="titre-dossier" placeholder="Titre du dossier...">
+    <button class="mt-3" id="btn-creer-nouveau-dossier">Créer le dossier</button>
+</fieldset>
+</div>
+
+<!-- Dossiers -->
+<div id="dialog-collections" title="Créer une collection"> 
+  <fieldset>
+      <h3>Créer une nouvelle collection</h3>
+      <label for="titre-collection">Titre de la collection*</label>
+      <input type="text" id="titre-collection" placeholder="Titre de la collection...">
+      <button class="mt-3" id="btn-creer-nouvelle-collection">Créer la collection</button>
+  </fieldset>
+</div>
+
+
+<!--<div id="dialog" title="Besoin d'aide ?">
+  <p>L'application vous permets de rechercher vos textes, de les analyser et de les comparer.</p>
+</div>-->
+
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="col-2">
+            <ul id="menu">
+                <li><div>Fichier</div>
+                    <ul>
+                      <li><div id="menu-ouvrir">Ouvrir</div></li>
+                      <li><div id="menu-importer">Importer</div></li>
+                    </ul>
+                  </li>
+                  <li><div>Nouveau&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <ul>
+                      <li><div id="creer-profil-connu">Profil Connu</div></li>
+                      <li><div id="creer-profil-anonyme">Profil Anonyme</div></li>
+                      <li><div id="creer-texte">Texte</div></li>
+                      <li><div id="creer-collection">Collection&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></li>
+                      <li><div id="creer-dossier">Dossier</div></li>
+                    </ul>
+                  </li>
+                <li><div>Analyses</div>
+                  <ul>
+                    <li><div id="analyse-profil">Profil</div></li>
+                    <li><div id="analyse-texte">Texte</div></li>
+                  </ul>
+                </li>
+                <li><div>Rapports</div>
+                  <ul>
+                    <li><div id="rapports-profil">Profil</div></li>
+                    <li><div id="rapports-texte">Texte</div></li>
+                  </ul>
+                </li>
+                <li><div id="recherche-bdd">Base de données</div></li>
+                <li><div>Paramètres&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                  <ul>
+                    <li><div id="parametres-profil">Modifier le mot de passe</div></li>
+                    <li><div id="parametres-compte">Ajouter un compte</div></li>
+                    <li><div id="parametres-deconnexion">Déconnexion&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></li>
+                  </ul>
+                </li>
+              </ul>
+          <!--<div id="accordion">
+            <h3>Sélections</h3>
+            <div>
+              <p>
+              Aucune donnée à afficher.
+              </p>
+            </div>
+            <h3>Dossiers</h3>
+            <div>
+              <p>
+              Dossiers en cours de chargement...
+              </p>
+            </div>
+            <h3>Collections</h3>
+            <div>
+              <p>
+              Collections en cours de chargement...
+              </p>
+            </div>
+            <h3>Recherche</h3>
+            <div>
+              <input style="width: 150px;" type="text" id="texte-recherche" placeholder="Recherche...">
+              <button class="ui-button ui-widget ui-corner-all" id="bouton-recherche">Rechercher</button>
+            </div>
+          </div>-->
+        </div>
+        <div class="col-10" id="ecran">
+            <div id="tabs">
+                <ul id="my-tabs">
+                  <li><a id="click-tabs-1" href="#tabs-1"><b>Recherche</b></a></li>
+                </ul>
+                <div id="tabs-1" style="height:500px;">
+                  <h3>Recherche en base de données</h3>
+                  <input autocomplete="off" type="text" id="recherche" placeholder="Votre recherche...">
+                  <div class="mt-4">
+                    <div class="list-group" id="search-result" style="overflow-y: scroll; height:250px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>
