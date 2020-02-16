@@ -5,12 +5,9 @@
     </v-tabs>
     <v-card-text class="text-center">
       <v-divider class="mx-4" vertical></v-divider>
-      <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
-        <v-btn @click="removeTab" depressed small color="error">X Fermer la fenêtre</v-btn>
-      </div>
-      <Content :id="contentTabs.nowId" :content="contentTabs.data" />
       <v-text-field v-model="textTitle" label="Texte" required></v-text-field>
       <v-btn text @click="addTab">Ajouter Tab</v-btn>
+      <Content :id="contentTabs.nowId" :content="contentTabs.data" />
     </v-card-text>
   </v-card>
 </template>
