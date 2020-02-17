@@ -2,6 +2,7 @@
   <v-app>
     <v-container fluid>
       <v-row no-gutters>
+        <Dialogs />
         <v-col lg="2">
           <Menu />
         </v-col>
@@ -16,6 +17,7 @@
 <script>
 import Tabs from "./components/Tabs";
 import Menu from "./components/Menu";
+import Dialogs from "./components/Dialogs";
 // import CreateProfil from "./components/dialogs/CreateProfilConnu";
 
 export default {
@@ -23,7 +25,8 @@ export default {
 
   components: {
     Tabs,
-    Menu
+    Menu,
+    Dialogs
   },
 
   data: () => ({

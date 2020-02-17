@@ -1,10 +1,10 @@
 // 
-// Flux Menu
+// Flux Dialogs
 // @DemangeJeremy
 // 
 
-// Store MenuData
-export const MenuData = {
+// Store DialogsData
+export const DialogsData = {
     debug: true,
     state: {
         id: 4,
