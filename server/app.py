@@ -7,7 +7,7 @@ ALLOWED_EXTENSIONS = {'txt'}
 app = Flask(__name__)
 app.secret_key = 'dhbjnbhz68Gbzbzbhu'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-CORS(app)
+CORS(app, support_credentials=True, resources={r"/*": {"origins": "*"}})
 
 
 

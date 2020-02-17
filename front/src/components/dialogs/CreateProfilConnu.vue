@@ -17,6 +17,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
+                  v-model="alias"
                   label="Alias"
                   autocomplete="nope"
                   hint="Identifiant du profil"
@@ -91,6 +92,7 @@
               </v-col>
               <v-col cols="12">
                 <v-textarea
+                  v-model="commentaire"
                   autocomplete="nope"
                   label="Commentaires"
                 ></v-textarea>
@@ -112,6 +114,7 @@
 
 <script>
 import { DialogsData } from "../../flux/Dialogs";
+import axios from "axios";
 
 export default {
   name: "CreateProfilConnu",
@@ -120,6 +123,7 @@ export default {
     dialogm1: "",
     dialog: false,
     valid: true,
+    alias: "",
     nom: "",
     nomRules: [v => !!v || "Le nom est requis."],
     prenom: "",
@@ -130,21 +134,46 @@ export default {
       v =>
         /^(([9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
         "L'âge doit être compris entre 9 et 120"
-    ]
+    ],
+    sexe: "",
+    education: "",
+    sociale: "",
+    commentaire: ""
   }),
   methods: {
     checkDialog() {
       DialogsData.close("profil-connu");
     },
-    validate() {
-      if (this.$refs.form.validate()) {
-        alert("Le profil à bien été crée");
-        this.reset();
-        this.dialog = false;
-      }
-    },
     reset() {
       this.$refs.form.reset();
+    },
+    validate() {
+      if (this.$refs.form.validate()) {
+        // Ajout en formulaire
+        let formData = new FormData();
+        formData.append("alias", this.alias);
+        formData.append("prenom", this.prenom);
+        formData.append("nom", this.nom);
+        formData.append("age", this.age);
+        formData.append("sexe", this.sexe);
+        formData.append("education", this.education);
+        formData.append("sociale", this.sociale);
+        formData.append("commentaire", this.commentaire);
+        formData.append("typeP", "connu");
+
+        // Appel avec axios
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/creer-profil-connu", formData)
+          .then(response => {
+            alert("Le profil à bien été crée");
+            console.log(response);
+            this.reset();
+            DialogsData.close("profil-connu");
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     },
     resetValidation() {
       this.$refs.form.resetValidation();

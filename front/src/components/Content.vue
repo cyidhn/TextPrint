@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Champs recherche -->
     <div v-if="contentTabs.nowId === 1">
       <transition name="slide-fade">
         <div
@@ -13,7 +14,9 @@
         </div>
       </transition>
     </div>
+    <!-- /Champs recherche -->
 
+    <!-- Texte -->
     <div v-if="type === 'Texte'">
       <transition name="slide-fade">
         <div style="overflow: scroll" :key="id" class="taille-f">
@@ -22,12 +25,61 @@
               >X Fermer la fenêtre</v-btn
             >
           </div>
-          <h1>{{ title }}</h1>
+          <h1>Texte : {{ title }}</h1>
           <br />
           <Texte :content="save" />
         </div>
       </transition>
     </div>
+    <!-- /Texte -->
+
+    <!-- Dossiers -->
+    <div v-if="type === 'Dossiers'">
+      <transition name="slide-fade">
+        <div style="overflow: scroll" :key="id" class="taille-f">
+          <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
+            <v-btn @click="removeTab" depressed small color="error"
+              >X Fermer la fenêtre</v-btn
+            >
+          </div>
+          <h1>Dossier :</h1>
+          <br />
+        </div>
+      </transition>
+    </div>
+    <!-- /Dossiers -->
+
+    <!-- Collections -->
+    <div v-if="type === 'Collections'">
+      <transition name="slide-fade">
+        <div style="overflow: scroll" :key="id" class="taille-f">
+          <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
+            <v-btn @click="removeTab" depressed small color="error"
+              >X Fermer la fenêtre</v-btn
+            >
+          </div>
+          <h1>Collection :</h1>
+          <br />
+        </div>
+      </transition>
+    </div>
+    <!-- /Collections -->
+
+    <!-- Profil -->
+    <div v-if="type === 'Profil'">
+      <transition name="slide-fade">
+        <div style="overflow: scroll" :key="id" class="taille-f">
+          <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
+            <v-btn @click="removeTab" depressed small color="error"
+              >X Fermer la fenêtre</v-btn
+            >
+          </div>
+          <h1>Profil :</h1>
+          <br />
+        </div>
+      </transition>
+    </div>
+    <!-- /Profil -->
   </div>
 </template>
 

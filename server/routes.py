@@ -297,6 +297,11 @@ def profil():
     # Faire un retour de resultat
     return alias
 
+@app.route("/ready-to-post", methods=["POST"])
+def readyToPost():
+    alias = escape(request.form["alias"])
+    return "Vous avez envoyé : " + alias, 201
+
 @app.route("/modifier-profil", methods=["POST"])
 def modifierProfil():
 
