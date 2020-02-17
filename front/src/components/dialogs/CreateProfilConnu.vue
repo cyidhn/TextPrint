@@ -1,7 +1,11 @@
 <template>
   <v-row justify="center">
-    <button @click="checkDialog" v-if="!dialog">Hello</button>
-    <v-dialog v-model="dialog" persistent scrollable max-width="500px">
+    <v-dialog
+      v-model="data.profilConnu"
+      persistent
+      scrollable
+      max-width="500px"
+    >
       <v-card>
         <v-card-title>Créer un profil connu</v-card-title>
         <v-divider></v-divider>
@@ -107,9 +111,12 @@
 </template>
 
 <script>
+import { DialogsData } from "../../flux/Dialogs";
+
 export default {
   name: "CreateProfilConnu",
   data: () => ({
+    data: DialogsData.state,
     dialogm1: "",
     dialog: false,
     valid: true,
@@ -127,7 +134,7 @@ export default {
   }),
   methods: {
     checkDialog() {
-      this.dialog = !this.dialog;
+      DialogsData.close("profil-connu");
     },
     validate() {
       if (this.$refs.form.validate()) {

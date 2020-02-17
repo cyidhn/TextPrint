@@ -29,6 +29,7 @@
 
 <script>
 import { TabsData } from "../flux/Tabs";
+import { DialogsData } from "../flux/Dialogs";
 
 export default {
   data: () => ({
@@ -55,10 +56,10 @@ export default {
         icon: "mdi-keyboard-backspace",
         link: "retour"
       },
-      { title: "Profil connu", icon: "mdi-account", link: "ouvrir" },
-      { title: "Profil anonyme", icon: "mdi-account", link: "ouvrir" },
-      { title: "Texte", icon: "mdi-file", link: "ouvrir" },
-      { title: "Dossier", icon: "mdi-folder", link: "ouvrir" },
+      { title: "Profil connu", icon: "mdi-account", link: "profil-connu" },
+      { title: "Profil anonyme", icon: "mdi-account", link: "profil-anonyme" },
+      { title: "Texte", icon: "mdi-file", link: "texte" },
+      { title: "Dossier", icon: "mdi-folder", link: "dossier" },
       {
         title: "Collection",
         icon: "mdi-folder-multiple",
@@ -89,6 +90,10 @@ export default {
       }
       if (ref === "database") {
         TabsData.bdd();
+      }
+
+      if (ref === "profil-connu") {
+        DialogsData.open("profil-connu");
       }
     }
   }

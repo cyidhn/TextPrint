@@ -1,7 +1,15 @@
 <template>
-  <div></div>
+  <div>
+    <CreateProfilConnu />
+  </div>
 </template>
 
 <script>
-export default {};
+import CreateProfilConnu from "./dialogs/CreateProfilConnu";
+
+export default {
+  components: {
+    CreateProfilConnu
+  }
+};
 </script>
