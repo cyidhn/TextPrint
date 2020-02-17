@@ -1,12 +1,15 @@
 <template>
   <v-card>
     <v-tabs v-model="contentTabs.tab" background-color="black lighten-2" dark>
-      <v-tab v-for="n in contentTabs.data" :key="n.id" @click="callEvent(n.id)">{{ n.title }}</v-tab>
+      <v-tab
+        v-for="n in contentTabs.data"
+        :key="n.id"
+        @click="callEvent(n.id)"
+        >{{ n.title }}</v-tab
+      >
     </v-tabs>
     <v-card-text class="text-center">
       <v-divider class="mx-4" vertical></v-divider>
-      <v-text-field v-model="textTitle" label="Texte" required></v-text-field>
-      <v-btn text @click="addTab">Ajouter Tab</v-btn>
       <Content :id="contentTabs.nowId" :content="contentTabs.data" />
     </v-card-text>
   </v-card>

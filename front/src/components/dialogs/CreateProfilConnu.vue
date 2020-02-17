@@ -12,7 +12,11 @@
                 <h2>Identification</h2>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Alias" autocomplete="nope" hint="Identifiant du profil"></v-text-field>
+                <v-text-field
+                  label="Alias"
+                  autocomplete="nope"
+                  hint="Identifiant du profil"
+                ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
@@ -49,17 +53,32 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-select :items="['Non spécifié', 'Homme', 'Femme']" label="Sexe*" required></v-select>
+                <v-select
+                  :items="['Non spécifié', 'Homme', 'Femme']"
+                  label="Sexe*"
+                  required
+                ></v-select>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
-                  :items="['Non spécifié', 'Primaire', 'Secondaire 1', 'Secondaire 2', 'Supérieur']"
+                  :items="[
+                    'Non spécifié',
+                    'Primaire',
+                    'Secondaire 1',
+                    'Secondaire 2',
+                    'Supérieur'
+                  ]"
                   label="Niveau d'éducation"
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
-                  :items="['Non spécifiée', 'Classe populaire', 'Classe moyenne', 'Classe aisée']"
+                  :items="[
+                    'Non spécifiée',
+                    'Classe populaire',
+                    'Classe moyenne',
+                    'Classe aisée'
+                  ]"
                   label="Classe sociale"
                 ></v-select>
               </v-col>
@@ -67,7 +86,10 @@
                 <h2>Informations complémentaires</h2>
               </v-col>
               <v-col cols="12">
-                <v-textarea autocomplete="nope" label="Commentaires"></v-textarea>
+                <v-textarea
+                  autocomplete="nope"
+                  label="Commentaires"
+                ></v-textarea>
               </v-col>
             </v-row>
           </v-form>
@@ -75,7 +97,9 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn color="blue darken-1" text @click="checkDialog">Fermer</v-btn>
-          <v-btn color="blue darken-1" :disabled="!valid" text @click="validate">Créer</v-btn>
+          <v-btn color="blue darken-1" :disabled="!valid" text @click="validate"
+            >Créer</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -1,5 +1,5 @@
 <template>
-  <v-card height="100vh">
+  <v-card height="97vh">
     <v-navigation-drawer absolute permanent left width="100%">
       <template v-slot:prepend>
         <v-list-item two-line>
@@ -10,7 +10,11 @@
       <v-divider></v-divider>
 
       <v-list dense>
-        <v-list-item v-for="item in items" :key="item.title" @click="eventClick(item.link)">
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          @click="eventClick(item.link)"
+        >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -24,6 +28,8 @@
 </template>
 
 <script>
+import { TabsData } from "../flux/Tabs";
+
 export default {
   data: () => ({
     principal: [
@@ -59,15 +65,11 @@ export default {
         link: "ouvrir"
       }
     ],
-    items: [
-      { title: "Fichier", icon: "mdi-file", link: "fichier" },
-      { title: "Nouveau", icon: "mdi-pencil", link: "nouveau" },
-      { title: "Analyses", icon: "mdi-file-find", link: "analyses" },
-      { title: "Rapports", icon: "mdi-library-books", link: "rapports" },
-      { title: "Bases de données", icon: "mdi-database", link: "database" },
-      { title: "Paramètres", icon: "mdi-settings", link: "params" }
-    ]
+    items: []
   }),
+  mounted: function() {
+    this.items = [...this.principal];
+  },
   methods: {
     hello() {
       console.log("Hello");
@@ -84,6 +86,9 @@ export default {
       }
       if (ref === "nouveau") {
         this.items = this.nouveau;
+      }
+      if (ref === "database") {
+        TabsData.bdd();
       }
     }
   }

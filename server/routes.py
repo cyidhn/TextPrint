@@ -20,6 +20,7 @@ from langdetect import detect
 import chardet    
 import io
 
+
 #
 # Route de base
 # 

@@ -13,13 +13,17 @@ export const TabsData = {
         nowId: 1,
         data: [{
             id: 1,
-            title: "Recherche"
+            title: "Base de données",
+            contains: [{
+                type: "search"
+            }]
         }]
     },
-    add(title) {
+    add(title, item) {
         this.state.data = [...this.state.data, {
             id: this.state.id,
-            title
+            title,
+            contains: [item]
         }]
         this.state.nowId = this.state.id;
         this.state.tab = this.state.tabTotal + 1;
@@ -39,5 +43,9 @@ export const TabsData = {
         this.state.tab = 0;
         this.state.nowId = 1;
         this.state.tabTotal = this.state.tabTotal - 1;
+    },
+    bdd() {
+        this.state.tab = 0;
+        this.state.nowId = 1;
     }
 }
