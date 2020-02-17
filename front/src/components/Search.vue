@@ -62,7 +62,7 @@ export default {
   }),
   mounted: function() {
     axios
-      .get("http://127.0.0.1:5000/test")
+      .get(process.env.VUE_APP_SERVEUR + "/test")
       .then(response => {
         this.content = response.data;
       })

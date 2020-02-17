@@ -1,29 +1,34 @@
 <template>
-  <transition name="slide-fade">
+  <div>
     <div v-if="contentTabs.nowId === 1">
-      <div
-        style="overflow: scroll; padding-bottom:300px"
-        :key="id"
-        class="taille-f"
-      >
-        <h1>{{ title }}</h1>
-        <br />
-        <Search />
-      </div>
-    </div>
-    <div v-if="type === 'Texte'">
-      <div style="overflow: scroll" :key="id" class="taille-f">
-        <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
-          <v-btn @click="removeTab" depressed small color="error"
-            >X Fermer la fenêtre</v-btn
-          >
+      <transition name="slide-fade">
+        <div
+          style="overflow: scroll; padding-bottom:300px"
+          :key="id"
+          class="taille-f"
+        >
+          <h1>{{ title }}</h1>
+          <br />
+          <Search />
         </div>
-        <h1>{{ title }}</h1>
-        <br />
-        <Texte :content="save" />
-      </div>
+      </transition>
     </div>
-  </transition>
+
+    <div v-if="type === 'Texte'">
+      <transition name="slide-fade">
+        <div style="overflow: scroll" :key="id" class="taille-f">
+          <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
+            <v-btn @click="removeTab" depressed small color="error"
+              >X Fermer la fenêtre</v-btn
+            >
+          </div>
+          <h1>{{ title }}</h1>
+          <br />
+          <Texte :content="save" />
+        </div>
+      </transition>
+    </div>
+  </div>
 </template>
 
 <script>
