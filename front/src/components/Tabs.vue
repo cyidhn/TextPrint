@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-tabs v-model="contentTabs.tab" background-color="black lighten-2" dark>
+    <v-tabs v-model="contentTabs.tab" background-color="blue darken-4" dark>
       <v-tab
         v-for="n in contentTabs.data"
         :key="n.id"
