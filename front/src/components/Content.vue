@@ -42,8 +42,9 @@
               >X Fermer la fenêtre</v-btn
             >
           </div>
-          <h1>Dossier :</h1>
+          <h1>Dossier : Test</h1>
           <br />
+          <Dossier />
         </div>
       </transition>
     </div>
@@ -87,11 +88,13 @@
 import { TabsData } from "../flux/Tabs";
 import Search from "./Search";
 import Texte from "./windows/Texte";
+import Dossier from "./windows/Dossier";
 
 export default {
   components: {
     Search,
-    Texte
+    Texte,
+    Dossier
   },
   props: {
     id: Number,
