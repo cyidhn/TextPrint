@@ -5,7 +5,7 @@
         v-for="n in contentTabs.data"
         :key="n.id"
         @click="callEvent(n.id)"
-        >{{ n.title }}</v-tab
+        >{{ n.affichage }}</v-tab
       >
     </v-tabs>
     <v-card-text class="text-center">

@@ -3,7 +3,7 @@
     <v-navigation-drawer absolute permanent left width="100%">
       <template v-slot:prepend>
         <v-list-item two-line>
-          <h1 class="blue--text text--darken-4">TEXT|<b>PRINT</b></h1>
+          <h1 class="blue--text text--darken-4">TEXT | <b>PRINT</b></h1>
         </v-list-item>
       </template>
 

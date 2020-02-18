@@ -14,6 +14,7 @@ export const TabsData = {
         data: [{
             id: 1,
             title: "Base de données",
+            affichage: "Base de données",
             contains: [{
                 type: "search"
             }]
@@ -22,6 +23,7 @@ export const TabsData = {
     add(title, item) {
         this.state.data = [...this.state.data, {
             id: this.state.id,
+            affichage: item.type + " | " + title,
             title,
             contains: [item]
         }]
