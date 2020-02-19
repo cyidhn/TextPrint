@@ -451,6 +451,65 @@ def textesbyprofil():
     # Faire un retour de resultat
     return statsTexte, 201
 
+@app.route("/assoc", methods=["POST"])
+def assoc():
+
+    # Recuperer les donnees
+    idElement = escape(request.form["id"])
+    typeElement = escape(request.form["type"])
+    getElement = escape(request.form["get"])
+
+    # Requete de donnees
+    req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s' AND champs2 = '%s'" % (idElement, typeElement, getElement)
+
+    # Executer la requete
+    data = db_search(req)
+
+    # Lire les infos
+    if not data:
+        return "", 201
+
+    # Stockage infos
+    statsTexte = ""
+    idEl = 1
+    for r in data:
+        if r[1] == "Collection" and r[2] == "Profil":
+            req = "SELECT * FROM tpProfils WHERE id = %s" % (r[4])
+            dataTexte = db_search(req)
+            for t in dataTexte:
+                nom = str(t[3])
+                statsTexte += """
+                <tr>
+                    <th scope="row">Profil %s</th>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td><button class="delete-associationc" id="del-element-%s">Supprimer</button></td>
+                </tr>
+                """ % (t[9], t[1], t[2] + " " + nom, r[0])
+        if r[1] == "Dossier" and r[2] == "Profil":
+            req = "SELECT * FROM tpProfils WHERE id = %s" % (r[4])
+            dataTexte = db_search(req)
+            for t in dataTexte:
+                nom = str(t[3])
+                if idEl is not 1:
+                    statsTexte += ","
+                statsTexte += """
+                {
+                    id: %s,
+                    type: "Profil %s",
+                    alias: "%s",
+                    nom: "%s",
+                    delete: %s"
+                }
+                """ % (str(idEl), t[9], t[1], t[2] + " " + nom, r[0])
+                idEl += 1
+    #result = json.loads(statsTexte)
+
+    # Faire un retour de resultat
+    return jsonify(statsTexte), 201
+
+
+
 @app.route("/resultassocoiation", methods=["POST"])
 def resultassocoiation():
 

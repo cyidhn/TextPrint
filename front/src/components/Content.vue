@@ -126,7 +126,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* Les animations d'entrée (« enter ») et de sortie (« leave »)  */
 /* peuvent utiliser différentes fonctions de durée et de temps.  */
 .slide-fade-enter-active {

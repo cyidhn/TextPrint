@@ -14,15 +14,21 @@
       </v-row>
       <v-row>
         <v-col cols="6" align="start">
-          <v-text-field class="mx-2" v-model="search" label="Filtrer" single-line hide-details></v-text-field>
+          <v-text-field
+            class="mx-2"
+            v-model="searchProfils"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
         </v-col>
       </v-row>
       <br />
       <v-data-table
         v-model="selected"
-        :headers="headers"
-        :items="desserts"
-        :search="search"
+        :headers="headersProfils"
+        :items="profils"
+        :search="searchProfils"
         item-key="id"
         show-select
         class="elevation-1"
@@ -42,15 +48,21 @@
       </v-row>
       <v-row>
         <v-col cols="6" align="start">
-          <v-text-field class="mx-2" v-model="search1" label="Filtrer" single-line hide-details></v-text-field>
+          <v-text-field
+            class="mx-2"
+            v-model="searchTextes"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
         </v-col>
       </v-row>
       <br />
       <v-data-table
         v-model="selected"
-        :headers="headers"
-        :items="desserts"
-        :search="search1"
+        :headers="headersTextes"
+        :items="textes"
+        :search="searchTextes"
         item-key="id"
         show-select
         class="elevation-1"
@@ -60,41 +72,45 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      search: "",
-      search1: "",
+      searchProfils: "",
+      searchTextes: "",
       selected: [],
-      headers: [
-        {
-          text: "Type",
-          value: "name"
-        },
-        { text: "Alias", value: "calories" },
-        { text: "Prénom NOM", value: "fat" }
+      headersProfils: [
+        { text: "Type", value: "type" },
+        { text: "Alias", value: "alias" },
+        { text: "Prénom NOM", value: "nom" }
       ],
-      desserts: [
-        {
-          id: 1,
-          name: "Profil connu",
-          calories: "Jane_Doe",
-          fat: "Jane DOE"
-        },
-        {
-          id: 2,
-          name: "Profil anonyme",
-          calories: "J_Dupond_123",
-          fat: "/"
-        },
-        {
-          id: 3,
-          name: "Profil connu",
-          calories: "/",
-          fat: "Léo MARTIN"
-        }
-      ]
+      profils: [],
+      headersTextes: [
+        { text: "Titre", value: "titre" },
+        { text: "# Versions", value: "versions" }
+      ],
+      textes: []
     };
+  },
+  mounted: function() {
+    // Ajout en formulaire
+    let formData = new FormData();
+    formData.append("id", 2);
+    formData.append("type", "Dossier");
+    formData.append("get", "Profil");
+
+    // Appel avec axios
+    axios
+      .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+      .then(response => {
+        console.log(response.data);
+        let result = JSON.parse(response.data);
+        this.profils = [result];
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 </script>
