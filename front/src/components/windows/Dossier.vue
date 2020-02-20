@@ -30,7 +30,8 @@
       </v-row>
       <br />
       <v-data-table
-        no-data-text="Aucun élément trouvé"
+        no-data-text="Aucu
+        n élément trouvé"
         no-results-text="Aucun élément trouvé"
         loading-text="Chargement en cours..."
         v-model="selectedProfils"
