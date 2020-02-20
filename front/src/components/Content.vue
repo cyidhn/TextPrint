@@ -130,11 +130,11 @@ export default {
 /* Les animations d'entrée (« enter ») et de sortie (« leave »)  */
 /* peuvent utiliser différentes fonctions de durée et de temps.  */
 .slide-fade-enter-active {
-  transition: all 0.3s ease;
-  transition-delay: 0.3s;
+  transition: all 0.2s ease;
+  transition-delay: 0.2s;
 }
 .slide-fade-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {

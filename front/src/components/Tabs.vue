@@ -1,12 +1,7 @@
 <template>
   <v-card>
     <v-tabs v-model="contentTabs.tab" background-color="blue darken-4" dark>
-      <v-tab
-        v-for="n in contentTabs.data"
-        :key="n.id"
-        @click="callEvent(n.id)"
-        >{{ n.affichage }}</v-tab
-      >
+      <v-tab v-for="n in contentTabs.data" :key="n.id" @click="callEvent(n.id)">{{ n.affichage }}</v-tab>
     </v-tabs>
     <v-card-text class="text-center">
       <v-divider class="mx-4" vertical></v-divider>

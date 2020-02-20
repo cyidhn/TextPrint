@@ -470,7 +470,7 @@ def assoc():
         return "", 201
 
     # Stockage infos
-    statsTexte = ""
+    statsTexte = "["
     idEl = 1
     for r in data:
         if r[1] == "Collection" and r[2] == "Profil":
@@ -486,6 +486,23 @@ def assoc():
                     <td><button class="delete-associationc" id="del-element-%s">Supprimer</button></td>
                 </tr>
                 """ % (t[9], t[1], t[2] + " " + nom, r[0])
+        if r[1] == "Dossier" and r[2] == "Texte":
+            req = "SELECT * FROM tpTexte WHERE id = %s" % (r[4])
+            dataTexte = db_search(req)
+            for t in dataTexte:
+                nom = str(t[3])
+                if idEl is not 1:
+                    statsTexte += ","
+                statsTexte += """
+                {
+                    "id": %s,
+                    "type": "Texte",
+                    "titre": "%s",
+                    "version": 1,
+                    "delete": %s
+                }
+                """ % (str(idEl), t[2], r[0])
+                idEl += 1
         if r[1] == "Dossier" and r[2] == "Profil":
             req = "SELECT * FROM tpProfils WHERE id = %s" % (r[4])
             dataTexte = db_search(req)
@@ -495,14 +512,15 @@ def assoc():
                     statsTexte += ","
                 statsTexte += """
                 {
-                    id: %s,
-                    type: "Profil %s",
-                    alias: "%s",
-                    nom: "%s",
-                    delete: %s"
+                    "id": %s,
+                    "type": "Profil %s",
+                    "alias": "%s",
+                    "nom": "%s",
+                    "delete": %s
                 }
                 """ % (str(idEl), t[9], t[1], t[2] + " " + nom, r[0])
                 idEl += 1
+    statsTexte += "]"
     #result = json.loads(statsTexte)
 
     # Faire un retour de resultat
