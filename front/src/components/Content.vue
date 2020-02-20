@@ -134,7 +134,7 @@ export default {
   transition-delay: 0.2s;
 }
 .slide-fade-leave-active {
-  transition: all 0.2s ease;
+  transition: all 0.2ws ease;
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
