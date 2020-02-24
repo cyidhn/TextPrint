@@ -198,8 +198,25 @@ export default {
             )
             .then(response => {
               console.log(response.data);
-              // Ajout au tableau
-              this.profils = [...this.profils, {}];
+              // TypeProfils
+              // Ajout en formulaire
+              let newFormData = new FormData();
+              newFormData.append("id", 2);
+              newFormData.append("type", "Dossier");
+              newFormData.append("get", "Profil");
+
+              // Appel avec axios
+              axios
+                .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
+                .then(response => {
+                  let result = JSON.parse(response.data);
+                  this.profils = result;
+                })
+                .catch(error => {
+                  this.profils = [];
+                  console.log(error);
+                });
+              // /TypeProfils
             })
             .catch(error => {
               console.log(error);
@@ -226,31 +243,31 @@ export default {
             )
             .then(response => {
               console.log(response);
+              // TypeProfils
+              // Ajout en formulaire
+              let newFormData = new FormData();
+              newFormData.append("id", 2);
+              newFormData.append("type", "Dossier");
+              newFormData.append("get", "Profil");
+
+              // Appel avec axios
+              axios
+                .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
+                .then(response => {
+                  let result = JSON.parse(response.data);
+                  this.profils = result;
+                })
+                .catch(error => {
+                  this.profils = [];
+                  console.log(error);
+                });
+              // /TypeProfils
             })
             .catch(error => {
               console.log(error);
             });
         });
         this.selectedProfils = [];
-        // TypeProfils
-        // Ajout en formulaire
-        let newFormData = new FormData();
-        newFormData.append("id", 2);
-        newFormData.append("type", "Dossier");
-        newFormData.append("get", "Profil");
-
-        // Appel avec axios
-        axios
-          .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
-          .then(response => {
-            let result = JSON.parse(response.data);
-            this.profils = result;
-          })
-          .catch(error => {
-            this.profils = [];
-            console.log(error);
-          });
-        // /TypeProfils
       }
     }
   },
