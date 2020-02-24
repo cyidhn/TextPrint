@@ -1,6 +1,18 @@
 <template>
   <div>
     <v-container fluid>
+      <!-- Snackbar Ajouté avec succès -->
+      <v-snackbar v-model="snackbarAjoute" :bottom="true" color="success" :timeout="2000">
+        Les éléments ont bien été ajoutés et sauvegardés.
+        <v-btn dark text @click="snackbarAjoute = false">Fermer</v-btn>
+      </v-snackbar>
+      <!-- /Snackbar Ajouté avec succès -->
+      <!-- Snackbar Supprimé avec succès -->
+      <v-snackbar v-model="snackbarSupprimer" :bottom="true" color="error" :timeout="2000">
+        Les éléments ont bien été supprimés.
+        <v-btn dark text @click="snackbarSupprimer = false">Fermer</v-btn>
+      </v-snackbar>
+      <!-- /Snackbar Supprimé avec succès -->
       <!-- Modal ajouter un profil -->
       <v-dialog v-model="dialogProfils" max-width="500px" persistent scrollable>
         <v-card>
@@ -124,8 +136,15 @@
 import axios from "axios";
 
 export default {
+  props: {
+    content: Object
+  },
   data() {
     return {
+      // Snackbar
+      snackbarAjoute: false,
+      snackbarSupprimer: false,
+      // Autre
       disabledProfils: true,
       disabledTextes: true,
       searchProfils: "",
@@ -173,7 +192,7 @@ export default {
           formData = new FormData();
           formData.append("champs1", "Dossier");
           formData.append("champs2", "Profil");
-          formData.append("idchamps1", 2);
+          formData.append("idchamps1", this.content.id);
           formData.append("idchamps2", e.id);
           // Appel avec axios
           axios
@@ -186,7 +205,7 @@ export default {
               // TypeProfils
               // Ajout en formulaire
               let newFormData = new FormData();
-              newFormData.append("id", 2);
+              newFormData.append("id", this.content.id);
               newFormData.append("type", "Dossier");
               newFormData.append("get", "Profil");
 
@@ -196,6 +215,7 @@ export default {
                 .then(response => {
                   let result = JSON.parse(response.data);
                   this.profils = result;
+                  this.snackbarAjoute = true;
                 })
                 .catch(error => {
                   this.profils = [];
@@ -231,7 +251,7 @@ export default {
               // TypeProfils
               // Ajout en formulaire
               let newFormData = new FormData();
-              newFormData.append("id", 2);
+              newFormData.append("id", this.content.id);
               newFormData.append("type", "Dossier");
               newFormData.append("get", "Profil");
 
@@ -241,6 +261,7 @@ export default {
                 .then(response => {
                   let result = JSON.parse(response.data);
                   this.profils = result;
+                  this.snackbarSupprimer = true;
                 })
                 .catch(error => {
                   this.profils = [];
@@ -260,7 +281,7 @@ export default {
     // TypeProfils
     // Ajout en formulaire
     let formData = new FormData();
-    formData.append("id", 2);
+    formData.append("id", this.content.id);
     formData.append("type", "Dossier");
     formData.append("get", "Profil");
 
@@ -279,7 +300,7 @@ export default {
     // TypeTextes
     // Ajout en formulaire
     formData = new FormData();
-    formData.append("id", 2);
+    formData.append("id", this.content.id);
     formData.append("type", "Dossier");
     formData.append("get", "Texte");
 

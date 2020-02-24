@@ -36,11 +36,11 @@
           </div>
           <br />
           <br />
-          <h1>TEST</h1>
+          <h1>{{ title }}</h1>
           <br />
           <hr />
           <br />
-          <Dossier />
+          <Dossier :content="save" />
         </div>
       </transition>
     </div>
