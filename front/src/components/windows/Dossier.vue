@@ -87,6 +87,43 @@
         </v-card>
       </v-dialog>
       <!-- /Modal ajouter un profil -->
+      <!-- Modal ajouter une collection -->
+      <v-dialog v-model="dialogCollections" max-width="500px" persistent scrollable>
+        <v-card>
+          <v-card-title>
+            <span class="headline">
+              <b>Ajouter des collections</b>
+            </span>
+          </v-card-title>
+          <v-card-text>
+            <v-card class="mx-auto" max-width="800" tile>
+              <v-text-field
+                v-model="rechercheAjoutsCollections"
+                label="Rechercher dans la base de données"
+                required
+              ></v-text-field>
+              <v-data-table
+                no-data-text="Aucun élément trouvé"
+                no-results-text="Aucun élément trouvé"
+                loading-text="Chargement en cours..."
+                v-model="selectedAjoutsCollections"
+                :headers="headersCollections"
+                :items="filteredListCollections"
+                :items-per-page="5"
+                item-key="id"
+                show-select
+                class="elevation-1"
+              ></v-data-table>
+            </v-card>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="fermerCollections">Retour</v-btn>
+            <v-btn color="blue darken-1" text @click="associerCollections">Ajouter des collections</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- /Modal ajouter une collection -->
       <br />
       <br />
       <!-- Ajouter un element -->
@@ -139,7 +176,12 @@
         </v-col>
         <v-col cols="6" align="end">
           <v-btn small class="mx-2" color="primary" @click="ajouterTextes">Ajouter un texte</v-btn>
-          <v-btn small color="error" :disabled="disabledTextes">Supprimer la sélection</v-btn>
+          <v-btn
+            small
+            color="error"
+            :disabled="disabledTextes"
+            @click="deleteTextes"
+          >Supprimer la sélection</v-btn>
         </v-col>
       </v-row>
       <v-row>
@@ -176,8 +218,18 @@
           <h2>Association avec les Collections</h2>
         </v-col>
         <v-col cols="6" align="end">
-          <v-btn small class="mx-2" color="primary" @click="ajouterTextes">Ajouter une collection</v-btn>
-          <v-btn small color="error" :disabled="disabledTextes">Supprimer la sélection</v-btn>
+          <v-btn
+            small
+            class="mx-2"
+            color="primary"
+            @click="ajouterCollections"
+          >Ajouter une collection</v-btn>
+          <v-btn
+            small
+            color="error"
+            :disabled="disabledCollections"
+            @click="deleteCollections"
+          >Supprimer la sélection</v-btn>
         </v-col>
       </v-row>
       <v-row>
@@ -215,7 +267,7 @@
         </v-col>
         <v-col cols="6" align="end">
           <v-btn small class="mx-2" color="primary" @click="ajouterTextes">Ajouter une analyse</v-btn>
-          <v-btn small color="error" :disabled="disabledTextes">Supprimer la sélection</v-btn>
+          <v-btn small color="error" :disabled="true">Supprimer la sélection</v-btn>
         </v-col>
       </v-row>
       <v-row>
@@ -253,7 +305,7 @@
         </v-col>
         <v-col cols="6" align="end">
           <v-btn small class="mx-2" color="primary" @click="ajouterTextes">Ajouter un rapport</v-btn>
-          <v-btn small color="error" :disabled="disabledTextes">Supprimer la sélection</v-btn>
+          <v-btn small color="error" :disabled="true">Supprimer la sélection</v-btn>
         </v-col>
       </v-row>
       <v-row>
@@ -396,6 +448,22 @@ export default {
       this.dialogTextes = !this.dialogTextes;
       console.log("Ok");
     },
+    ajouterCollections() {
+      let formData = new FormData();
+      formData.append("req", "");
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/searchcollections", formData)
+        .then(response => {
+          console.log("reponse :", response.data);
+          this.contentCollections = response.data;
+        })
+        .catch(e => {
+          this.getError = true;
+          console.error("Impossible de charger les données", e);
+        });
+      this.dialogCollections = !this.dialogCollections;
+      console.log("Ok");
+    },
     associerProfils() {
       if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
         let formData = new FormData();
@@ -443,7 +511,101 @@ export default {
       }
     },
     associerTextes() {
-      console.log("Associer");
+      if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
+        let formData = new FormData();
+        this.selectedAjoutsTextes.map(e => {
+          formData = new FormData();
+          formData.append("champs1", "Dossier");
+          formData.append("champs2", "Texte");
+          formData.append("idchamps1", this.content.id);
+          formData.append("idchamps2", e.id);
+          // Appel avec axios
+          axios
+            .post(
+              process.env.VUE_APP_SERVEUR + "/associer-generalement",
+              formData
+            )
+            .then(response => {
+              console.log(response.data);
+              // TypeProfils
+              // Ajout en formulaire
+              let newFormData = new FormData();
+              newFormData.append("id", this.content.id);
+              newFormData.append("type", "Dossier");
+              newFormData.append("get", "Texte");
+
+              // Appel avec axios
+              axios
+                .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
+                .then(response => {
+                  let result = JSON.parse(response.data);
+                  this.textes = result;
+                  this.snackbarAjoute = true;
+                })
+                .catch(error => {
+                  this.textes = [];
+                  this.snackbarAjoute = true;
+                  console.log(error);
+                });
+              // /TypeProfils
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
+        this.selectedAjoutsTextes = [];
+        this.dialogTextes = false;
+      }
+    },
+    associerCollections() {
+      if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
+        let formData = new FormData();
+        this.selectedAjoutsCollections.map(e => {
+          formData = new FormData();
+          formData.append("champs1", "Dossier");
+          formData.append("champs2", "Collection");
+          formData.append("idchamps1", this.content.id);
+          formData.append("idchamps2", e.id);
+          // Appel avec axios
+          axios
+            .post(
+              process.env.VUE_APP_SERVEUR + "/associer-generalement",
+              formData
+            )
+            .then(response => {
+              console.log(response.data);
+              // TypeProfils
+              // Ajout en formulaire
+              let newFormData = new FormData();
+              newFormData.append("id", this.content.id);
+              newFormData.append("type", "Dossier");
+              newFormData.append("get", "Collection");
+
+              // Appel avec axios
+              axios
+                .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
+                .then(response => {
+                  let result = JSON.parse(response.data);
+                  this.collections = result;
+                  this.snackbarAjoute = true;
+                })
+                .catch(error => {
+                  this.collections = [];
+                  this.snackbarAjoute = true;
+                  console.error(error);
+                });
+              // /TypeProfils
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        });
+        this.selectedAjoutsCollections = [];
+        this.dialogCollections = false;
+      }
+    },
+    fermerCollections() {
+      this.dialogCollections = false;
     },
     fermerProfils() {
       this.dialogProfils = false;
@@ -479,6 +641,7 @@ export default {
                 })
                 .catch(error => {
                   this.profils = [];
+                  this.snackbarSupprimer = true;
                   console.log(error);
                 });
               // /TypeProfils
@@ -488,6 +651,92 @@ export default {
             });
         });
         this.selectedProfils = [];
+      }
+    },
+    deleteCollections() {
+      if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
+        let formData = new FormData();
+        this.selectedCollections.map(e => {
+          formData = new FormData();
+          formData.append("id", e.delete);
+          // Appel avec axios
+          axios
+            .post(
+              process.env.VUE_APP_SERVEUR + "/supprimer-association",
+              formData
+            )
+            .then(response => {
+              console.log(response);
+              // TypeProfils
+              // Ajout en formulaire
+              let newFormData = new FormData();
+              newFormData.append("id", this.content.id);
+              newFormData.append("type", "Dossier");
+              newFormData.append("get", "Collection");
+
+              // Appel avec axios
+              axios
+                .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
+                .then(response => {
+                  let result = JSON.parse(response.data);
+                  this.collections = result;
+                  this.snackbarSupprimer = true;
+                })
+                .catch(error => {
+                  this.collections = [];
+                  this.snackbarSupprimer = true;
+                  console.log(error);
+                });
+              // /TypeProfils
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
+        this.selectedCollections = [];
+      }
+    },
+    deleteTextes() {
+      if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
+        let formData = new FormData();
+        this.selectedTextes.map(e => {
+          formData = new FormData();
+          formData.append("id", e.delete);
+          // Appel avec axios
+          axios
+            .post(
+              process.env.VUE_APP_SERVEUR + "/supprimer-association",
+              formData
+            )
+            .then(response => {
+              console.log(response);
+              // TypeProfils
+              // Ajout en formulaire
+              let newFormData = new FormData();
+              newFormData.append("id", this.content.id);
+              newFormData.append("type", "Dossier");
+              newFormData.append("get", "Texte");
+
+              // Appel avec axios
+              axios
+                .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
+                .then(response => {
+                  let result = JSON.parse(response.data);
+                  this.textes = result;
+                  this.snackbarSupprimer = true;
+                })
+                .catch(error => {
+                  this.textes = [];
+                  this.snackbarSupprimer = true;
+                  console.log(error);
+                });
+              // /TypeProfils
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
+        this.selectedTextes = [];
       }
     }
   },
@@ -529,6 +778,25 @@ export default {
         console.log(error);
       });
     // /TypeTextes
+
+    // TypeCollections
+    // Ajout en formulaire
+    formData = new FormData();
+    formData.append("id", this.content.id);
+    formData.append("type", "Dossier");
+    formData.append("get", "Collection");
+
+    // Appel avec axios
+    axios
+      .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+      .then(response => {
+        let result = JSON.parse(response.data);
+        this.collections = result;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    // /TypeCollections
   },
   updated: function() {
     // Profils
@@ -542,6 +810,13 @@ export default {
       this.disabledTextes = false;
     } else {
       this.disabledTextes = true;
+    }
+
+    // Collections
+    if (this.selectedCollections.length > 0) {
+      this.disabledCollections = false;
+    } else {
+      this.disabledCollections = true;
     }
   },
   computed: {
@@ -563,6 +838,13 @@ export default {
         return p.titre
           .toLowerCase()
           .includes(this.rechercheAjoutsTextes.toLowerCase());
+      });
+    },
+    filteredListCollections() {
+      return this.contentCollections.filter(p => {
+        return p.titre
+          .toLowerCase()
+          .includes(this.rechercheAjoutsCollections.toLowerCase());
       });
     }
   }

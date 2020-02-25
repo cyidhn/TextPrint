@@ -503,6 +503,22 @@ def assoc():
                 }
                 """ % (str(idEl), t[2], r[0])
                 idEl += 1
+        if r[1] == "Dossier" and r[2] == "Collection":
+            req = "SELECT * FROM tpCollections WHERE id = %s" % (r[4])
+            dataTexte = db_search(req)
+            for t in dataTexte:
+                if idEl is not 1:
+                    statsTexte += ","
+                statsTexte += """
+                {
+                    "id": %s,
+                    "type": "Collection",
+                    "titre": "%s",
+                    "commentaire": "%s",
+                    "delete": %s
+                }
+                """ % (str(idEl), t[1], t[2], r[0])
+                idEl += 1
         if r[1] == "Dossier" and r[2] == "Profil":
             req = "SELECT * FROM tpProfils WHERE id = %s" % (r[4])
             dataTexte = db_search(req)
