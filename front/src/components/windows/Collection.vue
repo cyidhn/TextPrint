@@ -18,7 +18,7 @@
         <v-card>
           <v-card-title>
             <span class="headline">
-              <b>Ajouter un texte</b>
+              <b>Ajouter des textes</b>
             </span>
           </v-card-title>
           <v-card-text>
@@ -55,7 +55,7 @@
         <v-card>
           <v-card-title>
             <span class="headline">
-              <b>Ajouter un profil</b>
+              <b>Ajouter des profils</b>
             </span>
           </v-card-title>
           <v-card-text>
@@ -92,7 +92,7 @@
         <v-card>
           <v-card-title>
             <span class="headline">
-              <b>Ajouter des collections</b>
+              <b>Ajouter des dossiers</b>
             </span>
           </v-card-title>
           <v-card-text>
@@ -119,7 +119,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="fermerCollections">Retour</v-btn>
-            <v-btn color="blue darken-1" text @click="associerCollections">Ajouter des collections</v-btn>
+            <v-btn color="blue darken-1" text @click="associerCollections">Ajouter des dossiers</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -447,7 +447,7 @@ export default {
       let formData = new FormData();
       formData.append("req", "");
       axios
-        .post(process.env.VUE_APP_SERVEUR + "/searchcollections", formData)
+        .post(process.env.VUE_APP_SERVEUR + "/search-dossier", formData)
         .then(response => {
           console.log("reponse :", response.data);
           this.contentCollections = response.data;

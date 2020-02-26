@@ -53,8 +53,13 @@
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
             <v-btn @click="removeTab" depressed small color="error">X Fermer la fenêtre</v-btn>
           </div>
-          <h1>Collection :</h1>
           <br />
+          <br />
+          <h1>{{ title }}</h1>
+          <br />
+          <hr />
+          <br />
+          <Collection :content="save" />
         </div>
       </transition>
     </div>
@@ -81,12 +86,14 @@ import { TabsData } from "../flux/Tabs";
 import Search from "./Search";
 import Texte from "./windows/Texte";
 import Dossier from "./windows/Dossier";
+import Collection from "./windows/Collection";
 
 export default {
   components: {
     Search,
     Texte,
-    Dossier
+    Dossier,
+    Collection
   },
   props: {
     id: Number,

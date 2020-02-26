@@ -478,14 +478,51 @@ def assoc():
             dataTexte = db_search(req)
             for t in dataTexte:
                 nom = str(t[3])
+                if idEl is not 1:
+                    statsTexte += ","
                 statsTexte += """
-                <tr>
-                    <th scope="row">Profil %s</th>
-                    <td>%s</td>
-                    <td>%s</td>
-                    <td><button class="delete-associationc" id="del-element-%s">Supprimer</button></td>
-                </tr>
-                """ % (t[9], t[1], t[2] + " " + nom, r[0])
+                {
+                    "id": %s,
+                    "type": "Profil %s",
+                    "alias": "%s",
+                    "nom": "%s",
+                    "delete": %s
+                }
+                """ % (str(idEl), t[9], t[1], t[2] + " " + nom, r[0])
+                idEl += 1
+        if r[1] == "Collection" and r[2] == "Texte":
+            req = "SELECT * FROM tpTexte WHERE id = %s" % (r[4])
+            dataTexte = db_search(req)
+            for t in dataTexte:
+                nom = str(t[3])
+                if idEl is not 1:
+                    statsTexte += ","
+                statsTexte += """
+                {
+                    "id": %s,
+                    "type": "Texte",
+                    "titre": "%s",
+                    "version": 1,
+                    "delete": %s
+                }
+                """ % (str(idEl), t[2], r[0])
+                idEl += 1
+        if r[1] == "Collection" and r[2] == "Dossier":
+            req = "SELECT * FROM tpDossiers WHERE id = %s" % (r[4])
+            dataTexte = db_search(req)
+            for t in dataTexte:
+                if idEl is not 1:
+                    statsTexte += ","
+                statsTexte += """
+                {
+                    "id": %s,
+                    "type": "Dossier",
+                    "titre": "%s",
+                    "commentaire": "%s",
+                    "delete": %s
+                }
+                """ % (str(idEl), t[1], t[2], r[0])
+                idEl += 1
         if r[1] == "Dossier" and r[2] == "Texte":
             req = "SELECT * FROM tpTexte WHERE id = %s" % (r[4])
             dataTexte = db_search(req)
@@ -886,15 +923,16 @@ def searchdossier():
 
     # Recuperer les donnees
     req = request.form["req"]
-    print("*** The req is :", req)
+    #print("*** The req is :", req)
     #req = "1"
 
     # Recherche en DB
-    req = db_search("SELECT * FROM tpDossiers WHERE id = " + req + "")
 
     # Si vide
     if not req:
         req = db_search("SELECT * FROM tpDossiers")
+    else:
+        req = db_search("SELECT * FROM tpDossiers WHERE id = " + req + "")
 
     # Boucle
     result = '['
