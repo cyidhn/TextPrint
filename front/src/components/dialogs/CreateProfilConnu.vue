@@ -1,11 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog
-      v-model="data.profilConnu"
-      persistent
-      scrollable
-      max-width="500px"
-    >
+    <v-dialog v-model="data.profilConnu" persistent scrollable max-width="500px">
       <v-card>
         <v-card-title>Créer un profil connu</v-card-title>
         <v-divider></v-divider>
@@ -58,11 +53,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-select
-                  :items="['Non spécifié', 'Homme', 'Femme']"
-                  label="Sexe*"
-                  required
-                ></v-select>
+                <v-select :items="['Non spécifié', 'Homme', 'Femme']" label="Sexe*" required></v-select>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
@@ -91,11 +82,7 @@
                 <h2>Informations complémentaires</h2>
               </v-col>
               <v-col cols="12">
-                <v-textarea
-                  v-model="commentaire"
-                  autocomplete="nope"
-                  label="Commentaires"
-                ></v-textarea>
+                <v-textarea v-model="commentaire" autocomplete="nope" label="Commentaires"></v-textarea>
               </v-col>
             </v-row>
           </v-form>
@@ -103,9 +90,7 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn color="blue darken-1" text @click="checkDialog">Fermer</v-btn>
-          <v-btn color="blue darken-1" :disabled="!valid" text @click="validate"
-            >Créer</v-btn
-          >
+          <v-btn color="blue darken-1" :disabled="!valid" text @click="validate">Créer</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

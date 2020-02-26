@@ -5,18 +5,10 @@
     </div>
     <div v-else>
       <v-card class="mx-auto" max-width="1200" tile>
-        <v-text-field
-          v-model="recherche"
-          label="Rechercher dans la base de données"
-          required
-        ></v-text-field>
+        <v-text-field v-model="recherche" label="Rechercher dans la base de données" required></v-text-field>
         <v-list>
           <v-list-item-group color="primary">
-            <v-list-item
-              v-for="(item, i) in filteredList"
-              :key="i"
-              @click="addWindow(item)"
-            >
+            <v-list-item v-for="(item, i) in filteredList" :key="i" @click="addWindow(item)">
               <v-list-item-icon>
                 <div v-if="item.type === 'Texte'">
                   <v-icon v-text="text"></v-icon>
@@ -73,7 +65,16 @@ export default {
   },
   methods: {
     addWindow(item) {
-      TabsData.add(item.titre, item);
+      if (item.titre === undefined) {
+        if (item.alias === undefined) {
+          let nom = item.prenom + " " + item.nom;
+          TabsData.add(nom, item);
+        } else {
+          TabsData.add(item.alias, item);
+        }
+      } else {
+        TabsData.add(item.titre, item);
+      }
     }
   },
   computed: {

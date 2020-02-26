@@ -19,6 +19,11 @@
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
             <v-btn @click="removeTab" depressed small color="error">X Fermer la fenêtre</v-btn>
           </div>
+          <br />
+          <br />
+          <br />
+          <hr />
+          <br />
           <h1>Texte : {{ title }}</h1>
           <br />
           <Texte :content="save" />
@@ -36,9 +41,11 @@
           </div>
           <br />
           <br />
-          <h1>{{ title }}</h1>
           <br />
           <hr />
+          <br />
+          <h1>{{ title }}</h1>
+          <br />
           <br />
           <Dossier :content="save" />
         </div>
@@ -55,9 +62,11 @@
           </div>
           <br />
           <br />
-          <h1>{{ title }}</h1>
           <br />
           <hr />
+          <br />
+          <h1>{{ title }}</h1>
+          <br />
           <br />
           <Collection :content="save" />
         </div>
@@ -72,8 +81,12 @@
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
             <v-btn @click="removeTab" depressed small color="error">X Fermer la fenêtre</v-btn>
           </div>
-          <h1>Profil :</h1>
           <br />
+          <br />
+          <br />
+          <hr />
+          <br />
+          <Profil :personne="title" :content="save" />
         </div>
       </transition>
     </div>
@@ -87,13 +100,15 @@ import Search from "./Search";
 import Texte from "./windows/Texte";
 import Dossier from "./windows/Dossier";
 import Collection from "./windows/Collection";
+import Profil from "./windows/Profil";
 
 export default {
   components: {
     Search,
     Texte,
     Dossier,
-    Collection
+    Collection,
+    Profil
   },
   props: {
     id: Number,
