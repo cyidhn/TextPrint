@@ -45,7 +45,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="dialogTextes = false">Retour</v-btn>
-            <v-btn color="blue darken-1" text @click="associerTextes">Ajouter des profils</v-btn>
+            <v-btn color="blue darken-1" text @click="associerTextes">Ajouter des textes</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
