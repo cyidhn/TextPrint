@@ -39,6 +39,7 @@
 <script>
 import axios from "axios";
 import { TabsData } from "../flux/Tabs";
+// import { DialogsData } from "../flux/Dialogs";
 
 export default {
   data: () => ({
@@ -75,6 +76,17 @@ export default {
       } else {
         TabsData.add(item.titre, item);
       }
+    },
+    updateContent() {
+      axios
+        .get(process.env.VUE_APP_SERVEUR + "/test")
+        .then(response => {
+          this.content = response.data;
+        })
+        .catch(e => {
+          this.getError = true;
+          console.error("Impossible de charger les données", e);
+        });
     }
   },
   computed: {

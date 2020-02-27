@@ -62,7 +62,7 @@ export default {
       {
         title: "Collection",
         icon: "mdi-folder-multiple",
-        link: "ouvrir"
+        link: "collection"
       }
     ],
     items: []
@@ -90,9 +90,14 @@ export default {
       if (ref === "database") {
         TabsData.bdd();
       }
-
       if (ref === "profil-connu") {
         DialogsData.open("profil-connu");
+      }
+      if (ref === "collection") {
+        DialogsData.open("collection");
+      }
+      if (ref === "dossier") {
+        DialogsData.open("dossier");
       }
     }
   }

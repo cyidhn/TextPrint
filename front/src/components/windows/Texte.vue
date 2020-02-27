@@ -1,30 +1,17 @@
 <template>
   <div>
-    <v-form ref="form">
-      <v-row align="start" justify="start">
-        <v-col cols="12">
-          <h2>Identification</h2>
+    <v-container>
+      <v-row class="mt-8">
+        <v-col cols="6" align="start">
+          <h3 class="mb-4">Texte original</h3>
+          <iframe class="border-iframe" width="100%" height="500" :src="link"></iframe>
         </v-col>
-        <v-col cols="12" sm="6" md="4">
-          <v-text-field
-            v-model="titre"
-            label="Titre*"
-            autocomplete="nope"
-            hint="Titre du fichier"
-            required
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" sm="6" md="4">
-          <v-text-field
-            v-model="paternite"
-            label="Paternité*"
-            autocomplete="nope"
-            hint="Paternité du texte"
-            required
-          ></v-text-field>
+        <v-col cols="6" align="start">
+          <h3 class="mb-4">Premières analyses</h3>
+          <iframe class="border-iframe" width="100%" height="500" :src="linkAnalyse"></iframe>
         </v-col>
       </v-row>
-    </v-form>
+    </v-container>
   </div>
 </template>
 
@@ -35,12 +22,31 @@ export default {
   },
   data: () => ({
     titre: "",
-    paternite: ""
+    paternite: "",
+    linkAnalyse: "",
+    link: ""
   }),
   mounted() {
     console.log(this.content);
     this.titre = this.content.titre;
     this.paternite = this.content.paternite;
+    this.link =
+      process.env.VUE_APP_SERVEUR +
+      "/static/textes/" +
+      this.content.fichier +
+      ".txt";
+
+    this.linkAnalyse =
+      process.env.VUE_APP_SERVEUR +
+      "/static/textes/" +
+      this.content.fichier +
+      "_analyse.html";
   }
 };
 </script>
+
+<style scoped>
+.border-iframe {
+  border: 1px black solid;
+}
+</style>
