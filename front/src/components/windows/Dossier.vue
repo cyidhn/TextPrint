@@ -157,6 +157,7 @@
         no-data-text="Aucun élément trouvé"
         no-results-text="Aucun élément trouvé"
         loading-text="Chargement en cours..."
+        :loading="loadingProfils"
         v-model="selectedProfils"
         :headers="headersProfils"
         :items="profils"
@@ -200,6 +201,7 @@
         no-data-text="Aucun élément trouvé"
         no-results-text="Aucun élément trouvé"
         loading-text="Chargement en cours..."
+        :loading="loadingTextes"
         v-model="selectedTextes"
         :headers="headersTextes"
         :items="textes"
@@ -248,6 +250,7 @@
         no-data-text="Aucun élément trouvé"
         no-results-text="Aucun élément trouvé"
         loading-text="Chargement en cours..."
+        :loading="loadingTextes"
         v-model="selectedCollections"
         :headers="headersCollections"
         :items="collections"
@@ -404,16 +407,19 @@ export default {
       rechercheAjoutsProfils: "",
       selectedAjoutsProfils: [],
       contentProfils: [],
+      loadingProfils: true,
       // Ajouts textes
       dialogTextes: false,
       rechercheAjoutsTextes: "",
       selectedAjoutsTextes: [],
       contentTextes: [],
+      loadingTextes: true,
       // Ajouts collections
       dialogCollections: false,
       rechercheAjoutsCollections: "",
       selectedAjoutsCollections: [],
-      contentCollections: []
+      contentCollections: [],
+      loadingCollections: true
     };
   },
   methods: {
@@ -754,9 +760,11 @@ export default {
       .then(response => {
         let result = JSON.parse(response.data);
         this.profils = result;
+        this.loadingProfils = false;
       })
       .catch(error => {
         console.log(error);
+        this.loadingProfils = false;
       });
     // /TypeProfils
 
@@ -773,9 +781,11 @@ export default {
       .then(response => {
         let result = JSON.parse(response.data);
         this.textes = result;
+        this.loadingTextes = false;
       })
       .catch(error => {
         console.log(error);
+        this.loadingTextes = false;
       });
     // /TypeTextes
 
@@ -792,11 +802,13 @@ export default {
       .then(response => {
         let result = JSON.parse(response.data);
         this.collections = result;
+        this.loadingCollections = false;
       })
       .catch(error => {
         console.log(error);
+        this.loadingCollections = false;
       });
-    // /TypeCollections
+    // /TypeCollection
   },
   updated: function() {
     // Profils
