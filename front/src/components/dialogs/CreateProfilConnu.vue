@@ -2,7 +2,12 @@
   <v-row justify="center">
     <v-dialog v-model="data.profilConnu" persistent scrollable max-width="500px">
       <v-card>
-        <v-card-title>Créer un profil connu</v-card-title>
+        <div v-if="connu">
+          <v-card-title>Créer un profil connu</v-card-title>
+        </div>
+        <div v-else>
+          <v-card-title>Créer un profil anonyme</v-card-title>
+        </div>
         <v-divider></v-divider>
         <v-card-text style="height: 300px;">
           <v-form ref="form" v-model="valid" lazy-validation>
@@ -18,7 +23,7 @@
                   hint="Identifiant du profil"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="4" v-if="connu">
                 <v-text-field
                   v-model="prenom"
                   label="Prénom*"
@@ -28,7 +33,7 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="4" v-if="connu">
                 <v-text-field
                   v-model="nom"
                   label="Nom*"
@@ -44,16 +49,21 @@
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   v-model="age"
-                  label="Age*"
-                  type="number"
-                  autocomplete="nope"
-                  hint="Age du profil"
+                  :label="ageTexte"
+                  :type="ageType"
+                  autocomplete="nopep"
+                  hint="Âge du profil"
                   :rules="ageRules"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-select :items="['Non spécifié', 'Homme', 'Femme']" label="Sexe*" required></v-select>
+                <v-select
+                  :items="['Non spécifié', 'Homme', 'Femme']"
+                  v-model="sexe"
+                  label="Sexe"
+                  required
+                ></v-select>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
@@ -64,6 +74,7 @@
                     'Secondaire 2',
                     'Supérieur'
                   ]"
+                  v-model="education"
                   label="Niveau d'éducation"
                 ></v-select>
               </v-col>
@@ -75,6 +86,7 @@
                     'Classe moyenne',
                     'Classe aisée'
                   ]"
+                  v-model="sociale"
                   label="Classe sociale"
                 ></v-select>
               </v-col>
@@ -90,6 +102,18 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn color="blue darken-1" text @click="checkDialog">Fermer</v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="changerType"
+            v-if="connu"
+          >Changer à profil anonyme</v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="changerType"
+            v-if="!connu"
+          >Changer à profil connu</v-btn>
           <v-btn color="blue darken-1" :disabled="!valid" text @click="validate">Créer</v-btn>
         </v-card-actions>
       </v-card>
@@ -105,6 +129,7 @@ export default {
   name: "CreateProfilConnu",
   data: () => ({
     data: DialogsData.state,
+    connu: true,
     dialogm1: "",
     dialog: false,
     valid: true,
@@ -120,9 +145,11 @@ export default {
         /^(([9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
         "L'âge doit être compris entre 9 et 120"
     ],
-    sexe: "",
-    education: "",
-    sociale: "",
+    ageTexte: "Âge",
+    ageType: "number",
+    sexe: "Non spécifié",
+    education: "Non spécifié",
+    sociale: "Non spécifiée",
     commentaire: ""
   }),
   methods: {
@@ -132,10 +159,38 @@ export default {
     reset() {
       this.$refs.form.reset();
     },
+    changerType() {
+      this.connu = !this.connu;
+      // Changement du rôle de l'âge
+      if (this.connu === true) {
+        this.ageRules = [
+          v => !!v || "L'âge est requis.",
+          v =>
+            /^(([9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
+            "L'âge doit être compris entre 9 et 120"
+        ];
+        this.ageTexte = "Âge*";
+        this.ageType = "number";
+      } else {
+        this.ageRules = [
+          v => !!v || "L'âge estimé est requis.",
+          v =>
+            /^[1-9][0-9][-](([1-9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(
+              v
+            ) ||
+            "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120."
+        ];
+        this.ageTexte = "Estimation de l'âge";
+        this.ageType = "text";
+      }
+    },
     validate() {
       if (this.$refs.form.validate()) {
         // Ajout en formulaire
         let formData = new FormData();
+        if (this.alias == "") {
+          this.alias = "J.Dupont_" + Date.now();
+        }
         formData.append("alias", this.alias);
         formData.append("prenom", this.prenom);
         formData.append("nom", this.nom);
@@ -144,7 +199,11 @@ export default {
         formData.append("education", this.education);
         formData.append("sociale", this.sociale);
         formData.append("commentaire", this.commentaire);
-        formData.append("typeP", "connu");
+        if (this.connu === true) {
+          formData.append("typeP", "connu");
+        } else {
+          formData.append("typeP", "anonyme");
+        }
 
         // Appel avec axios
         axios
