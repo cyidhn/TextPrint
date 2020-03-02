@@ -102,6 +102,9 @@ export default {
       if (ref === "dossier") {
         DialogsData.open("dossier");
       }
+      if (ref === "texte") {
+        DialogsData.open("texte");
+      }
     }
   }
 };
