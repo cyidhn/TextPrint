@@ -42,6 +42,29 @@
                   required
                 ></v-select>
               </v-col>
+              <v-col cols="12" class="mt-8">
+                <h2>Mise en forme</h2>
+              </v-col>
+              <v-col cols="12">
+                <v-select
+                  :items="['Non spécifié', 
+                  'Écriture personnelle', 
+                  'Correspondance', 
+                  'Messagerie', 
+                  'Web et réseaux sociaux', 
+                  'Presse', 
+                  'Rédactions Scientifiques et Académiques', 
+                  'Rédaction Littéraires',
+                  'Rédactions Judiciaires',
+                  'Documents à intérêts judiciaires',
+                  'Autre']"
+                  v-model="typeDoc1"
+                  label="Type de document*"
+                  required
+                ></v-select>
+                <v-select v-if="viewTypeDoc2" :items="getTypeDoc2" v-model="typeDoc2" required></v-select>
+                <v-select v-if="viewTypeDoc3" :items="getTypeDoc3" v-model="typeDoc3" required></v-select>
+              </v-col>
             </v-row>
           </v-form>
         </v-card-text>
@@ -82,7 +105,11 @@ export default {
     paterniteRules: [v => !!v || "Le type de paternité est requis."],
     // Type de document
     typeDoc1: "Non spécifié",
+    getTypeDoc2: [],
+    viewTypeDoc2: false,
     typeDoc2: "",
+    viewTypeDoc3: false,
+    getTypeDoc3: [],
     typeDoc3: "",
     // Spécification
     specification: "",
