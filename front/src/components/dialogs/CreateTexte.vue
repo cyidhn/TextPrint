@@ -54,16 +54,29 @@
                   'Web et réseaux sociaux', 
                   'Presse', 
                   'Rédactions Scientifiques et Académiques', 
-                  'Rédaction Littéraires',
-                  'Rédactions Judiciaires',
+                  'Rédactions littéraires',
+                  'Rédactions judiciaires',
                   'Documents à intérêts judiciaires',
                   'Autre']"
                   v-model="typeDoc1"
                   label="Type de document*"
+                  @change="handleChangeType1()"
                   required
                 ></v-select>
-                <v-select v-if="viewTypeDoc2" :items="getTypeDoc2" v-model="typeDoc2" required></v-select>
-                <v-select v-if="viewTypeDoc3" :items="getTypeDoc3" v-model="typeDoc3" required></v-select>
+                <v-select
+                  v-if="viewTypeDoc2"
+                  :items="getTypeDoc2"
+                  v-model="typeDoc2"
+                  @change="handleChangeType2()"
+                  required
+                ></v-select>
+                <v-text-field
+                  v-if="viewTypeDocAutre"
+                  v-model="typeDocAutre"
+                  label="Saisir le type du document"
+                  autocomplete="nope"
+                  required
+                ></v-text-field>
               </v-col>
             </v-row>
           </v-form>
@@ -111,6 +124,8 @@ export default {
     viewTypeDoc3: false,
     getTypeDoc3: [],
     typeDoc3: "",
+    viewTypeDocAutre: false,
+    typeDocAutre: "",
     // Spécification
     specification: "",
     // Type d'écriture
@@ -163,6 +178,181 @@ export default {
         ];
         this.ageTexte = "Estimation de l'âge";
         this.ageType = "text";
+      }
+    },
+    handleChangeType1() {
+      // Non spécifié
+      if (this.typeDoc1 === "Non spécifié") {
+        // Masquer les éléments
+        this.viewTypeDoc2 = false;
+        this.viewTypeDoc3 = false;
+        this.viewTypeDocAutre = false;
+      }
+
+      // Autre
+      if (this.typeDoc1 === "Autre") {
+        // Masquer les éléments
+        this.viewTypeDoc2 = false;
+        this.viewTypeDoc3 = false;
+
+        // Afficher le champs autre
+        this.viewTypeDocAutre = true;
+      }
+
+      // Écriture personnelle
+      if (this.typeDoc1 === "Écriture personnelle") {
+        // Afficher les éléments
+        this.viewTypeDoc2 = true;
+        this.viewTypeDoc3 = false;
+        this.viewTypeDocAutre = false;
+
+        // Enregistre élément dans le select
+        this.getTypeDoc2 = [
+          "Jounal / Entrée d'un journal",
+          "Notes personnelles",
+          "Autre"
+        ];
+        this.typeDoc2 = this.getTypeDoc2[0];
+      }
+
+      // Correspondance
+      if (this.typeDoc1 === "Correspondance") {
+        // Afficher les éléments
+        this.viewTypeDoc2 = true;
+        this.viewTypeDoc3 = false;
+        this.viewTypeDocAutre = false;
+
+        // Enregistre élément dans le select
+        this.getTypeDoc2 = [
+          "Note",
+          "Carte postale",
+          "Lettre",
+          "Email",
+          "Autre"
+        ];
+        this.typeDoc2 = this.getTypeDoc2[0];
+      }
+
+      // Messagerie
+      if (this.typeDoc1 === "Messagerie") {
+        // Afficher les éléments
+        this.viewTypeDoc2 = true;
+        this.viewTypeDoc3 = false;
+        this.viewTypeDocAutre = false;
+
+        // Enregistre élément dans le select
+        this.getTypeDoc2 = ["SMS", "Messagerie instantanée", "Autre"];
+        this.typeDoc2 = this.getTypeDoc2[0];
+      }
+
+      // Web et réseaux sociaux
+      if (this.typeDoc1 === "Web et réseaux sociaux") {
+        // Afficher les éléments
+        this.viewTypeDoc2 = true;
+        this.viewTypeDoc3 = false;
+        this.viewTypeDocAutre = false;
+
+        // Enregistre élément dans le select
+        this.getTypeDoc2 = [
+          "Tweet",
+          "Publication sur forum",
+          "Publication sur Facebook",
+          "Billet de blog",
+          "Commentaires et interactions",
+          "Autre"
+        ];
+        this.typeDoc2 = this.getTypeDoc2[0];
+      }
+
+      // Presse
+      if (this.typeDoc1 === "Presse") {
+        // Afficher les éléments
+        this.viewTypeDoc2 = true;
+        this.viewTypeDoc3 = false;
+        this.viewTypeDocAutre = false;
+
+        // Enregistre élément dans le select
+        this.getTypeDoc2 = ["Article", "Journal", "Revue", "Autre"];
+        this.typeDoc2 = this.getTypeDoc2[0];
+      }
+
+      // Rédactions Scientifiques et Académiques
+      if (this.typeDoc1 === "Rédactions Scientifiques et Académiques") {
+        // Afficher les éléments
+        this.viewTypeDoc2 = true;
+        this.viewTypeDoc3 = false;
+        this.viewTypeDocAutre = false;
+
+        // Enregistre élément dans le select
+        this.getTypeDoc2 = [
+          "Article",
+          "Essai",
+          "Dissertation",
+          "Mémoire",
+          "Rapport",
+          "Revue scientifique",
+          "Livre d'instruction",
+          "Autre"
+        ];
+        this.typeDoc2 = this.getTypeDoc2[0];
+      }
+
+      // Rédactions littéraires
+      if (this.typeDoc1 === "Rédactions littéraires") {
+        // Afficher les éléments
+        this.viewTypeDoc2 = true;
+        this.viewTypeDoc3 = false;
+        this.viewTypeDocAutre = false;
+
+        // Enregistre élément dans le select
+        this.getTypeDoc2 = [
+          "Poésie",
+          "Roman",
+          "Pièce de théâtre",
+          "Conte",
+          "Fable",
+          "Autobiographie ou mémoire",
+          "Biographie",
+          "Autre"
+        ];
+        this.typeDoc2 = this.getTypeDoc2[0];
+      }
+
+      // Rédactions judiciaires
+      if (this.typeDoc1 === "Rédactions judiciaires") {
+        // Afficher les éléments
+        this.viewTypeDoc2 = true;
+        this.viewTypeDoc3 = false;
+        this.viewTypeDocAutre = false;
+
+        // Enregistre élément dans le select
+        this.getTypeDoc2 = ["Rapport", "Témoignage", "Lettre d'aveu", "Autre"];
+        this.typeDoc2 = this.getTypeDoc2[0];
+      }
+
+      // Documents à intérêts judiciaires
+      if (this.typeDoc1 === "Documents à intérêts judiciaires") {
+        // Afficher les éléments
+        this.viewTypeDoc2 = true;
+        this.viewTypeDoc3 = false;
+        this.viewTypeDocAutre = false;
+
+        // Enregistre élément dans le select
+        this.getTypeDoc2 = [
+          "Lettre d'adieu",
+          "Lettre de menace",
+          "Demande de rançon",
+          "Testament",
+          "Autre"
+        ];
+        this.typeDoc2 = this.getTypeDoc2[0];
+      }
+    },
+    handleChangeType2() {
+      if (this.typeDoc2 === "Autre") {
+        this.viewTypeDocAutre = true;
+      } else {
+        this.viewTypeDocAutre = false;
       }
     },
     handleFileUpload() {
