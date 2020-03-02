@@ -11,7 +11,36 @@
                 <h2>Importation</h2>
               </v-col>
               <v-col cols="12">
-                <input accept=".txt" type="file" id="file" ref="file" @change="handleFileUpload()" />
+                <input accept=".txt" type="file" ref="file" @change="handleFileUpload()" />
+                <p
+                  v-if="loadingText"
+                >Le fichier est en cours d'analyse. Cela peut prendre plusieurs minutes...</p>
+                <p v-if="errorText">
+                  <b>Le fichier est non conforme.</b> Merci de sélectionner un autre texte.
+                </p>
+              </v-col>
+            </v-row>
+            <v-row v-if="nextStep">
+              <v-col cols="12" class="mt-8">
+                <h2>Informations</h2>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="nom"
+                  label="Titre du texte*"
+                  autocomplete="nope"
+                  hint="Donner un titre unique à votre nouveau texte."
+                  :rules="nomRules"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-select
+                  :items="['Non spécifié', 'Anonyme', 'Connu']"
+                  v-model="paternite"
+                  label="Type de paternité*"
+                  required
+                ></v-select>
               </v-col>
             </v-row>
           </v-form>
@@ -33,37 +62,53 @@ import axios from "axios";
 export default {
   name: "CreateTexte",
   data: () => ({
+    // State
     data: DialogsData.state,
+    // Emplacement du fichier
     file: "",
+    // Gestion des erreurs du texte
     errorText: false,
     loadingText: false,
     nextStep: false,
-    connu: true,
+    disabledImport: false,
     dialogm1: "",
     dialog: false,
     valid: true,
-    alias: "",
+    // Titre
     nom: "",
-    nomRules: [v => !!v || "Le nom est requis."],
-    prenom: "",
-    prenomRules: [v => !!v || "Le prénom est requis."],
+    nomRules: [v => !!v || "Le titre est requis."],
+    // Paternité
+    paternite: "Non spécifié",
+    paterniteRules: [v => !!v || "Le type de paternité est requis."],
+    // Type de document
+    typeDoc1: "Non spécifié",
+    typeDoc2: "",
+    typeDoc3: "",
+    // Spécification
+    specification: "",
+    // Type d'écriture
+    typeEcriture: "Non spécifié",
+    // Segmentation
+    segmentation: "Non spécifiée",
+    // Langue
+    langue: "",
+    // Registre
+    registre: "Non spécifié",
+    // Commentaire
+    commenaire: "",
+    // Model pour l'âge
     age: "",
     ageRules: [
       v => !!v || "L'âge est requis.",
       v =>
         /^(([9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
         "L'âge doit être compris entre 9 et 120"
-    ],
-    ageTexte: "Âge",
-    ageType: "number",
-    sexe: "Non spécifié",
-    education: "Non spécifié",
-    sociale: "Non spécifiée",
-    commentaire: ""
+    ]
   }),
   methods: {
     checkDialog() {
       DialogsData.close("texte");
+      this.reset();
     },
     reset() {
       this.$refs.form.reset();
@@ -101,7 +146,8 @@ export default {
         let formData = new FormData();
         formData.append("importer-texte", this.file);
         this.loadingText = true;
-
+        this.disabledImport = true;
+        this.errorText = false;
         // Verifier l'upload
         // Appel avec axios
         axios
@@ -111,9 +157,7 @@ export default {
             }
           })
           .then(response => {
-            alert("Le profil à bien été crée");
             console.log(response);
-            this.reset();
             this.loadingText = false;
             this.errorText = false;
             this.nextStep = true;
@@ -123,6 +167,7 @@ export default {
             console.log(error);
             this.loadingText = false;
             this.errorText = true;
+            this.disabledImport = false;
           });
       }
     },
@@ -131,6 +176,7 @@ export default {
       this.sexe = "Non spécifié";
       this.education = "Non spécifié";
       this.sociale = "Non spécifiée";
+      this.disabledImport = false;
     }
   }
 };
