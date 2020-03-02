@@ -93,6 +93,9 @@ export default {
       if (ref === "profil-connu") {
         DialogsData.open("profil-connu");
       }
+      if (ref === "profil-anonyme") {
+        DialogsData.open("profil-anonyme");
+      }
       if (ref === "collection") {
         DialogsData.open("collection");
       }

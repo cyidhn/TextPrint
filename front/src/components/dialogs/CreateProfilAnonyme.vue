@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="data.profilConnu" persistent scrollable max-width="500px">
+    <v-dialog v-model="data.profilAnonyme" persistent scrollable max-width="500px">
       <v-card>
         <div v-if="connu">
           <v-card-title>Créer un profil connu</v-card-title>
@@ -126,7 +126,7 @@ import { DialogsData } from "../../flux/Dialogs";
 import axios from "axios";
 
 export default {
-  name: "CreateProfilConnu",
+  name: "CreateProfilAnonyme",
   data: () => ({
     data: DialogsData.state,
     connu: false,
@@ -154,7 +154,7 @@ export default {
   }),
   methods: {
     checkDialog() {
-      DialogsData.close("profil-connu");
+      DialogsData.close("profil-anonyme");
     },
     reset() {
       this.$refs.form.reset();
