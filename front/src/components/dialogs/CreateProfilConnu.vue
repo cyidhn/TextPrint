@@ -221,6 +221,9 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation();
+      this.sexe = "Non spécifié";
+      this.education = "Non spécifié";
+      this.sociale = "Non spécifiée";
     }
   }
 };
