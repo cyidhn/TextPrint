@@ -35,6 +35,9 @@ export default {
   data: () => ({
     data: DialogsData.state,
     file: "",
+    errorText: false,
+    loadingText: false,
+    nextStep: false,
     connu: true,
     dialogm1: "",
     dialog: false,
@@ -97,6 +100,7 @@ export default {
       if (this.$refs.form.validate()) {
         let formData = new FormData();
         formData.append("importer-texte", this.file);
+        this.loadingText = true;
 
         // Verifier l'upload
         // Appel avec axios
@@ -110,10 +114,15 @@ export default {
             alert("Le profil à bien été crée");
             console.log(response);
             this.reset();
+            this.loadingText = false;
+            this.errorText = false;
+            this.nextStep = true;
             //DialogsData.close("profil-connu");
           })
           .catch(error => {
             console.log(error);
+            this.loadingText = false;
+            this.errorText = true;
           });
       }
     },
