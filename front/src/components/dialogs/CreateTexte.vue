@@ -11,7 +11,13 @@
                 <h2>Importation</h2>
               </v-col>
               <v-col cols="12">
-                <input accept=".txt" type="file" ref="file" @change="handleFileUpload()" />
+                <input
+                  accept=".txt"
+                  type="file"
+                  id="documentTexte"
+                  ref="file"
+                  @change="handleFileUpload()"
+                />
                 <p
                   v-if="loadingText"
                 >Le fichier est en cours d'analyse. Cela peut prendre plusieurs minutes...</p>
@@ -77,6 +83,55 @@
                   autocomplete="nope"
                   required
                 ></v-text-field>
+                <v-text-field
+                  v-model="specification"
+                  label="Spécification"
+                  autocomplete="nope"
+                  required
+                ></v-text-field>
+                <v-select
+                  :items="['Non spécifié', 
+                  'Manuscrite', 
+                  'Tapuscrite', 
+                  'Dactylographié', 
+                  'Autre']"
+                  v-model="typeEcriture"
+                  label="Type d'écriture"
+                  required
+                ></v-select>
+                <v-select
+                  :items="['Non spécifiée', 
+                  'D\'origine', 
+                  'Passage', 
+                  'Compilation']"
+                  v-model="segmentation"
+                  label="Segmentation"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="12" class="mt-8">
+                <h2>Description linguistique</h2>
+              </v-col>
+              <v-col cols="12">
+                <v-select
+                  :items="['Non spécifiée', 
+                  'Français', 
+                  'Anglais', 
+                  'Espagnol']"
+                  v-model="langue"
+                  label="Langue (automatique)"
+                  required
+                ></v-select>
+                <v-select
+                  :items="['Non spécifié', 
+                  'Courant', 
+                  'Familier', 
+                  'Soutenu']"
+                  v-model="registre"
+                  label="Registre"
+                  required
+                ></v-select>
+                <v-textarea v-model="commentaire" autocomplete="nope" label="Commentaires"></v-textarea>
               </v-col>
             </v-row>
           </v-form>
@@ -110,6 +165,8 @@ export default {
     dialogm1: "",
     dialog: false,
     valid: true,
+    // Identifiant
+    nomFichier: "",
     // Titre
     nom: "",
     nomRules: [v => !!v || "Le titre est requis."],
@@ -137,48 +194,25 @@ export default {
     // Registre
     registre: "Non spécifié",
     // Commentaire
-    commenaire: "",
-    // Model pour l'âge
-    age: "",
-    ageRules: [
-      v => !!v || "L'âge est requis.",
-      v =>
-        /^(([9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
-        "L'âge doit être compris entre 9 et 120"
-    ]
+    commentaire: ""
   }),
   methods: {
     checkDialog() {
-      DialogsData.close("texte");
       this.reset();
+      DialogsData.close("texte");
     },
     reset() {
       this.$refs.form.reset();
-    },
-    changerType() {
-      this.connu = !this.connu;
-      // Changement du rôle de l'âge
-      if (this.connu === true) {
-        this.ageRules = [
-          v => !!v || "L'âge est requis.",
-          v =>
-            /^(([9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
-            "L'âge doit être compris entre 9 et 120"
-        ];
-        this.ageTexte = "Âge*";
-        this.ageType = "number";
-      } else {
-        this.ageRules = [
-          v => !!v || "L'âge estimé est requis.",
-          v =>
-            /^[1-9][0-9][-](([1-9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(
-              v
-            ) ||
-            "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120."
-        ];
-        this.ageTexte = "Estimation de l'âge";
-        this.ageType = "text";
-      }
+      document.getElementById("documentTexte").value = "";
+      this.$refs.form.resetValidation();
+      this.sexe = "Non spécifié";
+      this.education = "Non spécifié";
+      this.sociale = "Non spécifiée";
+      this.disabledImport = false;
+      this.nextStep = false;
+      this.viewTypeDoc2 = false;
+      this.viewTypeDoc3 = false;
+      this.viewTypeDocAutre = false;
     },
     handleChangeType1() {
       // Non spécifié
@@ -375,9 +409,27 @@ export default {
           })
           .then(response => {
             console.log(response);
-            this.loadingText = false;
-            this.errorText = false;
-            this.nextStep = true;
+            axios
+              .post(process.env.VUE_APP_SERVEUR + "/importer-texte", formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data"
+                }
+              })
+              .then(response => {
+                console.log(response);
+                this.nomFichier = response.name;
+                this.langue = response.langue;
+                this.loadingText = false;
+                this.errorText = false;
+                this.nextStep = true;
+                //DialogsData.close("profil-connu");
+              })
+              .catch(error => {
+                console.log(error);
+                this.loadingText = false;
+                this.errorText = true;
+                this.disabledImport = false;
+              });
             //DialogsData.close("profil-connu");
           })
           .catch(error => {
