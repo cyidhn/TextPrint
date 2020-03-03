@@ -3,6 +3,18 @@
     <h1>Profil {{formulaire.typeP}} : {{identification}}</h1>
     <v-container fluid class="mt-8">
       <v-row>
+        <v-col cols="12">
+          <v-btn
+            @click="removeProfil"
+            class="mr-3"
+            depressed
+            small
+            color="primary"
+          >Associer à des éléments</v-btn>
+          <v-btn @click="removeProfil" depressed small color="error">Supprimer</v-btn>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" align="start">
           <h2>Identification</h2>
         </v-col>
@@ -90,6 +102,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import { TabsData } from "../../flux/Tabs";
+
 export default {
   props: {
     content: Object,
@@ -102,6 +117,27 @@ export default {
   }),
 
   methods: {
+    removeProfil() {
+      if (
+        confirm(
+          "Voulez-vous vraiment supprimer ce profil et ses analyses définitivement ?"
+        )
+      ) {
+        // Appel avec axios
+        let formData = new FormData();
+        formData.append("id", this.content.id);
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/supprimer-profil", formData)
+          .then(response => {
+            alert("Le profil a bien été supprimé");
+            TabsData.remove(TabsData.state.nowId);
+            console.log(response);
+          })
+          .catch(error => {
+            alert(error);
+          });
+      }
+    },
     fetchProps() {
       this.formulaire = this.content;
       if (this.formulaire.alias === undefined) {

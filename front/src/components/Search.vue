@@ -5,7 +5,12 @@
     </div>
     <div v-else>
       <v-card class="mx-auto" max-width="1200" tile>
-        <v-text-field v-model="recherche" label="Rechercher dans la base de données" required></v-text-field>
+        <v-text-field
+          v-model="recherche"
+          label="Rechercher dans la base de données"
+          required
+          @click="updateContent"
+        ></v-text-field>
         <v-list>
           <v-list-item-group color="primary">
             <v-list-item v-for="(item, i) in filteredList" :key="i" @click="addWindow(item)">
