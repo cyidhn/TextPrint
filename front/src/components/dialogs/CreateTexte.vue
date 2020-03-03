@@ -139,7 +139,19 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn color="blue darken-1" text @click="checkDialog">Fermer</v-btn>
-          <v-btn color="blue darken-1" :disabled="!valid" text @click="validate">Importer le texte</v-btn>
+          <v-btn
+            color="blue darken-1"
+            v-if="!nextStep"
+            :disabled="checkProgress"
+            text
+            @click="validate"
+          >Importer le texte</v-btn>
+          <v-btn
+            color="blue darken-1"
+            v-if="nextStep"
+            text
+            @click="validateNext"
+          >Enregistrer le texte</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -158,6 +170,7 @@ export default {
     // Emplacement du fichier
     file: "",
     // Gestion des erreurs du texte
+    checkProgress: false,
     errorText: false,
     loadingText: false,
     nextStep: false,
@@ -178,9 +191,6 @@ export default {
     getTypeDoc2: [],
     viewTypeDoc2: false,
     typeDoc2: "",
-    viewTypeDoc3: false,
-    getTypeDoc3: [],
-    typeDoc3: "",
     viewTypeDocAutre: false,
     typeDocAutre: "",
     // Spécification
@@ -190,7 +200,7 @@ export default {
     // Segmentation
     segmentation: "Non spécifiée",
     // Langue
-    langue: "",
+    langue: "Non spécifiée",
     // Registre
     registre: "Non spécifié",
     // Commentaire
@@ -409,19 +419,22 @@ export default {
           })
           .then(response => {
             console.log(response);
+            this.checkProgress = true;
             axios
               .post(process.env.VUE_APP_SERVEUR + "/importer-texte", formData, {
                 headers: {
                   "Content-Type": "multipart/form-data"
                 }
               })
-              .then(response => {
-                console.log(response);
-                this.nomFichier = response.name;
-                this.langue = response.langue;
+              .then(response2 => {
+                console.log(response2);
+                console.log(response2.data.name);
+                this.langue = response2.data.langue;
+                this.nomFichier = response2.data.name;
                 this.loadingText = false;
                 this.errorText = false;
                 this.nextStep = true;
+                this.checkProgress = false;
                 //DialogsData.close("profil-connu");
               })
               .catch(error => {
@@ -429,6 +442,7 @@ export default {
                 this.loadingText = false;
                 this.errorText = true;
                 this.disabledImport = false;
+                this.checkProgress = false;
               });
             //DialogsData.close("profil-connu");
           })
@@ -437,6 +451,38 @@ export default {
             this.loadingText = false;
             this.errorText = true;
             this.disabledImport = false;
+            this.checkProgress = false;
+          });
+      }
+    },
+    validateNext() {
+      if (this.$refs.form.validate()) {
+        // Ajout en formulaire
+        let formData = new FormData();
+        formData.append("fichier", this.nomFichier);
+        formData.append("titre", this.nom);
+        formData.append("paternite", this.paternite);
+        formData.append("typeDocument1", this.typeDoc1);
+        formData.append("typeDocument2", this.typeDoc2);
+        formData.append("typeDocument3", this.typeDocAutre);
+        formData.append("specification", this.specification);
+        formData.append("typeEcriture", this.typeEcriture);
+        formData.append("segmentation", this.segmentation);
+        formData.append("langue", this.langue);
+        formData.append("registre", this.registre);
+        formData.append("commentaire", this.commentaire);
+
+        // Appel avec axios
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/importer-texte-bdd", formData)
+          .then(response => {
+            alert("Le texte à bien été crée");
+            console.log(response);
+            this.reset();
+            DialogsData.close("texte");
+          })
+          .catch(error => {
+            console.log(error);
           });
       }
     },
