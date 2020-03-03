@@ -124,6 +124,18 @@
         </v-card>
       </v-dialog>
       <!-- /Modal ajouter une collection -->
+      <v-row>
+        <v-col cols="12">
+          <v-btn
+            @click="removeCollection"
+            class="mr-3"
+            depressed
+            small
+            color="primary"
+          >Associer à des éléments</v-btn>
+          <v-btn @click="removeCollection" depressed small color="error">Supprimer</v-btn>
+        </v-col>
+      </v-row>
       <br />
       <br />
       <!-- Ajouter un element -->
@@ -337,6 +349,7 @@
 
 <script>
 import axios from "axios";
+import { TabsData } from "../../flux/Tabs";
 
 export default {
   props: {
@@ -412,6 +425,27 @@ export default {
     };
   },
   methods: {
+    removeCollection() {
+      if (
+        confirm(
+          "Voulez-vous vraiment supprimer cette collection et ses analyses définitivement ?"
+        )
+      ) {
+        // Appel avec axios
+        let formData = new FormData();
+        formData.append("id", this.content.id);
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/supprimer-collection", formData)
+          .then(response => {
+            alert("La collection a bien été supprimée");
+            TabsData.remove(TabsData.state.nowId);
+            console.log(response);
+          })
+          .catch(error => {
+            alert(error);
+          });
+      }
+    },
     ajouterProfils() {
       let formData = new FormData();
       formData.append("req", "");
