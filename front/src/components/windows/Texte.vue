@@ -23,6 +23,111 @@
           <iframe class="border-iframe" width="100%" height="500" :src="linkAnalyse"></iframe>
         </v-col>
       </v-row>
+      <v-row class="mt-8">
+        <v-col cols="12" class="mt-8">
+          <h2>Informations</h2>
+        </v-col>
+        <v-col cols="12">
+          <v-text-field
+            v-model="content.titre"
+            label="Titre du texte*"
+            autocomplete="nope"
+            hint="Donner un titre unique à votre nouveau texte."
+            required
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12">
+          <v-select
+            :items="['Non spécifié', 'Anonyme', 'Connu']"
+            v-model="paternite"
+            label="Type de paternité*"
+            required
+          ></v-select>
+        </v-col>
+        <v-col cols="12" class="mt-8">
+          <h2>Mise en forme</h2>
+        </v-col>
+        <v-col cols="12">
+          <v-select
+            :items="['Non spécifié', 
+                  'Écriture personnelle', 
+                  'Correspondance', 
+                  'Messagerie', 
+                  'Web et réseaux sociaux', 
+                  'Presse', 
+                  'Rédactions Scientifiques et Académiques', 
+                  'Rédactions littéraires',
+                  'Rédactions judiciaires',
+                  'Documents à intérêts judiciaires',
+                  'Autre']"
+            v-model="content.typeDocument1"
+            label="Type de document*"
+            @change="changeForm()"
+            required
+          ></v-select>
+          <v-select
+            :items="[content.typeDocument2]"
+            v-model="content.typeDocument2"
+            @change="changeForm()"
+            required
+          ></v-select>
+          <v-text-field
+            v-model="content.typeDocument3"
+            label="Autre..."
+            autocomplete="nope"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="content.specification"
+            label="Spécification"
+            autocomplete="nope"
+            required
+          ></v-text-field>
+          <v-select
+            :items="['Non spécifié', 
+                  'Manuscrite', 
+                  'Tapuscrite', 
+                  'Dactylographié', 
+                  'Autre']"
+            v-model="content.typeEcriture"
+            label="Type d'écriture"
+            required
+          ></v-select>
+          <v-select
+            :items="['Non spécifiée', 
+                  'D\'origine', 
+                  'Passage', 
+                  'Compilation']"
+            v-model="content.segmentation"
+            label="Segmentation"
+            required
+          ></v-select>
+        </v-col>
+        <v-col cols="12" class="mt-8">
+          <h2>Description linguistique</h2>
+        </v-col>
+        <v-col cols="12">
+          <v-select
+            :items="['Non spécifiée', 
+                  'Français', 
+                  'Anglais', 
+                  'Espagnol']"
+            v-model="content.langue"
+            label="Langue (automatique)"
+            required
+          ></v-select>
+          <v-select
+            :items="['Non spécifié', 
+                  'Courant', 
+                  'Familier', 
+                  'Soutenu']"
+            v-model="content.registre"
+            label="Registre"
+            required
+          ></v-select>
+          <v-textarea v-model="content.commentaire" autocomplete="nope" label="Commentaires"></v-textarea>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -42,6 +147,9 @@ export default {
     link: ""
   }),
   methods: {
+    changeForm() {
+      console.log("Changement dans le formulaire...");
+    },
     removeText() {
       console.log(this.content.id);
       console.log(this.content);
