@@ -7,6 +7,12 @@
         <v-btn dark text @click="snackbarAjoute = false">Fermer</v-btn>
       </v-snackbar>
       <!-- /Snackbar Ajouté avec succès -->
+      <!-- Snackbar Ajouté avec succès -->
+      <v-snackbar v-model="snackbarModifie" :bottom="true" color="success" :timeout="3000">
+        La modification a bien été prise en compte.
+        <v-btn dark text @click="snackbarModifie = false">Fermer</v-btn>
+      </v-snackbar>
+      <!-- /Snackbar Ajouté avec succès -->
       <!-- Snackbar Supprimé avec succès -->
       <v-snackbar v-model="snackbarSupprimer" :bottom="true" color="error" :timeout="3000">
         Les éléments ont bien été supprimés.
@@ -126,6 +132,34 @@
       <!-- /Modal ajouter une collection -->
 
       <!-- Ajouter un element -->
+      <v-row v-if="commentaireClick === true" @click="clickOnCommentaire()">
+        <v-col cols="12">
+          <div class="text-center">
+            <v-btn class="mx-2" fab x-small color="primary">
+              <v-icon dark>{{commentaire ? "mdi-pen" : "mdi-plus"}}</v-icon>
+            </v-btn>
+            {{commentaire ? commentaire : "Ajouter un commentaire..."}}
+          </div>
+        </v-col>
+      </v-row>
+      <v-row v-if="commentaireClick === false">
+        <v-col cols="9">
+          <div class="text-center">
+            <v-text-field
+              v-model="commentaire"
+              autocomplete="nope"
+              hint="Ajouter un commentaire..."
+            ></v-text-field>
+          </div>
+        </v-col>
+        <v-col cols="3">
+          <div class="text-center">
+            <div class="my-2" @click="clickOnCommentaire()">
+              <v-btn color="error" dark large>Sauvegarder</v-btn>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col cols="12">
           <v-btn
@@ -369,6 +403,10 @@ export default {
       // Snackbar
       snackbarAjoute: false,
       snackbarSupprimer: false,
+      snackbarModifie: false,
+      // Commentaire
+      commentaire: "",
+      commentaireClick: false,
       // Desactive
       disabledProfils: true,
       disabledTextes: true,
@@ -437,6 +475,9 @@ export default {
     };
   },
   methods: {
+    clickOnCommentaire() {
+      this.commentaireClick = !this.commentaireClick;
+    },
     removeDossier() {
       if (
         confirm(
@@ -844,6 +885,9 @@ export default {
         this.loadingCollections = false;
       });
     // /TypeCollection
+
+    // Commentaire
+    this.commentaire = this.content.commentaire;
   },
   updated: function() {
     // Profils
