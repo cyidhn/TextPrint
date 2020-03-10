@@ -5,13 +5,32 @@
     </div>
     <div v-else>
       <v-card class="mx-auto" max-width="1200" tile>
-        <v-text-field
-          v-model="recherche"
-          label="Rechercher dans la base de données"
-          required
-          @click="updateContent"
-        ></v-text-field>
+        <v-row justify="space-around">
+          <v-col cols="12">
+            <v-text-field
+              v-model="recherche"
+              label="Rechercher dans la base de données"
+              required
+              @click="updateContent"
+            ></v-text-field>
+          </v-col>
+          <v-switch v-model="filterTextes" class="ma-2" label="Textes" @change="updateContent()"></v-switch>
+          <v-switch
+            v-model="filterDossiers"
+            class="ma-2"
+            label="Dossiers"
+            @change="updateContent()"
+          ></v-switch>
+          <v-switch
+            v-model="filterCollections"
+            class="ma-2"
+            label="Collections"
+            @change="updateContent()"
+          ></v-switch>
+          <v-switch v-model="filterProfils" class="ma-2" label="Profil" @change="updateContent()"></v-switch>
+        </v-row>
         <v-list>
+          <hr />
           <v-list-item-group color="primary">
             <v-list-item v-for="(item, i) in filteredList" :key="i" @click="addWindow(item)">
               <v-list-item-icon>
@@ -48,6 +67,12 @@ import { TabsData } from "../flux/Tabs";
 
 export default {
   data: () => ({
+    // Filtres
+    filterTextes: true,
+    filterDossiers: true,
+    filterCollections: true,
+    filterProfils: true,
+    // Autre
     recherche: "",
     content: [],
     getError: false,
@@ -70,6 +95,52 @@ export default {
       });
   },
   methods: {
+    updateSelection() {
+      // Mettre à jour les contenus
+      // Filtrer un texte
+      if (!this.filterTextes) {
+        // False
+        for (let i = 0; i < this.content.length; i++) {
+          if (this.content[i].type == "Texte") {
+            this.content.splice(i, 1);
+            i--;
+          }
+        }
+      }
+
+      // Filtrer un dossier
+      if (!this.filterDossiers) {
+        // False
+        for (let i = 0; i < this.content.length; i++) {
+          if (this.content[i].type == "Dossiers") {
+            this.content.splice(i, 1);
+            i--;
+          }
+        }
+      }
+
+      // Filtrer une collection
+      if (!this.filterCollections) {
+        // False
+        for (let i = 0; i < this.content.length; i++) {
+          if (this.content[i].type == "Collections") {
+            this.content.splice(i, 1);
+            i--;
+          }
+        }
+      }
+
+      // Filtrer un profil
+      if (!this.filterProfils) {
+        // False
+        for (let i = 0; i < this.content.length; i++) {
+          if (this.content[i].type == "Profil") {
+            this.content.splice(i, 1);
+            i--;
+          }
+        }
+      }
+    },
     addWindow(item) {
       if (item.titre === undefined) {
         if (item.alias === undefined) {
@@ -87,6 +158,7 @@ export default {
         .get(process.env.VUE_APP_SERVEUR + "/test")
         .then(response => {
           this.content = response.data;
+          this.updateSelection();
         })
         .catch(e => {
           this.getError = true;
