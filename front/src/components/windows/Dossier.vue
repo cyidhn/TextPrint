@@ -406,7 +406,7 @@ export default {
       snackbarModifie: false,
       // Commentaire
       commentaire: "",
-      commentaireClick: false,
+      commentaireClick: true,
       // Desactive
       disabledProfils: true,
       disabledTextes: true,
@@ -477,6 +477,22 @@ export default {
   methods: {
     clickOnCommentaire() {
       this.commentaireClick = !this.commentaireClick;
+      if (this.commentaireClick === true) {
+        // Appel avec axios
+        let formData = new FormData();
+        formData.append("id", this.content.id);
+        formData.append("commentaire", this.commentaire);
+        formData.append("titre", this.content.titre);
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/modifier-dossier", formData)
+          .then(response => {
+            this.snackbarModifie = true;
+            console.log(response);
+          })
+          .catch(error => {
+            alert(error);
+          });
+      }
     },
     removeDossier() {
       if (
@@ -887,7 +903,20 @@ export default {
     // /TypeCollection
 
     // Commentaire
-    this.commentaire = this.content.commentaire;
+    // Appel avec axios
+    formData = new FormData();
+    formData.append("req", this.content.id);
+    axios
+      .post(process.env.VUE_APP_SERVEUR + "/search-dossier", formData)
+      .then(response => {
+        this.commentaire = response.data[0].commentaire;
+        if (this.commentaire == "None") {
+          this.commentaire = "";
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
   updated: function() {
     // Profils
