@@ -36,9 +36,9 @@ export default {
       { title: "Fichier", icon: "mdi-file", link: "fichier" },
       { title: "Nouveau", icon: "mdi-pencil", link: "nouveau" },
       { title: "Analyses", icon: "mdi-file-find", link: "analyses" },
-      { title: "Rapports", icon: "mdi-library-books", link: "rapports" },
+      { title: "Rapports", icon: "mdi-folder-lock", link: "rapports" },
       { title: "Bases de données", icon: "mdi-database", link: "database" },
-      { title: "Paramètres", icon: "mdi-settings", link: "params" }
+      { title: "Paramètres", icon: "mdi-message-alert", link: "params" }
     ],
     fichier: [
       {
@@ -55,7 +55,11 @@ export default {
         icon: "mdi-keyboard-backspace",
         link: "retour"
       },
-      { title: "Profil connu", icon: "mdi-account", link: "profil-connu" },
+      {
+        title: "Profil connu",
+        icon: "mdi-account-outline",
+        link: "profil-connu"
+      },
       { title: "Profil anonyme", icon: "mdi-account", link: "profil-anonyme" },
       { title: "Texte", icon: "mdi-file", link: "texte" },
       { title: "Dossier", icon: "mdi-folder", link: "dossier" },
