@@ -91,6 +91,7 @@ export default {
       .get(process.env.VUE_APP_SERVEUR + "/test")
       .then(response => {
         this.content = response.data;
+        this.content = this.shuffleContent(this.content);
       })
       .catch(e => {
         this.getError = true;
@@ -98,6 +99,16 @@ export default {
       });
   },
   methods: {
+    shuffleContent(a) {
+      var j, x, i;
+      for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+      }
+      return a;
+    },
     updateSelection() {
       // Mettre à jour les contenus
       // Filtrer un texte
@@ -161,6 +172,7 @@ export default {
         .get(process.env.VUE_APP_SERVEUR + "/test")
         .then(response => {
           this.content = response.data;
+          this.content = this.shuffleContent(this.content);
           this.updateSelection();
         })
         .catch(e => {
