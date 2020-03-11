@@ -23,7 +23,7 @@ export const TabsData = {
     add(title, item) {
         this.state.data = [...this.state.data, {
             id: this.state.id,
-            affichage: item.type + " | " + title,
+            affichage: title,
             title,
             contains: [item]
         }]
