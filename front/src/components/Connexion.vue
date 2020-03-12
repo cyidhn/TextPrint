@@ -1,5 +1,9 @@
 <template>
   <v-container>
+    <v-snackbar v-model="barinfo" :bottom="true" color="error" :timeout="3000">
+      Le login ou le mot de passe sont incorrectes. Merci de réessayer.
+      <v-btn dark text @click="snackbarSupprimer = false">Fermer</v-btn>
+    </v-snackbar>
     <v-col class="justify-center">
       <h1>TextPrint V.1.02</h1>
       <v-form ref="form">
@@ -12,13 +16,15 @@
 </template>
 
 <script>
+import { ConnectData } from "../flux/Connect";
+
 export default {
-  props: {
-    login: String,
-    mdp: String,
-    connecte: Boolean,
-    barinfo: Boolean
-  },
+  data: () => ({
+    login: "",
+    mdp: "",
+    connecte: "",
+    barinfo: false
+  }),
 
   methods: {
     connexion() {
@@ -26,7 +32,7 @@ export default {
         (this.login === "idhn" && this.mdp === "idhn3") ||
         (this.login === "alexandra" && this.mdp === "idhn_chemiirita")
       ) {
-        this.connecte = true;
+        ConnectData.connexion();
       } else {
         this.barinfo = true;
       }

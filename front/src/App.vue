@@ -1,13 +1,7 @@
 <template>
   <v-app>
     <v-container fluid>
-      <!-- Snackbar -->
-      <v-snackbar v-model="barinfo" :bottom="true" color="error" :timeout="3000">
-        Le login ou le mot de passe est incorrect.
-        <v-btn dark text @click="snackbarSupprimer = false">Fermer</v-btn>
-      </v-snackbar>
-      <!-- /Snackbar -->
-      <div v-if="connecte">
+      <div v-if="etat.connect">
         <v-row no-gutters>
           <Dialogs />
           <v-col lg="2">
@@ -19,7 +13,7 @@
         </v-row>
       </div>
       <div v-else>
-        <Connexion :login="login" :mdp="mdp" :connecte="connecte" :barinfo="barinfo" />
+        <Connexion />
       </div>
     </v-container>
   </v-app>
@@ -30,6 +24,7 @@ import Tabs from "./components/Tabs";
 import Menu from "./components/Menu";
 import Dialogs from "./components/Dialogs";
 import Connexion from "./components/Connexion";
+import { ConnectData } from "./flux/Connect";
 // import CreateProfil from "./components/dialogs/CreateProfilConnu";
 
 export default {
@@ -42,11 +37,12 @@ export default {
     Connexion
   },
 
+  mounted: function() {
+    console.log(`TextPrint - Version 1.02 | Laboratoire IDHN`);
+  },
+
   data: () => ({
-    login: "",
-    mdp: "",
-    connecte: true,
-    barinfo: false
+    etat: ConnectData.state
   })
 };
 </script>
