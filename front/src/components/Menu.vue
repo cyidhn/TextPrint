@@ -29,6 +29,7 @@
 <script>
 import { TabsData } from "../flux/Tabs";
 import { DialogsData } from "../flux/Dialogs";
+import { ConnectData } from "../flux/Connect";
 
 export default {
   data: () => ({
@@ -119,6 +120,9 @@ export default {
       }
       if (ref === "texte") {
         DialogsData.open("texte");
+      }
+      if (ref === "deconnexion") {
+        ConnectData.deconnexion();
       }
     }
   }
