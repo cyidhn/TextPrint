@@ -49,6 +49,14 @@ export default {
       { title: "Ouvrir", icon: "mdi-file", link: "ouvrir" },
       { title: "Importer", icon: "mdi-pencil", link: "importer" }
     ],
+    params: [
+      {
+        title: "<b>Retour</b>",
+        icon: "mdi-keyboard-backspace",
+        link: "retour"
+      },
+      { title: "Déconnexion", icon: "mdi-run", link: "deconnexion" }
+    ],
     nouveau: [
       {
         title: "<b>Retour</b>",
@@ -90,6 +98,9 @@ export default {
       }
       if (ref === "nouveau") {
         this.items = this.nouveau;
+      }
+      if (ref === "params") {
+        this.items = this.params;
       }
       if (ref === "database") {
         TabsData.bdd();
