@@ -13,9 +13,6 @@
               required
               @click="updateContent"
             ></v-text-field>
-            <v-card-text class="py-0">
-              <v-chip v-for="(keyword, i) in keywords" :key="i" class="mr-2">{{ keyword }}</v-chip>
-            </v-card-text>
           </v-col>
           <v-switch v-model="filterTextes" class="ma-2" label="Textes" @change="updateContent()"></v-switch>
           <v-switch
