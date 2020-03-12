@@ -90,6 +90,12 @@ export default {
     back() {
       this.principal = true;
     },
+    setCookie(cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+      var expires = "expires=" + d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    },
     eventClick(ref) {
       if (ref === "retour") {
         this.items = this.principal;
@@ -122,6 +128,7 @@ export default {
         DialogsData.open("texte");
       }
       if (ref === "deconnexion") {
+        this.setCookie("ctex", "1", 1);
         ConnectData.deconnexion();
       }
     }
