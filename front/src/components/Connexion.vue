@@ -4,14 +4,19 @@
       Le login ou le mot de passe sont incorrectes. Merci de réessayer.
       <v-btn dark text @click="snackbarSupprimer = false">Fermer</v-btn>
     </v-snackbar>
-    <v-col class="justify-center">
-      <h1>TextPrint V.1.2</h1>
-      <v-form ref="form">
-        <v-text-field v-model="login" label="Login" required></v-text-field>
-        <v-text-field type="password" v-model="mdp" label="Mot de passe" required></v-text-field>
-        <v-btn color="success" class="mr-4" @click="connexion">Se connecter</v-btn>
-      </v-form>
-    </v-col>
+    <v-row>
+      <v-col class="justify-center">
+        <h1 class="blue--text text--darken-4 text-center">
+          TEXT |
+          <b>PRINT</b>
+        </h1>
+        <v-form ref="form" class="mt-8">
+          <v-text-field v-model="login" label="Login" required></v-text-field>
+          <v-text-field type="password" v-model="mdp" label="Mot de passe" required></v-text-field>
+          <v-btn block color="primary" class="mt-4" @click="connexion">Se connecter</v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
