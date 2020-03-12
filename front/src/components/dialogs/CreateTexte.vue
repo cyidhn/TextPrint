@@ -427,10 +427,10 @@ export default {
                 }
               })
               .then(response2 => {
-                console.log(response2);
-                console.log(response2.data.name);
+                // Ajour des informations
                 this.langue = response2.data.langue;
                 this.nomFichier = response2.data.name;
+                this.nom = this.file.name;
                 this.loadingText = false;
                 this.errorText = false;
                 this.nextStep = true;
