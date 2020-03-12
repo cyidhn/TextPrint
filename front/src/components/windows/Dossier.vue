@@ -135,10 +135,10 @@
       <v-row v-if="commentaireClick === true" @click="clickOnCommentaire()">
         <v-col cols="12">
           <div class="text-center">
+            {{commentaire ? commentaire : "Ajouter un commentaire..."}}
             <v-btn class="mx-2" fab x-small color="primary">
               <v-icon dark>{{commentaire ? "mdi-pen" : "mdi-plus"}}</v-icon>
             </v-btn>
-            {{commentaire ? commentaire : "Ajouter un commentaire..."}}
           </div>
         </v-col>
       </v-row>
@@ -147,6 +147,7 @@
           <div class="text-center">
             <v-text-field
               v-model="commentaire"
+              placeholder="Ajoutez votre commentaire ici..."
               autocomplete="nope"
               hint="Ajouter un commentaire..."
             ></v-text-field>

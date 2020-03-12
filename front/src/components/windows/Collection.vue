@@ -7,6 +7,12 @@
         <v-btn dark text @click="snackbarAjoute = false">Fermer</v-btn>
       </v-snackbar>
       <!-- /Snackbar Ajouté avec succès -->
+      <!-- Snackbar Ajouté avec succès -->
+      <v-snackbar v-model="snackbarModifie" :bottom="true" color="success" :timeout="3000">
+        La modification a bien été prise en compte.
+        <v-btn dark text @click="snackbarModifie = false">Fermer</v-btn>
+      </v-snackbar>
+      <!-- /Snackbar Ajouté avec succès -->
       <!-- Snackbar Supprimé avec succès -->
       <v-snackbar v-model="snackbarSupprimer" :bottom="true" color="error" :timeout="3000">
         Les éléments ont bien été supprimés.
@@ -124,6 +130,36 @@
         </v-card>
       </v-dialog>
       <!-- /Modal ajouter une collection -->
+      <!-- Ajouter un element -->
+      <v-row v-if="commentaireClick === true" @click="clickOnCommentaire()">
+        <v-col cols="12">
+          <div class="text-center">
+            {{commentaire ? commentaire : "Ajouter un commentaire..."}}
+            <v-btn class="mx-2" fab x-small color="primary">
+              <v-icon dark>{{commentaire ? "mdi-pen" : "mdi-plus"}}</v-icon>
+            </v-btn>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row v-if="commentaireClick === false">
+        <v-col cols="9">
+          <div class="text-center">
+            <v-text-field
+              v-model="commentaire"
+              placeholder="Ajoutez votre commentaire ici..."
+              autocomplete="nope"
+              hint="Ajouter un commentaire..."
+            ></v-text-field>
+          </div>
+        </v-col>
+        <v-col cols="3">
+          <div class="text-center">
+            <div class="my-2" @click="clickOnCommentaire()">
+              <v-btn color="error" dark large>Sauvegarder</v-btn>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
       <v-row>
         <v-col cols="12">
           <v-btn
@@ -360,6 +396,10 @@ export default {
       // Snackbar
       snackbarAjoute: false,
       snackbarSupprimer: false,
+      snackbarModifie: false,
+      // Commentaire
+      commentaire: "",
+      commentaireClick: true,
       // Desactive
       disabledProfils: true,
       disabledTextes: true,
@@ -425,6 +465,25 @@ export default {
     };
   },
   methods: {
+    clickOnCommentaire() {
+      this.commentaireClick = !this.commentaireClick;
+      if (this.commentaireClick === true) {
+        // Appel avec axios
+        let formData = new FormData();
+        formData.append("id", this.content.id);
+        formData.append("commentaire", this.commentaire);
+        formData.append("titre", this.content.titre);
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/modifier-collection", formData)
+          .then(response => {
+            this.snackbarModifie = true;
+            console.log(response);
+          })
+          .catch(error => {
+            alert(error);
+          });
+      }
+    },
     removeCollection() {
       if (
         confirm(
@@ -826,6 +885,21 @@ export default {
         console.log(error);
       });
     // /TypeCollections
+    // Commentaire
+    // Appel avec axios
+    formData = new FormData();
+    formData.append("req", this.content.id);
+    axios
+      .post(process.env.VUE_APP_SERVEUR + "/search-collection", formData)
+      .then(response => {
+        this.commentaire = response.data[0].commentaire;
+        if (this.commentaire == "None") {
+          this.commentaire = "";
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
   updated: function() {
     // Profils
