@@ -22,7 +22,7 @@
                   v-if="loadingText"
                 >Le fichier est en cours d'analyse. Cela peut prendre plusieurs minutes...</p>
                 <p v-if="errorText">
-                  <b>Le fichier est non conforme.</b> Merci de sélectionner un autre texte.
+                  <b>Le fichier est non conforme, il doit être encodé en UTF-8.</b> Merci de sélectionner un autre texte.
                 </p>
               </v-col>
             </v-row>
