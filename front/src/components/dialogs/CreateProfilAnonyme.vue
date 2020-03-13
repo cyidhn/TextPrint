@@ -140,10 +140,10 @@ export default {
     prenomRules: [v => !!v || "Le prénom est requis."],
     age: "",
     ageRules: [
-      v => !!v || "L'âge est requis.",
+      v => !!v || "L'âge estimé est requis.",
       v =>
-        /^(([9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
-        "L'âge doit être compris entre 9 et 120"
+        /^[1-9][0-9][-](([1-9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
+        "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120."
     ],
     ageTexte: "Âge",
     ageType: "number",
