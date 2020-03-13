@@ -1,11 +1,15 @@
 <template>
   <div>
-    <h1>Profil {{formulaire.typeP}} : {{identification}}</h1>
+    <h1>Profil {{ formulaire.typeP }} : {{ identification }}</h1>
     <v-container fluid class="mt-8">
       <v-row>
         <v-col cols="12">
-          <v-btn class="mr-3" depressed small color="primary">Associer à des éléments</v-btn>
-          <v-btn @click="removeProfil" depressed small color="error">Supprimer</v-btn>
+          <v-btn class="mr-3" depressed small color="primary"
+            >Associer à des éléments</v-btn
+          >
+          <v-btn @click="removeProfil" depressed small color="error"
+            >Supprimer</v-btn
+          >
         </v-col>
       </v-row>
       <v-row>
@@ -15,18 +19,33 @@
       </v-row>
       <v-row>
         <v-col cols="6" align="start">
-          <v-text-field v-model="formulaire.alias" autocomplete="nope" label="Alias" required></v-text-field>
+          <v-text-field
+            v-model="formulaire.alias"
+            autocomplete="nope"
+            label="Alias"
+            required
+          ></v-text-field>
         </v-col>
       </v-row>
       <div v-if="formulaire.typeP === 'connu'">
         <v-row>
           <v-col cols="6" align="start">
-            <v-text-field v-model="formulaire.prenom" autocomplete="nope" label="Prénom*" required></v-text-field>
+            <v-text-field
+              v-model="formulaire.prenom"
+              autocomplete="nope"
+              label="Prénom*"
+              required
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="6" align="start">
-            <v-text-field v-model="formulaire.nom" autocomplete="nope" label="Nom*" required></v-text-field>
+            <v-text-field
+              v-model="formulaire.nom"
+              autocomplete="nope"
+              label="Nom*"
+              required
+            ></v-text-field>
           </v-col>
         </v-row>
       </div>
@@ -37,7 +56,12 @@
       </v-row>
       <v-row>
         <v-col cols="6" align="start">
-          <v-text-field v-model="formulaire.age" autocomplete="nope" label="Age" required></v-text-field>
+          <v-text-field
+            v-model="formulaire.age"
+            autocomplete="nope"
+            label="Age"
+            required
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
@@ -55,12 +79,12 @@
           <v-select
             v-model="formulaire.education"
             :items="[
-                    'Non spécifié',
-                    'Primaire',
-                    'Secondaire 1',
-                    'Secondaire 2',
-                    'Supérieur'
-                  ]"
+              'Non spécifié',
+              'Primaire',
+              'Secondaire 1',
+              'Secondaire 2',
+              'Supérieur'
+            ]"
             label="Niveau d'éducation"
             required
           ></v-select>
@@ -71,11 +95,11 @@
           <v-select
             v-model="formulaire.sociale"
             :items="[
-                    'Non spécifiée',
-                    'Classe populaire',
-                    'Classe moyenne',
-                    'Classe aisée'
-                  ]"
+              'Non spécifiée',
+              'Classe populaire',
+              'Classe moyenne',
+              'Classe aisée'
+            ]"
             label="Classe sociale"
             required
           ></v-select>
@@ -88,12 +112,18 @@
       </v-row>
       <v-row>
         <v-col cols="6" align="start">
-          <v-textarea v-model="formulaire.commentaire" label="Commentaire" required></v-textarea>
+          <v-textarea
+            v-model="formulaire.commentaire"
+            label="Commentaire"
+            required
+          ></v-textarea>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="6" align="start">
-          <v-btn block color="error" class="mt-4" @click="modifierProfil">Sauvegarder</v-btn>
+          <v-btn block color="error" class="mt-4" @click="modifierProfil"
+            >Sauvegarder</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>
