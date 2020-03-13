@@ -97,6 +97,11 @@
           <v-textarea v-model="formulaire.commentaire" label="Commentaire" required></v-textarea>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="6" align="start">
+          <v-btn block color="error" class="mt-4" @click="connexion">Sauvegarder</v-btn>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
