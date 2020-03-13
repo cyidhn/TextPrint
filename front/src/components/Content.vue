@@ -3,7 +3,11 @@
     <!-- Champs recherche -->
     <div v-if="contentTabs.nowId === 1">
       <transition name="slide-fade">
-        <div style="overflow: scroll; padding-bottom:300px" :key="id" class="taille-f">
+        <div
+          style="overflow: scroll; padding-bottom:300px"
+          :key="id"
+          class="taille-f"
+        >
           <h1>{{ title }}</h1>
           <br />
           <Search />
@@ -17,7 +21,9 @@
       <transition name="slide-fade">
         <div style="overflow: scroll" :key="id" class="taille-f">
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
-            <v-btn @click="removeTab" depressed small color="error">X Fermer la fenêtre</v-btn>
+            <v-btn @click="removeTab" depressed small color="error"
+              >X Fermer la fenêtre</v-btn
+            >
           </div>
           <br />
           <br />
@@ -37,7 +43,9 @@
       <transition name="slide-fade">
         <div style="overflow: scroll" :key="id" class="taille-f">
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
-            <v-btn @click="removeTab" depressed small color="error">X Fermer la fenêtre</v-btn>
+            <v-btn @click="removeTab" depressed small color="error"
+              >X Fermer la fenêtre</v-btn
+            >
           </div>
           <br />
           <br />
@@ -55,7 +63,9 @@
       <transition name="slide-fade">
         <div style="overflow: scroll" :key="id" class="taille-f">
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
-            <v-btn @click="removeTab" depressed small color="error">X Fermer la fenêtre</v-btn>
+            <v-btn @click="removeTab" depressed small color="error"
+              >X Fermer la fenêtre</v-btn
+            >
           </div>
           <br />
           <br />
@@ -73,7 +83,9 @@
       <transition name="slide-fade">
         <div style="overflow: scroll" :key="id" class="taille-f">
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
-            <v-btn @click="removeTab" depressed small color="error">X Fermer la fenêtre</v-btn>
+            <v-btn @click="removeTab" depressed small color="error"
+              >X Fermer la fenêtre</v-btn
+            >
           </div>
           <br />
           <br />
