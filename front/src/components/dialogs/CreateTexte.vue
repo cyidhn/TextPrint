@@ -120,6 +120,7 @@
                   'Espagnol']"
                   v-model="langue"
                   label="Langue (automatique)"
+                  @change="changeLangue"
                   required
                 ></v-select>
                 <v-select
@@ -201,12 +202,26 @@ export default {
     segmentation: "Non spécifiée",
     // Langue
     langue: "Non spécifiée",
+    langueO: "",
     // Registre
     registre: "Non spécifié",
     // Commentaire
     commentaire: ""
   }),
   methods: {
+    changeLangue() {
+      if (this.langueO != this.langue) {
+        if (confirm("Êtes-vous sûr de vouloir changer la langue ?")) {
+          this.langueO = this.langue;
+          console.log(`Ici c'est ${this.langue}`);
+        } else {
+          this.langueOriginal();
+        }
+      }
+    },
+    langueOriginal() {
+      this.langue = this.langueO;
+    },
     checkDialog() {
       this.reset();
       DialogsData.close("texte");
@@ -429,6 +444,7 @@ export default {
               .then(response2 => {
                 // Ajour des informations
                 this.langue = response2.data.langue;
+                this.langueO = response2.data.langue;
                 this.nomFichier = response2.data.name;
                 this.nom = this.file.name;
                 this.loadingText = false;
