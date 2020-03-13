@@ -513,9 +513,6 @@ export default {
       imprimer.document.close(); //missing code
       imprimer.focus();
       imprimer.print();
-      setTimeout(function() {
-        imprimer.close();
-      }, 10000);
     },
     clickOnTitre() {
       this.titreClick = !this.titreClick;
