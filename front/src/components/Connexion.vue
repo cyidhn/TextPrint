@@ -31,8 +31,10 @@
 </template>
 
 <script>
+// Importations
 import { ConnectData } from "../flux/Connect";
 
+// Exportations de la fonction
 export default {
   data: () => ({
     login: "",

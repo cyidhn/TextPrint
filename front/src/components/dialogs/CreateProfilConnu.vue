@@ -1,6 +1,11 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="data.profilConnu" persistent scrollable max-width="500px">
+    <v-dialog
+      v-model="data.profilConnu"
+      persistent
+      scrollable
+      max-width="500px"
+    >
       <v-card>
         <div v-if="connu">
           <v-card-title>Créer un profil connu</v-card-title>
@@ -94,7 +99,11 @@
                 <h2>Informations complémentaires</h2>
               </v-col>
               <v-col cols="12">
-                <v-textarea v-model="commentaire" autocomplete="nope" label="Commentaires"></v-textarea>
+                <v-textarea
+                  v-model="commentaire"
+                  autocomplete="nope"
+                  label="Commentaires"
+                ></v-textarea>
               </v-col>
             </v-row>
           </v-form>
@@ -102,19 +111,15 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn color="blue darken-1" text @click="checkDialog">Fermer</v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="changerType"
-            v-if="connu"
-          >Changer à profil anonyme</v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="changerType"
-            v-if="!connu"
-          >Changer à profil connu</v-btn>
-          <v-btn color="blue darken-1" :disabled="!valid" text @click="validate">Créer</v-btn>
+          <v-btn color="blue darken-1" text @click="changerType" v-if="connu"
+            >Changer à profil anonyme</v-btn
+          >
+          <v-btn color="blue darken-1" text @click="changerType" v-if="!connu"
+            >Changer à profil connu</v-btn
+          >
+          <v-btn color="blue darken-1" :disabled="!valid" text @click="validate"
+            >Créer</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -122,9 +127,11 @@
 </template>
 
 <script>
+// Importations
 import { DialogsData } from "../../flux/Dialogs";
 import axios from "axios";
 
+// Exportation de la fonction
 export default {
   name: "CreateProfilConnu",
   data: () => ({

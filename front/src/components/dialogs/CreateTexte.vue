@@ -171,9 +171,11 @@
 </template>
 
 <script>
+// Importations
 import { DialogsData } from "../../flux/Dialogs";
 import axios from "axios";
 
+// Exportation de la fonction
 export default {
   name: "CreateTexte",
   data: () => ({

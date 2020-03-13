@@ -461,9 +461,11 @@
 </template>
 
 <script>
+// Importations
 import axios from "axios";
 import { TabsData } from "../../flux/Tabs";
 
+// Exportations
 export default {
   props: {
     content: Object

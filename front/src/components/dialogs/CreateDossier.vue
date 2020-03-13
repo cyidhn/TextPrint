@@ -23,7 +23,9 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn color="blue darken-1" text @click="checkDialog">Fermer</v-btn>
-          <v-btn color="blue darken-1" :disabled="!valid" text @click="validate">Créer</v-btn>
+          <v-btn color="blue darken-1" :disabled="!valid" text @click="validate"
+            >Créer</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -31,10 +33,12 @@
 </template>
 
 <script>
+// Importations
 import { DialogsData } from "../../flux/Dialogs";
 import { TabsData } from "../../flux/Tabs";
 import axios from "axios";
 
+// Exportation de la fonction
 export default {
   name: "CreateDossier",
   data: () => ({

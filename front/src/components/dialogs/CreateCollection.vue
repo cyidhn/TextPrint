@@ -33,10 +33,12 @@
 </template>
 
 <script>
+// Importations
 import { DialogsData } from "../../flux/Dialogs";
 import { TabsData } from "../../flux/Tabs";
 import axios from "axios";
 
+// Exportation de la fonction
 export default {
   name: "CreateCollection",
   data: () => ({
