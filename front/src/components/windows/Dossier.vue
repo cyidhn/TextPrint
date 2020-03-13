@@ -576,6 +576,8 @@ export default {
           .post(process.env.VUE_APP_SERVEUR + "/modifier-dossier", formData)
           .then(response => {
             this.snackbarModifie = true;
+            console.log("titre : " + TabsData.state.nowId);
+            TabsData.changeName(TabsData.state.nowId, this.titre);
             console.log(response);
           })
           .catch(error => {
