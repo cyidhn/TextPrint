@@ -14,7 +14,12 @@
               @click="updateContent"
             ></v-text-field>
           </v-col>
-          <v-switch v-model="filterTextes" class="ma-2" label="Textes" @change="updateContent()"></v-switch>
+          <v-switch
+            v-model="filterTextes"
+            class="ma-2"
+            label="Textes"
+            @change="updateContent()"
+          ></v-switch>
           <v-switch
             v-model="filterDossiers"
             class="ma-2"
@@ -27,12 +32,21 @@
             label="Collections"
             @change="updateContent()"
           ></v-switch>
-          <v-switch v-model="filterProfils" class="ma-2" label="Profil" @change="updateContent()"></v-switch>
+          <v-switch
+            v-model="filterProfils"
+            class="ma-2"
+            label="Profil"
+            @change="updateContent()"
+          ></v-switch>
         </v-row>
         <v-list>
           <hr />
           <v-list-item-group color="primary">
-            <v-list-item v-for="(item, i) in filteredList" :key="i" @click="addWindow(item)">
+            <v-list-item
+              v-for="(item, i) in filteredList"
+              :key="i"
+              @click="addWindow(item)"
+            >
               <v-list-item-icon>
                 <div v-if="item.type === 'Texte'">
                   <v-icon v-text="text"></v-icon>

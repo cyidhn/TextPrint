@@ -18,11 +18,16 @@
                   ref="file"
                   @change="handleFileUpload()"
                 />
-                <p
-                  v-if="loadingText"
-                >Le fichier est en cours d'analyse. Cela peut prendre plusieurs minutes...</p>
+                <p v-if="loadingText">
+                  Le fichier est en cours d'analyse. Cela peut prendre plusieurs
+                  minutes...
+                </p>
                 <p v-if="errorText">
-                  <b>Le fichier est non conforme, il doit être encodé en UTF-8.</b> Merci de sélectionner un autre texte.
+                  <b
+                    >Le fichier est non conforme, il doit être encodé en
+                    UTF-8.</b
+                  >
+                  Merci de sélectionner un autre texte.
                 </p>
               </v-col>
             </v-row>
@@ -53,17 +58,19 @@
               </v-col>
               <v-col cols="12">
                 <v-select
-                  :items="['Non spécifié', 
-                  'Écriture personnelle', 
-                  'Correspondance', 
-                  'Messagerie', 
-                  'Web et réseaux sociaux', 
-                  'Presse', 
-                  'Rédactions Scientifiques et Académiques', 
-                  'Rédactions littéraires',
-                  'Rédactions judiciaires',
-                  'Documents à intérêts judiciaires',
-                  'Autre']"
+                  :items="[
+                    'Non spécifié',
+                    'Écriture personnelle',
+                    'Correspondance',
+                    'Messagerie',
+                    'Web et réseaux sociaux',
+                    'Presse',
+                    'Rédactions Scientifiques et Académiques',
+                    'Rédactions littéraires',
+                    'Rédactions judiciaires',
+                    'Documents à intérêts judiciaires',
+                    'Autre'
+                  ]"
                   v-model="typeDoc1"
                   label="Type de document*"
                   @change="handleChangeType1()"
@@ -90,20 +97,24 @@
                   required
                 ></v-text-field>
                 <v-select
-                  :items="['Non spécifié', 
-                  'Manuscrite', 
-                  'Tapuscrite', 
-                  'Dactylographié', 
-                  'Autre']"
+                  :items="[
+                    'Non spécifié',
+                    'Manuscrite',
+                    'Tapuscrite',
+                    'Dactylographié',
+                    'Autre'
+                  ]"
                   v-model="typeEcriture"
                   label="Type d'écriture"
                   required
                 ></v-select>
                 <v-select
-                  :items="['Non spécifiée', 
-                  'D\'origine', 
-                  'Passage', 
-                  'Compilation']"
+                  :items="[
+                    'Non spécifiée',
+                    'D\'origine',
+                    'Passage',
+                    'Compilation'
+                  ]"
                   v-model="segmentation"
                   label="Segmentation"
                   required
@@ -114,25 +125,23 @@
               </v-col>
               <v-col cols="12">
                 <v-select
-                  :items="['Non spécifiée', 
-                  'Français', 
-                  'Anglais', 
-                  'Espagnol']"
+                  :items="['Non spécifiée', 'Français', 'Anglais', 'Espagnol']"
                   v-model="langue"
                   label="Langue (automatique)"
                   @change="changeLangue"
                   required
                 ></v-select>
                 <v-select
-                  :items="['Non spécifié', 
-                  'Courant', 
-                  'Familier', 
-                  'Soutenu']"
+                  :items="['Non spécifié', 'Courant', 'Familier', 'Soutenu']"
                   v-model="registre"
                   label="Registre"
                   required
                 ></v-select>
-                <v-textarea v-model="commentaire" autocomplete="nope" label="Commentaires"></v-textarea>
+                <v-textarea
+                  v-model="commentaire"
+                  autocomplete="nope"
+                  label="Commentaires"
+                ></v-textarea>
               </v-col>
             </v-row>
           </v-form>
@@ -146,13 +155,15 @@
             :disabled="checkProgress"
             text
             @click="validate"
-          >Importer le texte</v-btn>
+            >Importer le texte</v-btn
+          >
           <v-btn
             color="blue darken-1"
             v-if="nextStep"
             text
             @click="validateNext"
-          >Enregistrer le texte</v-btn>
+            >Enregistrer le texte</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
