@@ -32,6 +32,7 @@
 
 <script>
 import { DialogsData } from "../../flux/Dialogs";
+import { TabsData } from "../../flux/Tabs";
 import axios from "axios";
 
 export default {
@@ -45,6 +46,30 @@ export default {
     nomRules: [v => !!v || "Le nom de la collection est requis."]
   }),
   methods: {
+    addWindow() {
+      // Ajout en formulaire
+      let formData = new FormData();
+
+      // Appel avec axios
+      axios
+        .get(process.env.VUE_APP_SERVEUR + "/lastid-collection")
+        .then(response => {
+          formData.append("req", response.data[0].id);
+          console.log(response.data[0].id);
+          axios
+            .post(process.env.VUE_APP_SERVEUR + "/search-collection", formData)
+            .then(response2 => {
+              console.log(response2);
+              TabsData.add(response2.data[0].titre, response2.data[0]);
+            })
+            .catch(error => {
+              alert(error.response.data);
+            });
+        })
+        .catch(error => {
+          alert(error.response.data);
+        });
+    },
     checkDialog() {
       DialogsData.close("collection");
     },
@@ -61,7 +86,13 @@ export default {
         axios
           .post(process.env.VUE_APP_SERVEUR + "/creer-collection", formData)
           .then(response => {
-            alert("La collection a bien été créée");
+            if (
+              confirm(
+                "La collection a bien été créée. Souhaitez-vous ajoutez des éléments maintenant à celle-ci ?"
+              )
+            ) {
+              this.addWindow();
+            }
             console.log(response);
             this.reset();
             DialogsData.close("collection");

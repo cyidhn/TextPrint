@@ -229,6 +229,38 @@ def lastidprofil():
     # Faire un retour de resultat
     return jsonify(result)
 
+@app.route("/lastid-dossier", methods=["GET"])
+def lastiddossier():
+
+    # Recherche en DB
+    req = db_search("SELECT * FROM tpDossiers ORDER BY id DESC LIMIT 1")
+
+    # Boucle
+    result = '[]'
+    for r in req:
+        result = '[{"id": %s}]' % (r[0])
+
+    result = json.loads(result)
+
+    # Faire un retour de resultat
+    return jsonify(result)
+
+@app.route("/lastid-collection", methods=["GET"])
+def lastidcollection():
+
+    # Recherche en DB
+    req = db_search("SELECT * FROM tpCollections ORDER BY id DESC LIMIT 1")
+
+    # Boucle
+    result = '[]'
+    for r in req:
+        result = '[{"id": %s}]' % (r[0])
+
+    result = json.loads(result)
+
+    # Faire un retour de resultat
+    return jsonify(result)
+
 @app.route("/creer-dossier", methods=["POST"])
 def creerDossier():
 

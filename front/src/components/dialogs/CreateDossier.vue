@@ -32,6 +32,7 @@
 
 <script>
 import { DialogsData } from "../../flux/Dialogs";
+import { TabsData } from "../../flux/Tabs";
 import axios from "axios";
 
 export default {
@@ -51,6 +52,30 @@ export default {
     reset() {
       this.$refs.form.reset();
     },
+    addWindow() {
+      // Ajout en formulaire
+      let formData = new FormData();
+
+      // Appel avec axios
+      axios
+        .get(process.env.VUE_APP_SERVEUR + "/lastid-dossier")
+        .then(response => {
+          formData.append("req", response.data[0].id);
+          console.log(response.data[0].id);
+          axios
+            .post(process.env.VUE_APP_SERVEUR + "/search-dossier", formData)
+            .then(response2 => {
+              console.log(response2);
+              TabsData.add(response2.data[0].titre, response2.data[0]);
+            })
+            .catch(error => {
+              alert(error.response.data);
+            });
+        })
+        .catch(error => {
+          alert(error.response.data);
+        });
+    },
     validate() {
       if (this.$refs.form.validate()) {
         // Ajout en formulaire
@@ -61,7 +86,13 @@ export default {
         axios
           .post(process.env.VUE_APP_SERVEUR + "/creer-dossier", formData)
           .then(response => {
-            alert("Le dossier a bien été crée");
+            if (
+              confirm(
+                "Le dossier a bien été crée. Souhaitez-vous ajoutez des éléments maintenant à celui-ci ?"
+              )
+            ) {
+              this.addWindow();
+            }
             console.log(response);
             this.reset();
             DialogsData.close("dossier");
