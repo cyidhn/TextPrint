@@ -571,6 +571,8 @@ export default {
           .post(process.env.VUE_APP_SERVEUR + "/modifier-collection", formData)
           .then(response => {
             this.snackbarModifie = true;
+            TabsData.changeName(TabsData.state.nowId, this.titre);
+            this.content.titre = this.titre;
             console.log(response);
           })
           .catch(error => {
