@@ -44,7 +44,6 @@
           <br />
           <hr />
           <br />
-          <h1>{{ title }}</h1>
           <Dossier :content="save" />
         </div>
       </transition>
