@@ -768,6 +768,7 @@ export default {
       this.dialogProfils = false;
     },
     deleteProfils() {
+      // Message de suppression de profil
       if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
         let formData = new FormData();
         this.selectedProfils.map(e => {
