@@ -746,6 +746,7 @@ export default {
                   this.snackbarAjoute = true;
                 })
                 .catch(error => {
+                  // En cas d'erreur
                   this.collections = [];
                   this.snackbarAjoute = true;
                   console.error(error);
