@@ -195,7 +195,7 @@ export default {
             ) ||
             "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120."
         ];
-        this.ageTexte = "Estimation de l'âge";
+        this.ageTexte = "Estimation de l'âge*";
         this.ageType = "text";
       }
     },
