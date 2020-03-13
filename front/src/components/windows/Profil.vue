@@ -4,13 +4,7 @@
     <v-container fluid class="mt-8">
       <v-row>
         <v-col cols="12">
-          <v-btn
-            @click="removeProfil"
-            class="mr-3"
-            depressed
-            small
-            color="primary"
-          >Associer à des éléments</v-btn>
+          <v-btn class="mr-3" depressed small color="primary">Associer à des éléments</v-btn>
           <v-btn @click="removeProfil" depressed small color="error">Supprimer</v-btn>
         </v-col>
       </v-row>
@@ -99,7 +93,7 @@
       </v-row>
       <v-row>
         <v-col cols="6" align="start">
-          <v-btn block color="error" class="mt-4" @click="connexion">Sauvegarder</v-btn>
+          <v-btn block color="error" class="mt-4" @click="modifierProfil">Sauvegarder</v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -118,19 +112,34 @@ export default {
 
   data: () => ({
     formulaire: [],
-    identification: "",
-    // Stockage information profils
-    alias: "",
-    prenom: "",
-    nom: "",
-    age: "",
-    sexe: "",
-    education: "",
-    sociale: "",
-    commentaire: ""
+    identification: ""
   }),
 
   methods: {
+    modifierProfil() {
+      // Contenu des fichiers
+      let formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("alias", this.formulaire.alias);
+      formData.append("prenom", this.formulaire.prenom);
+      formData.append("nom", this.formulaire.nom);
+      formData.append("age", this.formulaire.age);
+      formData.append("sexe", this.formulaire.sexe);
+      formData.append("education", this.formulaire.education);
+      formData.append("sociale", this.formulaire.sociale);
+      formData.append("commentaire", this.formulaire.commentaire);
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/modifier-profil", formData)
+        .then(response => {
+          alert("Sauvegarde effectuée");
+          console.log(response);
+        })
+        .catch(error => {
+          alert(error);
+        });
+    },
     removeProfil() {
       if (
         confirm(
@@ -217,10 +226,15 @@ export default {
       if (this.formulaire.sociale === "aisée") {
         this.formulaire.sociale = "Classe aisée";
       }
+
+      if (this.formulaire.commentaire === "undefined") {
+        this.formulaire.commentaire = "";
+      }
     }
   },
 
   mounted() {
+    // Anciennes modifications
     this.fetchProps();
     this.modifsOldVersion();
   }
