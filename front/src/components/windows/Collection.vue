@@ -192,7 +192,7 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-btn class="mr-3" depressed small color="primary">Associer à des éléments</v-btn>
+          <v-btn @click="imprimer" class="mr-3" depressed small color="primary">Imprimer</v-btn>
           <v-btn @click="removeCollection" depressed small color="error">Supprimer</v-btn>
         </v-col>
       </v-row>
@@ -492,6 +492,21 @@ export default {
     };
   },
   methods: {
+    imprimer() {
+      // Générer le lien de l'impression
+      let imprimer = window.open(
+        `${process.env.VUE_APP_SERVEUR}/imprimer-collection/${this.content.id}`,
+        "_blank"
+      );
+
+      // Traitement du lien
+      imprimer.document.close(); //missing code
+      imprimer.focus();
+      imprimer.print();
+      setTimeout(function() {
+        imprimer.close();
+      }, 10000);
+    },
     clickOnTitre() {
       this.titreClick = !this.titreClick;
       if (this.titreClick === true) {
