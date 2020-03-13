@@ -214,6 +214,7 @@ export default {
         formData.append("education", this.education);
         formData.append("sociale", this.sociale);
         formData.append("commentaire", this.commentaire);
+        // Profil connu ou non
         if (this.connu === true) {
           formData.append("typeP", "connu");
         } else {
@@ -224,17 +225,20 @@ export default {
         axios
           .post(process.env.VUE_APP_SERVEUR + "/creer-profil-connu", formData)
           .then(response => {
+            // Message profil bien crée
             alert("Le profil à bien été crée");
             console.log(response);
             this.reset();
             DialogsData.close("profil-connu");
           })
           .catch(error => {
+            // Affichage erreur
             console.log(error);
           });
       }
     },
     resetValidation() {
+      // Reset informations mis en mémoire
       this.$refs.form.resetValidation();
       this.sexe = "Non spécifié";
       this.education = "Non spécifié";
