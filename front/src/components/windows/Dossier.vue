@@ -2,19 +2,34 @@
   <div>
     <v-container fluid>
       <!-- Snackbar Ajouté avec succès -->
-      <v-snackbar v-model="snackbarAjoute" :bottom="true" color="success" :timeout="3000">
+      <v-snackbar
+        v-model="snackbarAjoute"
+        :bottom="true"
+        color="success"
+        :timeout="3000"
+      >
         Les éléments ont bien été ajoutés et sauvegardés.
         <v-btn dark text @click="snackbarAjoute = false">Fermer</v-btn>
       </v-snackbar>
       <!-- /Snackbar Ajouté avec succès -->
       <!-- Snackbar Ajouté avec succès -->
-      <v-snackbar v-model="snackbarModifie" :bottom="true" color="success" :timeout="3000">
+      <v-snackbar
+        v-model="snackbarModifie"
+        :bottom="true"
+        color="success"
+        :timeout="3000"
+      >
         La modification a bien été prise en compte.
         <v-btn dark text @click="snackbarModifie = false">Fermer</v-btn>
       </v-snackbar>
       <!-- /Snackbar Ajouté avec succès -->
       <!-- Snackbar Supprimé avec succès -->
-      <v-snackbar v-model="snackbarSupprimer" :bottom="true" color="error" :timeout="3000">
+      <v-snackbar
+        v-model="snackbarSupprimer"
+        :bottom="true"
+        color="error"
+        :timeout="3000"
+      >
         Les éléments ont bien été supprimés.
         <v-btn dark text @click="snackbarSupprimer = false">Fermer</v-btn>
       </v-snackbar>
@@ -50,8 +65,12 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialogTextes = false">Retour</v-btn>
-            <v-btn color="blue darken-1" text @click="associerTextes">Ajouter des textes</v-btn>
+            <v-btn color="blue darken-1" text @click="dialogTextes = false"
+              >Retour</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="associerTextes"
+              >Ajouter des textes</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -87,14 +106,23 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="fermerProfils">Retour</v-btn>
-            <v-btn color="blue darken-1" text @click="associerProfils">Ajouter des profils</v-btn>
+            <v-btn color="blue darken-1" text @click="fermerProfils"
+              >Retour</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="associerProfils"
+              >Ajouter des profils</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
       <!-- /Modal ajouter un profil -->
       <!-- Modal ajouter une collection -->
-      <v-dialog v-model="dialogCollections" max-width="500px" persistent scrollable>
+      <v-dialog
+        v-model="dialogCollections"
+        max-width="500px"
+        persistent
+        scrollable
+      >
         <v-card>
           <v-card-title>
             <span class="headline">
@@ -124,8 +152,12 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="fermerCollections">Retour</v-btn>
-            <v-btn color="blue darken-1" text @click="associerCollections">Ajouter des collections</v-btn>
+            <v-btn color="blue darken-1" text @click="fermerCollections"
+              >Retour</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="associerCollections"
+              >Ajouter des collections</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -134,7 +166,7 @@
       <v-row v-if="titreClick === true" @click="clickOnTitre()">
         <v-col cols="12">
           <h1 class="text-center">
-            {{titre}}
+            {{ titre }}
             <v-btn class="mx-2" fab x-small color="primary">
               <v-icon dark>mdi-pen</v-icon>
             </v-btn>
@@ -164,9 +196,9 @@
       <v-row v-if="commentaireClick === true" @click="clickOnCommentaire()">
         <v-col cols="12">
           <div class="text-center">
-            {{commentaire ? commentaire : "Ajouter un commentaire..."}}
+            {{ commentaire ? commentaire : "Ajouter un commentaire..." }}
             <v-btn class="mx-2" fab x-small color="primary">
-              <v-icon dark>{{commentaire ? "mdi-pen" : "mdi-plus"}}</v-icon>
+              <v-icon dark>{{ commentaire ? "mdi-pen" : "mdi-plus" }}</v-icon>
             </v-btn>
           </div>
         </v-col>
@@ -192,8 +224,12 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-btn @click="imprimer" class="mr-3" depressed small color="primary">Imprimer</v-btn>
-          <v-btn @click="removeDossier" depressed small color="error">Supprimer</v-btn>
+          <v-btn @click="imprimer" class="mr-3" depressed small color="primary"
+            >Imprimer</v-btn
+          >
+          <v-btn @click="removeDossier" depressed small color="error"
+            >Supprimer</v-btn
+          >
         </v-col>
       </v-row>
       <br />
@@ -203,13 +239,16 @@
           <h2>Association avec les Profils</h2>
         </v-col>
         <v-col cols="6" align="end">
-          <v-btn small class="mx-2" color="primary" @click="ajouterProfils">Ajouter un profil</v-btn>
+          <v-btn small class="mx-2" color="primary" @click="ajouterProfils"
+            >Ajouter un profil</v-btn
+          >
           <v-btn
             small
             color="error"
             :disabled="disabledProfils"
             @click="deleteProfils"
-          >Supprimer la sélection</v-btn>
+            >Supprimer la sélection</v-btn
+          >
         </v-col>
       </v-row>
       <v-row>
@@ -247,13 +286,16 @@
           <h2>Association avec les Textes</h2>
         </v-col>
         <v-col cols="6" align="end">
-          <v-btn small class="mx-2" color="primary" @click="ajouterTextes">Ajouter un texte</v-btn>
+          <v-btn small class="mx-2" color="primary" @click="ajouterTextes"
+            >Ajouter un texte</v-btn
+          >
           <v-btn
             small
             color="error"
             :disabled="disabledTextes"
             @click="deleteTextes"
-          >Supprimer la sélection</v-btn>
+            >Supprimer la sélection</v-btn
+          >
         </v-col>
       </v-row>
       <v-row>
@@ -291,18 +333,16 @@
           <h2>Association avec les Collections</h2>
         </v-col>
         <v-col cols="6" align="end">
-          <v-btn
-            small
-            class="mx-2"
-            color="primary"
-            @click="ajouterCollections"
-          >Ajouter une collection</v-btn>
+          <v-btn small class="mx-2" color="primary" @click="ajouterCollections"
+            >Ajouter une collection</v-btn
+          >
           <v-btn
             small
             color="error"
             :disabled="disabledCollections"
             @click="deleteCollections"
-          >Supprimer la sélection</v-btn>
+            >Supprimer la sélection</v-btn
+          >
         </v-col>
       </v-row>
       <v-row>
@@ -340,8 +380,12 @@
           <h2>Association avec les Analyses</h2>
         </v-col>
         <v-col cols="6" align="end">
-          <v-btn small class="mx-2" color="primary" @click="ajouterTextes">Ajouter une analyse</v-btn>
-          <v-btn small color="error" :disabled="true">Supprimer la sélection</v-btn>
+          <v-btn small class="mx-2" color="primary" @click="ajouterTextes"
+            >Ajouter une analyse</v-btn
+          >
+          <v-btn small color="error" :disabled="true"
+            >Supprimer la sélection</v-btn
+          >
         </v-col>
       </v-row>
       <v-row>
@@ -378,8 +422,12 @@
           <h2>Association avec les Rapports</h2>
         </v-col>
         <v-col cols="6" align="end">
-          <v-btn small class="mx-2" color="primary" @click="ajouterTextes">Ajouter un rapport</v-btn>
-          <v-btn small color="error" :disabled="true">Supprimer la sélection</v-btn>
+          <v-btn small class="mx-2" color="primary" @click="ajouterTextes"
+            >Ajouter un rapport</v-btn
+          >
+          <v-btn small color="error" :disabled="true"
+            >Supprimer la sélection</v-btn
+          >
         </v-col>
       </v-row>
       <v-row>
