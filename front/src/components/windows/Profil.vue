@@ -118,7 +118,16 @@ export default {
 
   data: () => ({
     formulaire: [],
-    identification: ""
+    identification: "",
+    // Stockage information profils
+    alias: "",
+    prenom: "",
+    nom: "",
+    age: "",
+    sexe: "",
+    education: "",
+    sociale: "",
+    commentaire: ""
   }),
 
   methods: {
