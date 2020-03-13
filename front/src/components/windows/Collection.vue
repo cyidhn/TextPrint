@@ -131,6 +131,36 @@
       </v-dialog>
       <!-- /Modal ajouter une collection -->
       <!-- Ajouter un element -->
+      <v-row v-if="titreClick === true" @click="clickOnTitre()">
+        <v-col cols="12">
+          <h1 class="text-center">
+            {{titre}}
+            <v-btn class="mx-2" fab x-small color="primary">
+              <v-icon dark>mdi-pen</v-icon>
+            </v-btn>
+          </h1>
+        </v-col>
+      </v-row>
+      <v-row v-if="titreClick === false">
+        <v-col cols="9">
+          <div class="text-center">
+            <v-text-field
+              v-model="titre"
+              placeholder="Ajoutez votre titre ici..."
+              autocomplete="nope"
+              hint="Modifier le titre de la collection"
+            ></v-text-field>
+          </div>
+        </v-col>
+        <v-col cols="3">
+          <div class="text-center">
+            <div class="my-2" @click="clickOnTitre()">
+              <v-btn color="error" dark large>Sauvegarder</v-btn>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+      <!-- Ajouter un element -->
       <v-row v-if="commentaireClick === true" @click="clickOnCommentaire()">
         <v-col cols="12">
           <div class="text-center">
@@ -162,13 +192,7 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-btn
-            @click="removeCollection"
-            class="mr-3"
-            depressed
-            small
-            color="primary"
-          >Associer à des éléments</v-btn>
+          <v-btn class="mr-3" depressed small color="primary">Associer à des éléments</v-btn>
           <v-btn @click="removeCollection" depressed small color="error">Supprimer</v-btn>
         </v-col>
       </v-row>
@@ -400,6 +424,9 @@ export default {
       // Commentaire
       commentaire: "",
       commentaireClick: true,
+      // Titre
+      titre: "",
+      titreClick: true,
       // Desactive
       disabledProfils: true,
       disabledTextes: true,
@@ -465,6 +492,25 @@ export default {
     };
   },
   methods: {
+    clickOnTitre() {
+      this.titreClick = !this.titreClick;
+      if (this.titreClick === true) {
+        // Appel avec axios
+        let formData = new FormData();
+        formData.append("id", this.content.id);
+        formData.append("commentaire", this.commentaire);
+        formData.append("titre", this.titre);
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/modifier-collection", formData)
+          .then(response => {
+            this.snackbarModifie = true;
+            console.log(response);
+          })
+          .catch(error => {
+            alert(error);
+          });
+      }
+    },
     clickOnCommentaire() {
       this.commentaireClick = !this.commentaireClick;
       if (this.commentaireClick === true) {
@@ -900,6 +946,9 @@ export default {
       .catch(error => {
         console.log(error);
       });
+
+    // Ajout du titre en variable
+    this.titre = this.content.titre;
   },
   updated: function() {
     // Profils

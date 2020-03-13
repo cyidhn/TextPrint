@@ -63,7 +63,6 @@
           <br />
           <hr />
           <br />
-          <h1>{{ title }}</h1>
           <Collection :content="save" />
         </div>
       </transition>
