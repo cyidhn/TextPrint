@@ -47,7 +47,7 @@ export default {
     dialog: false,
     valid: true,
     nom: "",
-    nomRules: [v => !!v || "Le nom de la collection est requis."]
+    nomRules: [v => !!v || "Le nom de la collection est requise."]
   }),
   methods: {
     addWindow() {
