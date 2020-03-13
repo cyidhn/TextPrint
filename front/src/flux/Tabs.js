@@ -43,6 +43,9 @@ export const TabsData = {
     this.state.nowId = id;
     console.log("newId", id);
   },
+  changeName(id, name) {
+    console.log(`Changement du titre pour ${name} pour l'id ${id}`);
+  },
   remove(id) {
     for (let i = 0; i < this.state.data.length; i++) {
       if (this.state.data[i].id === id) {
