@@ -11,7 +11,7 @@
           <b>PRINT</b>
         </h1>
         <h4 class="mt-2 text-center">
-          Connextez-vous pour accéder à l'application
+          Connectez-vous pour accéder à l'application
         </h4>
         <v-form ref="form" class="mt-8">
           <v-text-field v-model="login" label="Login" required></v-text-field>
