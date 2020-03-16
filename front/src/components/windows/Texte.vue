@@ -75,6 +75,7 @@
               'Documents à intérêts judiciaires',
               'Autre'
             ]"
+            disabled="true"
             v-model="content.typeDocument1"
             label="Type de document*"
             @change="changeForm()"
@@ -82,12 +83,14 @@
           ></v-select>
           <v-select
             :items="[content.typeDocument2]"
+            disabled="true"
             v-model="content.typeDocument2"
             @change="changeForm()"
             required
           ></v-select>
           <v-text-field
             v-model="content.typeDocument3"
+            disabled="true"
             label="Autre..."
             autocomplete="nope"
             required
@@ -124,6 +127,7 @@
           <v-select
             :items="['Non spécifiée', 'Français', 'Anglais', 'Espagnol']"
             v-model="content.langue"
+            disabled="true"
             label="Langue (automatique)"
             required
           ></v-select>
@@ -138,6 +142,9 @@
             autocomplete="nope"
             label="Commentaires"
           ></v-textarea>
+          <v-btn block color="error" class="mt-4" @click="sauvegarder"
+            >Sauvegarder</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>
@@ -161,6 +168,30 @@ export default {
     link: ""
   }),
   methods: {
+    sauvegarder() {
+      // Sauvegarder les modifications
+      // Ajout en formulaire
+      let formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("alias", this.content.titre);
+      formData.append("paternite", this.content.paternite);
+      formData.append("specification", this.content.specification);
+      formData.append("typeEcriture", this.content.typeEcriture);
+      formData.append("segmentation", this.content.segmentation);
+      formData.append("registre", this.content.registre);
+      formData.append("commentaire", this.content.commentaire);
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/modifier-texte", formData)
+        .then(response => {
+          console.log(response);
+          alert("Les modifications ont bien été mises à jour.");
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     changeForm() {
       console.log("Changement dans le formulaire...");
     },
