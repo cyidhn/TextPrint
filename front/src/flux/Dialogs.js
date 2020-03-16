@@ -11,7 +11,10 @@ export const DialogsData = {
     profilAnonyme: false,
     collection: false,
     dossier: false,
-    texte: false
+    texte: false,
+    stateInFolder: false,
+    nameFolder: "",
+    numberFolder: 0
   },
   open(n) {
     if (n === "profil-connu") {
@@ -29,6 +32,14 @@ export const DialogsData = {
     if (n === "dossier") {
       this.state.dossier = true;
     }
+  },
+  addToFolder(name, number) {
+    this.state.stateInFolder = true;
+    this.state.nameFolder = name;
+    this.state.numberFolder = number;
+  },
+  init() {
+    this.state.stateInFolder = false;
   },
   close(n) {
     if (n === "profil-connu") {

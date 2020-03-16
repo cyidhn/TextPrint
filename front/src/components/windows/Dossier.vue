@@ -570,6 +570,7 @@ export default {
     },
     nouvelleCollection() {
       DialogsData.open("collection");
+      DialogsData.addToFolder("Dossier", this.content.id);
     },
     imprimer() {
       // Générer le lien de l'impression
@@ -833,6 +834,8 @@ export default {
       }
     },
     fermerCollections() {
+      DialogsData.init();
+      this.majDossier();
       this.dialogCollections = false;
     },
     fermerProfils() {
@@ -924,6 +927,89 @@ export default {
         });
         this.selectedCollections = [];
       }
+    },
+    majDossier() {
+      // TypeProfils
+      // Ajout en formulaire
+      let formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("type", "Dossier");
+      formData.append("get", "Profil");
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+        .then(response => {
+          let result = JSON.parse(response.data);
+          this.profils = result;
+          this.loadingProfils = false;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loadingProfils = false;
+        });
+      // /TypeProfils
+
+      // TypeTextes
+      // Ajout en formulaire
+      formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("type", "Dossier");
+      formData.append("get", "Texte");
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+        .then(response => {
+          let result = JSON.parse(response.data);
+          this.textes = result;
+          this.loadingTextes = false;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loadingTextes = false;
+        });
+      // /TypeTextes
+
+      // TypeCollections
+      // Ajout en formulaire
+      formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("type", "Dossier");
+      formData.append("get", "Collection");
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+        .then(response => {
+          let result = JSON.parse(response.data);
+          this.collections = result;
+          this.loadingCollections = false;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loadingCollections = false;
+        });
+      // /TypeCollection
+
+      // Commentaire
+      // Appel avec axios
+      formData = new FormData();
+      formData.append("req", this.content.id);
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/search-dossier", formData)
+        .then(response => {
+          this.commentaire = response.data[0].commentaire;
+          if (this.commentaire == "None") {
+            this.commentaire = "";
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+      // Ajout du titre en variable
+      this.titre = this.content.titre;
     },
     deleteTextes() {
       if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
