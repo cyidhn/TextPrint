@@ -68,6 +68,9 @@
             <v-btn color="blue darken-1" text @click="dialogTextes = false"
               >Retour</v-btn
             >
+            <v-btn color="blue darken-1" text @click="nouveauTexte"
+              >Nouveau texte</v-btn
+            >
             <v-btn color="blue darken-1" text @click="associerTextes"
               >Ajouter des textes</v-btn
             >
@@ -108,6 +111,9 @@
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="fermerProfils"
               >Retour</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="nouveauProfil"
+              >Nouveau profil</v-btn
             >
             <v-btn color="blue darken-1" text @click="associerProfils"
               >Ajouter des profils</v-btn
@@ -154,6 +160,9 @@
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="fermerCollections"
               >Retour</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="nouvelleCollection"
+              >Nouvelle collection</v-btn
             >
             <v-btn color="blue darken-1" text @click="associerCollections"
               >Ajouter des collections</v-btn
@@ -466,6 +475,7 @@
 // Importations
 import axios from "axios";
 import { TabsData } from "../../flux/Tabs";
+import { DialogsData } from "../../flux/Dialogs";
 
 // Exportation de la fonction
 export default {
@@ -552,6 +562,15 @@ export default {
     };
   },
   methods: {
+    nouveauTexte() {
+      DialogsData.open("texte");
+    },
+    nouveauProfil() {
+      DialogsData.open("profil-connu");
+    },
+    nouvelleCollection() {
+      DialogsData.open("collection");
+    },
     imprimer() {
       // Générer le lien de l'impression
       let imprimer = window.open(
