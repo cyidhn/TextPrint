@@ -485,34 +485,39 @@ export default {
       }
     },
     validateNext() {
-      if (this.$refs.form.validate()) {
-        // Ajout en formulaire
-        let formData = new FormData();
-        formData.append("fichier", this.nomFichier);
-        formData.append("titre", this.nom);
-        formData.append("paternite", this.paternite);
-        formData.append("typeDocument1", this.typeDoc1);
-        formData.append("typeDocument2", this.typeDoc2);
-        formData.append("typeDocument3", this.typeDocAutre);
-        formData.append("specification", this.specification);
-        formData.append("typeEcriture", this.typeEcriture);
-        formData.append("segmentation", this.segmentation);
-        formData.append("langue", this.langue);
-        formData.append("registre", this.registre);
-        formData.append("commentaire", this.commentaire);
+      console.log(this.paternite);
+      if (this.paternite == "Non spécifié") {
+        alert("Le champs type de paternité doit obligatoirement être rempli.");
+      } else {
+        if (this.$refs.form.validate()) {
+          // Ajout en formulaire
+          let formData = new FormData();
+          formData.append("fichier", this.nomFichier);
+          formData.append("titre", this.nom);
+          formData.append("paternite", this.paternite);
+          formData.append("typeDocument1", this.typeDoc1);
+          formData.append("typeDocument2", this.typeDoc2);
+          formData.append("typeDocument3", this.typeDocAutre);
+          formData.append("specification", this.specification);
+          formData.append("typeEcriture", this.typeEcriture);
+          formData.append("segmentation", this.segmentation);
+          formData.append("langue", this.langue);
+          formData.append("registre", this.registre);
+          formData.append("commentaire", this.commentaire);
 
-        // Appel avec axios
-        axios
-          .post(process.env.VUE_APP_SERVEUR + "/importer-texte-bdd", formData)
-          .then(response => {
-            alert("Le texte à bien été crée");
-            console.log(response);
-            this.reset();
-            DialogsData.close("texte");
-          })
-          .catch(error => {
-            console.log(error);
-          });
+          // Appel avec axios
+          axios
+            .post(process.env.VUE_APP_SERVEUR + "/importer-texte-bdd", formData)
+            .then(response => {
+              alert("Le texte à bien été crée");
+              console.log(response);
+              this.reset();
+              DialogsData.close("texte");
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
       }
     },
     resetValidation() {

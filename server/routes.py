@@ -1047,11 +1047,11 @@ def verifierTexte():
         os.remove(fa)
 
         # Verifier que le texte ne contient pas de signes interdits
-        if ">" in texte:
-            return "Fichier non conforme", 405
+        # if ">" in texte:
+        #     return "Fichier non conforme", 405
 
-        if "<" in texte:
-            return "Fichier non conforme", 405
+        # if "<" in texte:
+        #     return "Fichier non conforme", 405
 
         # Si tout se passe bien
         return "Fichier conforme", 200
