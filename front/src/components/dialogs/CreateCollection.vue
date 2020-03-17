@@ -110,7 +110,15 @@ export default {
                       formData
                     )
                     .then(response => {
-                      alert("La collection à bien été créée et ajoutée.");
+                      if (
+                        confirm(
+                          "La collection a bien été créée. Souhaitez-vous ajoutez des éléments maintenant à celle-ci ?"
+                        )
+                      ) {
+                        this.addWindow();
+                      } else {
+                        alert("La collection à bien été créée et ajoutée.");
+                      }
                       console.log(response.data);
                     })
                     .catch(error => {

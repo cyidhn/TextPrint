@@ -125,7 +125,7 @@
       <!-- Modal ajouter une collection -->
       <v-dialog
         v-model="dialogCollections"
-        max-width="500px"
+        max-width="800px"
         persistent
         scrollable
       >
