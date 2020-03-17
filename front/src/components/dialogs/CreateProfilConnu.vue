@@ -185,10 +185,26 @@ export default {
             /^[1-9][0-9][-](([1-9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(
               v
             ) ||
-            "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120."
+            "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120.",
+          v =>
+            this.testAgeAnonyme(v) ||
+            "L'âge à gauche doit être plus petite qu'à droite..."
         ];
         this.ageTexte = "Estimation de l'âge";
         this.ageType = "text";
+      }
+    },
+    testAgeAnonyme(v) {
+      // Split
+      let splitNumber = v.split("-");
+      // Verification
+      if (
+        Number(splitNumber[0]) > Number(splitNumber[1]) ||
+        Number(splitNumber[0]) == Number(splitNumber[1])
+      ) {
+        return false;
+      } else {
+        return true;
       }
     },
     validate() {
