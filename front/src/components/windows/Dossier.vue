@@ -65,7 +65,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialogTextes = false"
+            <v-btn color="blue darken-1" text @click="fermerTextes"
               >Retour</v-btn
             >
             <v-btn color="blue darken-1" text @click="nouveauTexte"
@@ -564,9 +564,11 @@ export default {
   methods: {
     nouveauTexte() {
       DialogsData.open("texte");
+      DialogsData.addToFolder("Dossier", this.content.id);
     },
     nouveauProfil() {
       DialogsData.open("profil-connu");
+      DialogsData.addToFolder("Dossier", this.content.id);
     },
     nouvelleCollection() {
       DialogsData.open("collection");
@@ -839,7 +841,14 @@ export default {
       this.dialogCollections = false;
     },
     fermerProfils() {
+      DialogsData.init();
+      this.majDossier();
       this.dialogProfils = false;
+    },
+    fermerTextes() {
+      DialogsData.init();
+      this.majDossier();
+      this.dialogTextes = false;
     },
     deleteProfils() {
       // Message de suppression de profil
