@@ -509,6 +509,7 @@ export default {
           axios
             .post(process.env.VUE_APP_SERVEUR + "/importer-texte-bdd", formData)
             .then(response => {
+              // begin
               // Appel avec axios
               axios
                 .get(process.env.VUE_APP_SERVEUR + "/lastid-texte")
@@ -546,6 +547,7 @@ export default {
                 .catch(error => {
                   alert(error.response.data);
                 });
+              // /end
               console.log(response);
               this.reset();
               DialogsData.close("texte");

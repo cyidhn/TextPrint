@@ -216,7 +216,42 @@ export default {
         axios
           .post(process.env.VUE_APP_SERVEUR + "/creer-profil-connu", formData)
           .then(response => {
-            alert("Le profil à bien été crée");
+            // begin
+            // Appel avec axios
+            axios
+              .get(process.env.VUE_APP_SERVEUR + "/lastid-profil")
+              .then(response => {
+                let idProfil = response.data[0].id;
+                console.log(idProfil);
+                // Si le folder est activé
+                if (DialogsData.state.stateInFolder == true) {
+                  console.log("ok");
+                  formData = new FormData();
+                  formData.append("champs1", DialogsData.state.nameFolder);
+                  formData.append("champs2", "Profil");
+                  formData.append("idchamps1", DialogsData.state.numberFolder);
+                  formData.append("idchamps2", idProfil);
+                  // Appel avec axios
+                  axios
+                    .post(
+                      process.env.VUE_APP_SERVEUR + "/associer-generalement",
+                      formData
+                    )
+                    .then(response => {
+                      alert("Le profil a bien été crée et ajouté");
+                      console.log(response.data);
+                    })
+                    .catch(error => {
+                      console.error(error);
+                    });
+                } else {
+                  alert("Le profil à bien été crée");
+                }
+              })
+              .catch(error => {
+                alert(error.response.data);
+              });
+            // /end
             console.log(response);
             this.reset();
             DialogsData.close("profil-connu");
