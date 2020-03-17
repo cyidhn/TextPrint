@@ -90,6 +90,7 @@ export default {
         axios
           .post(process.env.VUE_APP_SERVEUR + "/creer-collection", formData)
           .then(response => {
+            // begin
             // Appel avec axios
             axios
               .get(process.env.VUE_APP_SERVEUR + "/lastid-collection")
@@ -138,6 +139,7 @@ export default {
               .catch(error => {
                 alert(error.response.data);
               });
+            // end
             console.log(response);
             this.reset();
             DialogsData.close("collection");

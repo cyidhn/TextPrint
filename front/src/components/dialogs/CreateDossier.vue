@@ -90,13 +90,56 @@ export default {
         axios
           .post(process.env.VUE_APP_SERVEUR + "/creer-dossier", formData)
           .then(response => {
-            if (
-              confirm(
-                "Le dossier a bien été crée. Souhaitez-vous ajoutez des éléments maintenant à celui-ci ?"
-              )
-            ) {
-              this.addWindow();
-            }
+            // begin
+            // Appel avec axios
+            axios
+              .get(process.env.VUE_APP_SERVEUR + "/lastid-dossier")
+              .then(response => {
+                let idCollection = response.data[0].id;
+                console.log(idCollection);
+                // Si le folder est activé
+                if (DialogsData.state.stateInFolder == true) {
+                  console.log("ok");
+                  formData = new FormData();
+                  formData.append("champs1", DialogsData.state.nameFolder);
+                  formData.append("champs2", "Dossier");
+                  formData.append("idchamps1", DialogsData.state.numberFolder);
+                  formData.append("idchamps2", idCollection);
+                  // Appel avec axios
+                  axios
+                    .post(
+                      process.env.VUE_APP_SERVEUR + "/associer-generalement",
+                      formData
+                    )
+                    .then(response => {
+                      if (
+                        confirm(
+                          "La dossier a bien été crée. Souhaitez-vous ajoutez des éléments maintenant à celui-ci ?"
+                        )
+                      ) {
+                        this.addWindow();
+                      } else {
+                        alert("La dossier à bien été crée et ajouté.");
+                      }
+                      console.log(response.data);
+                    })
+                    .catch(error => {
+                      console.error(error);
+                    });
+                } else {
+                  if (
+                    confirm(
+                      "La dossier a bien été crée. Souhaitez-vous ajoutez des éléments maintenant à celui-ci ?"
+                    )
+                  ) {
+                    this.addWindow();
+                  }
+                }
+              })
+              .catch(error => {
+                alert(error.response.data);
+              });
+            // end
             console.log(response);
             this.reset();
             DialogsData.close("dossier");
