@@ -65,8 +65,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialogTextes = false"
+            <v-btn color="blue darken-1" text @click="fermerTextes"
               >Retour</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="nouveauTexte"
+              >Nouveau texte</v-btn
             >
             <v-btn color="blue darken-1" text @click="associerTextes"
               >Ajouter des textes</v-btn
@@ -109,6 +112,9 @@
             <v-btn color="blue darken-1" text @click="fermerProfils"
               >Retour</v-btn
             >
+            <v-btn color="blue darken-1" text @click="nouveauProfil"
+              >Nouveau profil</v-btn
+            >
             <v-btn color="blue darken-1" text @click="associerProfils"
               >Ajouter des profils</v-btn
             >
@@ -119,7 +125,7 @@
       <!-- Modal ajouter une collection -->
       <v-dialog
         v-model="dialogCollections"
-        max-width="500px"
+        max-width="800px"
         persistent
         scrollable
       >
@@ -152,8 +158,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="fermerCollections"
+            <v-btn color="blue darken-1" text @click="fermerDossier"
               >Retour</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="nouveauDossier"
+              >Nouveau dossier</v-btn
             >
             <v-btn color="blue darken-1" text @click="associerCollections"
               >Ajouter des dossiers</v-btn
@@ -464,6 +473,7 @@
 // Importations
 import axios from "axios";
 import { TabsData } from "../../flux/Tabs";
+import { DialogsData } from "../../flux/Dialogs";
 
 // Exportations
 export default {
@@ -547,6 +557,109 @@ export default {
     };
   },
   methods: {
+    nouveauTexte() {
+      DialogsData.open("texte");
+      DialogsData.addToFolder("Collection", this.content.id);
+    },
+    nouveauProfil() {
+      DialogsData.open("profil-connu");
+      DialogsData.addToFolder("Collection", this.content.id);
+    },
+    nouveauDossier() {
+      DialogsData.open("dossier");
+      DialogsData.addToFolder("Collection", this.content.id);
+    },
+    fermerDossier() {
+      DialogsData.init();
+      this.majDossier();
+      this.dialogCollections = false;
+    },
+    fermerProfils() {
+      DialogsData.init();
+      this.majDossier();
+      this.dialogProfils = false;
+    },
+    fermerTextes() {
+      DialogsData.init();
+      this.majDossier();
+      this.dialogTextes = false;
+    },
+    majDossier() {
+      // TypeProfils
+      // Ajout en formulaire
+      let formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("type", "Collection");
+      formData.append("get", "Profil");
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+        .then(response => {
+          let result = JSON.parse(response.data);
+          this.profils = result;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      // /TypeProfils
+
+      // TypeTextes
+      // Ajout en formulaire
+      formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("type", "Collection");
+      formData.append("get", "Texte");
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+        .then(response => {
+          let result = JSON.parse(response.data);
+          this.textes = result;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      // /TypeTextes
+
+      // TypeCollections
+      // Ajout en formulaire
+      formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("type", "Collection");
+      formData.append("get", "Dossier");
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+        .then(response => {
+          let result = JSON.parse(response.data);
+          this.collections = result;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      // /TypeCollections
+      // Commentaire
+      // Appel avec axios
+      formData = new FormData();
+      formData.append("req", this.content.id);
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/search-collection", formData)
+        .then(response => {
+          this.commentaire = response.data[0].commentaire;
+          if (this.commentaire == "None") {
+            this.commentaire = "";
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+      // Ajout du titre en variable
+      this.titre = this.content.titre;
+    },
     imprimer() {
       // Générer le lien de l'impression
       let imprimer = window.open(
@@ -806,12 +919,6 @@ export default {
         this.selectedAjoutsCollections = [];
         this.dialogCollections = false;
       }
-    },
-    fermerCollections() {
-      this.dialogCollections = false;
-    },
-    fermerProfils() {
-      this.dialogProfils = false;
     },
     deleteProfils() {
       if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
