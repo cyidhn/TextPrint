@@ -224,7 +224,10 @@ export default {
       if (this.$refs.form.validate()) {
         // Ajout en formulaire
         let formData = new FormData();
-        if (this.alias == "" && this.connu == false) {
+        if (
+          (this.alias == "" || this.alias == undefined) &&
+          this.connu == false
+        ) {
           this.alias = "J.Dupont_" + Date.now();
         }
         formData.append("alias", this.alias);
