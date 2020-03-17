@@ -509,7 +509,43 @@ export default {
           axios
             .post(process.env.VUE_APP_SERVEUR + "/importer-texte-bdd", formData)
             .then(response => {
-              alert("Le texte à bien été crée");
+              // Appel avec axios
+              axios
+                .get(process.env.VUE_APP_SERVEUR + "/lastid-texte")
+                .then(response => {
+                  let idTexte = response.data[0].id;
+                  console.log(idTexte);
+                  // Si le folder est activé
+                  if (DialogsData.state.stateInFolder == true) {
+                    console.log("ok");
+                    formData = new FormData();
+                    formData.append("champs1", DialogsData.state.nameFolder);
+                    formData.append("champs2", "Texte");
+                    formData.append(
+                      "idchamps1",
+                      DialogsData.state.numberFolder
+                    );
+                    formData.append("idchamps2", idTexte);
+                    // Appel avec axios
+                    axios
+                      .post(
+                        process.env.VUE_APP_SERVEUR + "/associer-generalement",
+                        formData
+                      )
+                      .then(response => {
+                        alert("Le texte a bien été crée et ajouté");
+                        console.log(response.data);
+                      })
+                      .catch(error => {
+                        console.error(error);
+                      });
+                  } else {
+                    alert("Le texte à bien été crée");
+                  }
+                })
+                .catch(error => {
+                  alert(error.response.data);
+                });
               console.log(response);
               this.reset();
               DialogsData.close("texte");

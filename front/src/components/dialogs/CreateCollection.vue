@@ -96,6 +96,7 @@ export default {
               .then(response => {
                 let idCollection = response.data[0].id;
                 console.log(idCollection);
+                // Si le folder est activé
                 if (DialogsData.state.stateInFolder == true) {
                   console.log("ok");
                   formData = new FormData();

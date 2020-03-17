@@ -261,6 +261,22 @@ def lastidcollection():
     # Faire un retour de resultat
     return jsonify(result)
 
+@app.route("/lastid-texte", methods=["GET"])
+def lastidtexte():
+
+    # Recherche en DB
+    req = db_search("SELECT * FROM tpTexte ORDER BY id DESC LIMIT 1")
+
+    # Boucle
+    result = '[]'
+    for r in req:
+        result = '[{"id": %s}]' % (r[0])
+
+    result = json.loads(result)
+
+    # Faire un retour de resultat
+    return jsonify(result)
+
 @app.route("/creer-dossier", methods=["POST"])
 def creerDossier():
 
