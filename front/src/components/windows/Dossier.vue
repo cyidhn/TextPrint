@@ -34,6 +34,47 @@
         <v-btn dark text @click="snackbarSupprimer = false">Fermer</v-btn>
       </v-snackbar>
       <!-- /Snackbar Supprimé avec succès -->
+      <!-- Modal global -->
+      <v-dialog v-model="dialogGlobal" max-width="500px" persistent scrollable>
+        <v-card>
+          <v-card-title>
+            <span class="headline">
+              <b>Ajouter des éléments</b>
+            </span>
+          </v-card-title>
+          <v-card-text>
+            <v-card class="mx-auto" max-width="800" tile>
+              <v-text-field
+                v-model="rechercheAjoutsTextes"
+                label="Rechercher dans la base de données"
+                required
+              ></v-text-field>
+              <v-data-table
+                no-data-text="Aucun élément trouvé"
+                no-results-text="Aucun élément trouvé"
+                loading-text="Chargement en cours..."
+                v-model="selectedAjoutsTextes"
+                :headers="headersTextes"
+                :items="filteredListTextes"
+                :items-per-page="5"
+                item-key="id"
+                show-select
+                class="elevation-1"
+              ></v-data-table>
+            </v-card>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="fermerGlobal"
+              >Retour</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="associerGlobal"
+              >Ajouter les éléments sélectionnés</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- /Modal global -->
       <!-- Modal ajouter un texte -->
       <v-dialog v-model="dialogTextes" max-width="500px" persistent scrollable>
         <v-card>
@@ -475,6 +516,7 @@
 // Importations
 import axios from "axios";
 import { TabsData } from "../../flux/Tabs";
+import { AddData } from "../../flux/Add";
 import { DialogsData } from "../../flux/Dialogs";
 
 // Exportation de la fonction
@@ -558,10 +600,19 @@ export default {
       rechercheAjoutsCollections: "",
       selectedAjoutsCollections: [],
       contentCollections: [],
-      loadingCollections: true
+      loadingCollections: true,
+      // Ajout Global
+      dialogGlobal: false
     };
   },
   methods: {
+    fermerGlobal() {
+      AddData.close();
+      this.dialogGlobal = false;
+    },
+    associerGlobal() {
+      console.log("Associer globalement");
+    },
     nouveauTexte() {
       DialogsData.open("texte");
       DialogsData.addToFolder("Dossier", this.content.id);
@@ -1169,6 +1220,11 @@ export default {
       .catch(error => {
         console.log(error);
       });
+
+    // Si la fenetre est ouverte
+    if (AddData.state.openWindow) {
+      this.dialogGlobal = true;
+    }
 
     // Ajout du titre en variable
     this.titre = this.content.titre;
