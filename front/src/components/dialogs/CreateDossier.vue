@@ -36,6 +36,7 @@
 // Importations
 import { DialogsData } from "../../flux/Dialogs";
 import { TabsData } from "../../flux/Tabs";
+import { AddData } from "../../flux/Add";
 import axios from "axios";
 
 // Exportation de la fonction
@@ -70,6 +71,7 @@ export default {
             .post(process.env.VUE_APP_SERVEUR + "/search-dossier", formData)
             .then(response2 => {
               console.log(response2);
+              AddData.open();
               TabsData.add(response2.data[0].titre, response2.data[0]);
             })
             .catch(error => {
