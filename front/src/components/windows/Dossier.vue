@@ -879,6 +879,7 @@ export default {
                   let result = JSON.parse(response.data);
                   this.profils = result;
                   this.snackbarSupprimer = true;
+                  this.majDossier();
                 })
                 .catch(error => {
                   this.profils = [];
@@ -950,6 +951,18 @@ export default {
         .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
         .then(response => {
           let result = JSON.parse(response.data);
+          // Traitement
+          for (let i = 0; i < result.length; i++) {
+            if (result[i].alias == "undefined") {
+              result[i].alias = "";
+            }
+            if (result[i].prenom == "undefined") {
+              result[i].prenom = "";
+            }
+            if (result[i].nom == "undefined undefined") {
+              result[i].nom = "";
+            }
+          }
           this.profils = result;
           this.loadingProfils = false;
         })
@@ -1077,7 +1090,20 @@ export default {
       .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
       .then(response => {
         let result = JSON.parse(response.data);
+        // Traitement
+        for (let i = 0; i < result.length; i++) {
+          if (result[i].alias == "undefined") {
+            result[i].alias = "";
+          }
+          if (result[i].prenom == "undefined") {
+            result[i].prenom = "";
+          }
+          if (result[i].nom == "undefined undefined") {
+            result[i].nom = "";
+          }
+        }
         this.profils = result;
+        // /Traitement
         this.loadingProfils = false;
       })
       .catch(error => {
