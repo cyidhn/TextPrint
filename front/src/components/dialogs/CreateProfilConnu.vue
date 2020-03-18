@@ -172,8 +172,10 @@ export default {
           formData.append("req", response.data[0].id);
           console.log(response.data[0].id);
           axios
-            .post(process.env.VUE_APP_SERVEUR + "/searchprofil", formData)
+            .post(process.env.VUE_APP_SERVEUR + "/search-profil", formData)
             .then(response2 => {
+              console.log("Result___");
+              console.log(response2);
               console.log(response2.data[0]);
               if (
                 response2.data[0].alias === "undefined" ||
