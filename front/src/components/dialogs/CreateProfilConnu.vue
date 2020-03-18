@@ -129,6 +129,7 @@
 <script>
 // Importations
 import { DialogsData } from "../../flux/Dialogs";
+import { TabsData } from "../../flux/Tabs";
 import axios from "axios";
 
 // Exportation de la fonction
@@ -160,6 +161,40 @@ export default {
     commentaire: ""
   }),
   methods: {
+    addWindow() {
+      // Ajout en formulaire
+      let formData = new FormData();
+
+      // Appel avec axios
+      axios
+        .get(process.env.VUE_APP_SERVEUR + "/lastid-profil")
+        .then(response => {
+          formData.append("req", response.data[0].id);
+          console.log(response.data[0].id);
+          axios
+            .post(process.env.VUE_APP_SERVEUR + "/searchprofil", formData)
+            .then(response2 => {
+              console.log(response2.data[0]);
+              if (
+                response2.data[0].alias === "undefined" ||
+                response2.data[0].alias === undefined ||
+                response2.data[0].alias === ""
+              ) {
+                let nom =
+                  response2.data[0].prenom + " " + response2.data[0].nom;
+                TabsData.add(nom, response2.data[0]);
+              } else {
+                TabsData.add(response2.data[0].alias, response2.data[0]);
+              }
+            })
+            .catch(error => {
+              alert(error.response.data);
+            });
+        })
+        .catch(error => {
+          alert(error.response.data);
+        });
+    },
     checkDialog() {
       DialogsData.close("profil-connu");
     },
@@ -257,14 +292,26 @@ export default {
                       formData
                     )
                     .then(response => {
-                      alert("Le profil a bien été crée et ajouté");
+                      if (
+                        confirm(
+                          "Le profil a bien été crée et ajouté. Souhaitez-vous l'ouvrir dans une nouvelle fenêtre ?"
+                        )
+                      ) {
+                        this.addWindow();
+                      }
                       console.log(response.data);
                     })
                     .catch(error => {
                       console.error(error);
                     });
                 } else {
-                  alert("Le profil à bien été crée");
+                  if (
+                    confirm(
+                      "Le profil a bien été crée. Souhaitez-vous l'ouvrir dans une nouvelle fenêtre ?"
+                    )
+                  ) {
+                    this.addWindow();
+                  }
                 }
               })
               .catch(error => {
