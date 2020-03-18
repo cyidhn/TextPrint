@@ -63,8 +63,12 @@
               </v-list-item-icon>
               <v-list-item-content>
                 Type : {{ item.type }} | Identifiant :
-                {{ item.titre ? item.titre : item.alias }}
-                {{ item.alias === "" ? item.prenom + " " + item.nom : "" }}
+                {{ item.titre ? item.titre : "" }}
+                {{
+                  item.alias === "undefined" || item.alias === ""
+                    ? item.prenom + " " + item.nom
+                    : item.alias
+                }}
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -171,7 +175,11 @@ export default {
     },
     addWindow(item) {
       if (item.titre === undefined) {
-        if (item.alias === undefined) {
+        if (
+          item.alias === "undefined" ||
+          item.alias === undefined ||
+          item.alias === ""
+        ) {
           let nom = item.prenom + " " + item.nom;
           TabsData.add(nom, item);
         } else {
