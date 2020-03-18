@@ -173,6 +173,7 @@
 <script>
 // Importations
 import { DialogsData } from "../../flux/Dialogs";
+import { TabsData } from "../../flux/Tabs";
 import axios from "axios";
 
 // Exportation de la fonction
@@ -222,6 +223,30 @@ export default {
     commentaire: ""
   }),
   methods: {
+    addWindow() {
+      // Ajout en formulaire
+      let formData = new FormData();
+
+      // Appel avec axios
+      axios
+        .get(process.env.VUE_APP_SERVEUR + "/lastid-texte")
+        .then(response => {
+          formData.append("req", response.data[0].id);
+          console.log(response.data[0].id);
+          axios
+            .post(process.env.VUE_APP_SERVEUR + "/search-texte", formData)
+            .then(response2 => {
+              console.log(response2);
+              TabsData.add(response2.data[0].titre, response2.data[0]);
+            })
+            .catch(error => {
+              alert(error.response.data);
+            });
+        })
+        .catch(error => {
+          alert(error.response.data);
+        });
+    },
     changeLangue() {
       if (this.langueO != this.langue) {
         if (confirm("Êtes-vous sûr de vouloir changer la langue ?")) {
@@ -534,14 +559,26 @@ export default {
                         formData
                       )
                       .then(response => {
-                        alert("Le texte a bien été crée et ajouté");
+                        if (
+                          confirm(
+                            "Le texte a bien été crée et ajouté. Souhaitez-vous l'ouvrir dans une autre fenêtre ?"
+                          )
+                        ) {
+                          this.addWindow();
+                        }
                         console.log(response.data);
                       })
                       .catch(error => {
                         console.error(error);
                       });
                   } else {
-                    alert("Le texte à bien été crée");
+                    if (
+                      confirm(
+                        "Le texte a bien été crée. Souhaitez-vous l'ouvrir dans une autre fenêtre ?"
+                      )
+                    ) {
+                      this.addWindow();
+                    }
                   }
                 })
                 .catch(error => {
