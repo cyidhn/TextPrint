@@ -195,7 +195,12 @@ export default {
     },
     fetchProps() {
       this.formulaire = this.content;
-      if (this.formulaire.alias === undefined) {
+      if (
+        this.formulaire.alias === undefined ||
+        this.formulaire.alias === "undefined" ||
+        this.formulaire.alias === ""
+      ) {
+        this.formulaire.alias = "";
         this.identification =
           this.formulaire.prenom + " " + this.formulaire.nom;
       } else {
