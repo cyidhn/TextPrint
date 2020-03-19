@@ -45,7 +45,7 @@
           <v-card-text>
             <v-card class="mx-auto" max-width="800" tile>
               <v-text-field
-                v-model="rechercheAjoutsTextes"
+                v-model="searchGlobal"
                 label="Rechercher dans la base de données"
                 required
               ></v-text-field>
@@ -53,9 +53,9 @@
                 no-data-text="Aucun élément trouvé"
                 no-results-text="Aucun élément trouvé"
                 loading-text="Chargement en cours..."
-                v-model="selectedAjoutsTextes"
-                :headers="headersTextes"
-                :items="filteredListTextes"
+                v-model="selectedAjoutsGlobal"
+                :headers="headersGlobal"
+                :items="contentGlobal"
                 :items-per-page="5"
                 item-key="id"
                 show-select
@@ -548,6 +548,7 @@ export default {
       searchCollections: "",
       searchAnalyses: "",
       searchRapports: "",
+      searchGlobal: "",
       // Selection
       selectedProfils: [],
       selectedTextes: [],
@@ -583,6 +584,11 @@ export default {
         { text: "Type de rapport", value: "type" }
       ],
       rapports: [],
+      headersGlobal: [
+        { text: "Type", value: "type" },
+        { text: "Titre", value: "titre" }
+      ],
+      contentGlobal: [],
       // Ajouts profils
       dialogProfils: false,
       rechercheAjoutsProfils: "",
@@ -606,6 +612,28 @@ export default {
     };
   },
   methods: {
+    shuffleContent(a) {
+      var j, x, i;
+      for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+      }
+      return a;
+    },
+    updateContent() {
+      axios
+        .get(process.env.VUE_APP_SERVEUR + "/test")
+        .then(response => {
+          this.contentGlobal = response.data;
+          this.contentGlobal = this.shuffleContent(this.content);
+        })
+        .catch(e => {
+          this.getError = true;
+          console.error("Impossible de charger les données", e);
+        });
+    },
     fermerGlobal() {
       AddData.close();
       this.dialogGlobal = false;
@@ -1224,6 +1252,7 @@ export default {
     // Si la fenetre est ouverte
     if (AddData.state.openWindow) {
       this.dialogGlobal = true;
+      this.updateContent();
     }
 
     // Ajout du titre en variable
