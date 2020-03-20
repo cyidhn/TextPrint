@@ -1,15 +1,70 @@
 <template>
   <div>
     <v-container>
+      <!-- Snackbar Ajouté avec succès -->
+      <v-snackbar
+        v-model="snackbarAjoute"
+        :bottom="true"
+        color="success"
+        :timeout="3000"
+      >
+        Les éléments ont bien été ajoutés et sauvegardés.
+        <v-btn dark text @click="snackbarAjoute = false">Fermer</v-btn>
+      </v-snackbar>
+      <!-- /Snackbar Ajouté avec succès -->
+      <!-- Modal ajouter un profil -->
+      <v-dialog v-model="dialogProfils" max-width="500px" persistent scrollable>
+        <v-card>
+          <v-card-title>
+            <span class="headline">
+              <b>Ajouter un profil</b>
+            </span>
+          </v-card-title>
+          <v-card-text>
+            <v-card class="mx-auto" max-width="800" tile>
+              <v-text-field
+                v-model="rechercheAjoutsProfils"
+                label="Rechercher dans la base de données"
+                required
+              ></v-text-field>
+              <v-data-table
+                no-data-text="Aucun élément trouvé"
+                no-results-text="Aucun élément trouvé"
+                loading-text="Chargement en cours..."
+                v-model="selectedAjoutsProfils"
+                :headers="headersProfils"
+                :items="filteredList"
+                :items-per-page="5"
+                item-key="id"
+                show-select
+                class="elevation-1"
+              ></v-data-table>
+            </v-card>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="fermerProfils"
+              >Retour</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="nouveauProfil"
+              >Nouveau profil</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="associerProfils"
+              >Ajouter des profils</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- /Modal ajouter un profil -->
       <v-row>
         <v-col cols="12">
           <v-btn
-            @click="removeText"
+            @click="ajouterProfils"
             class="mr-3"
             depressed
             small
             color="primary"
-            >Associer à des éléments</v-btn
+            >Associer un profil</v-btn
           >
           <v-btn @click="removeText" depressed small color="error"
             >Supprimer</v-btn
@@ -36,6 +91,50 @@
           ></iframe>
         </v-col>
       </v-row>
+      <!-- Affichage profils -->
+      <v-row>
+        <v-col cols="6" align="start">
+          <h2>Association avec les Profils</h2>
+        </v-col>
+        <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary" @click="ajouterProfils"
+            >Ajouter un profil</v-btn
+          >
+          <v-btn
+            small
+            color="error"
+            :disabled="disabledProfils"
+            @click="deleteProfils"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6" align="start">
+          <v-text-field
+            class="mx-2"
+            v-model="searchProfils"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <br />
+      <v-data-table
+        no-data-text="Aucun élément trouvé"
+        no-results-text="Aucun élément trouvé"
+        loading-text="Chargement en cours..."
+        :loading="loadingProfils"
+        v-model="selectedProfils"
+        :headers="headersProfils"
+        :items="profils"
+        :search="searchProfils"
+        item-key="id"
+        show-select
+        class="elevation-1"
+      ></v-data-table>
+      <!-- /Affichage profils -->
       <v-row class="mt-8">
         <v-col cols="12" class="mt-8">
           <h2>Informations</h2>
@@ -75,7 +174,7 @@
               'Documents à intérêts judiciaires',
               'Autre'
             ]"
-            disabled="true"
+            :disabled="true"
             v-model="content.typeDocument1"
             label="Type de document*"
             @change="changeForm()"
@@ -83,14 +182,14 @@
           ></v-select>
           <v-select
             :items="[content.typeDocument2]"
-            disabled="true"
+            :disabled="true"
             v-model="content.typeDocument2"
             @change="changeForm()"
             required
           ></v-select>
           <v-text-field
             v-model="content.typeDocument3"
-            disabled="true"
+            :disabled="true"
             label="Autre..."
             autocomplete="nope"
             required
@@ -127,7 +226,7 @@
           <v-select
             :items="['Non spécifiée', 'Français', 'Anglais', 'Espagnol']"
             v-model="content.langue"
-            disabled="true"
+            :disabled="true"
             label="Langue (automatique)"
             required
           ></v-select>
@@ -155,6 +254,7 @@
 // Importations
 import axios from "axios";
 import { TabsData } from "../../flux/Tabs";
+import { DialogsData } from "../../flux/Dialogs";
 
 // Exportation de la fonction
 export default {
@@ -162,12 +262,134 @@ export default {
     content: Object
   },
   data: () => ({
+    snackbarAjoute: false,
     titre: "",
     paternite: "",
     linkAnalyse: "",
-    link: ""
+    link: "",
+    // Ajouter profil
+    searchProfils: "",
+    selectedProfils: [],
+    headersProfils: [
+      { text: "Type", value: "type" },
+      { text: "Alias", value: "alias" },
+      { text: "Prénom NOM", value: "nom" }
+    ],
+    profils: [],
+    disabledProfils: true,
+    dialogProfils: false,
+    rechercheAjoutsProfils: "",
+    selectedAjoutsProfils: [],
+    contentProfils: [],
+    loadingProfils: true
   }),
   methods: {
+    majTexte() {
+      // TypeProfils
+      // Ajout en formulaire
+      let formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("type", "Texte");
+      formData.append("get", "Profil");
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+        .then(response => {
+          let result = JSON.parse(response.data);
+          console.log("The result :");
+          console.log(result);
+          // Traitement
+          for (let i = 0; i < result.length; i++) {
+            if (result[i].alias == "undefined") {
+              result[i].alias = "";
+            }
+            if (result[i].prenom == "undefined") {
+              result[i].prenom = "";
+            }
+            if (result[i].nom == "undefined undefined") {
+              result[i].nom = "";
+            }
+          }
+          this.profils = result;
+          this.loadingProfils = false;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loadingProfils = false;
+        });
+      // /TypeProfils
+    },
+    nouveauProfil() {
+      DialogsData.open("profil-connu");
+      DialogsData.addToFolder("Texte", this.content.id);
+    },
+    ajouterProfils() {
+      let formData = new FormData();
+      formData.append("req", "");
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/searchprofil", formData)
+        .then(response => {
+          this.contentProfils = response.data;
+        })
+        .catch(e => {
+          this.getError = true;
+          console.error("Impossible de charger les données", e);
+        });
+      this.dialogProfils = !this.dialogProfils;
+      console.log("Ok");
+    },
+    associerProfils() {
+      if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
+        let formData = new FormData();
+        this.selectedAjoutsProfils.map(e => {
+          formData = new FormData();
+          formData.append("champs1", "Texte");
+          formData.append("champs2", "Profil");
+          formData.append("idchamps1", this.content.id);
+          formData.append("idchamps2", e.id);
+          // Appel avec axios
+          axios
+            .post(
+              process.env.VUE_APP_SERVEUR + "/associer-generalement",
+              formData
+            )
+            .then(response => {
+              console.log(response.data);
+              // TypeProfils
+              // Ajout en formulaire
+              let newFormData = new FormData();
+              newFormData.append("id", this.content.id);
+              newFormData.append("type", "Texte");
+              newFormData.append("get", "Profil");
+
+              // Appel avec axios
+              axios
+                .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
+                .then(response => {
+                  let result = JSON.parse(response.data);
+                  this.profils = result;
+                  this.snackbarAjoute = true;
+                })
+                .catch(error => {
+                  this.profils = [];
+                  console.log(error);
+                });
+              // /TypeProfils
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
+        this.selectedAjoutsProfils = [];
+        this.dialogProfils = false;
+      }
+    },
+    fermerProfils() {
+      DialogsData.init();
+      this.majTexte();
+      this.dialogProfils = false;
+    },
     sauvegarder() {
       // Sauvegarder les modifications
       // Ajout en formulaire
@@ -186,7 +408,7 @@ export default {
         .post(process.env.VUE_APP_SERVEUR + "/modifier-texte", formData)
         .then(response => {
           console.log(response);
-          alert("Les modifications ont bien été mises à jour.");
+          this.snackbarAjoute = true;
         })
         .catch(error => {
           console.log(error);
@@ -217,6 +439,51 @@ export default {
             alert(error);
           });
       }
+    },
+    deleteProfils() {
+      // Message de suppression de profil
+      if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
+        let formData = new FormData();
+        this.selectedProfils.map(e => {
+          formData = new FormData();
+          formData.append("id", e.delete);
+          // Appel avec axios
+          axios
+            .post(
+              process.env.VUE_APP_SERVEUR + "/supprimer-association",
+              formData
+            )
+            .then(response => {
+              console.log(response);
+              // TypeProfils
+              // Ajout en formulaire
+              let newFormData = new FormData();
+              newFormData.append("id", this.content.id);
+              newFormData.append("type", "Texte");
+              newFormData.append("get", "Profil");
+
+              // Appel avec axios
+              axios
+                .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
+                .then(response => {
+                  let result = JSON.parse(response.data);
+                  this.profils = result;
+                  this.snackbarSupprimer = true;
+                  this.majTexte();
+                })
+                .catch(error => {
+                  this.profils = [];
+                  this.snackbarSupprimer = true;
+                  console.log(error);
+                });
+              // /TypeProfils
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
+        this.selectedProfils = [];
+      }
     }
   },
   mounted() {
@@ -234,6 +501,31 @@ export default {
       "/static/textes/" +
       this.content.fichier +
       "_analyse.html";
+    this.majTexte();
+  },
+  computed: {
+    filteredList() {
+      return this.contentProfils.filter(p => {
+        try {
+          return p.titre
+            .toLowerCase()
+            .includes(this.rechercheAjoutsProfils.toLowerCase());
+        } catch {
+          return p.alias
+            .toLowerCase()
+            .includes(this.rechercheAjoutsProfils.toLowerCase());
+        }
+      });
+    }
+  },
+  updated: function() {
+    // Profils
+    if (this.selectedProfils.length > 0) {
+      this.disabledProfils = false;
+    } else {
+      this.disabledProfils = true;
+    }
+    // Textes
   }
 };
 </script>

@@ -521,6 +521,23 @@ def assoc():
     statsTexte = "["
     idEl = 1
     for r in data:
+        if r[1] == "Texte" and r[2] == "Profil":
+            req = "SELECT * FROM tpProfils WHERE id = %s" % (r[4])
+            dataTexte = db_search(req)
+            for t in dataTexte:
+                nom = str(t[3])
+                if idEl is not 1:
+                    statsTexte += ","
+                statsTexte += """
+                {
+                    "id": %s,
+                    "type": "Profil %s",
+                    "alias": "%s",
+                    "nom": "%s",
+                    "delete": %s
+                }
+                """ % (str(idEl), t[9], t[1], t[2] + " " + nom, r[0])
+                idEl += 1
         if r[1] == "Collection" and r[2] == "Profil":
             req = "SELECT * FROM tpProfils WHERE id = %s" % (r[4])
             dataTexte = db_search(req)
