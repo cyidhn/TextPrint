@@ -1046,6 +1046,8 @@ def verifierTexte():
             if (result['encoding'] == "ISO-8859-1"):
                 content = content.decode('iso-8859-1').encode('utf8')
                 #return "Le fichier doit être en UTF-8", 405
+            elif (result['encoding'] == "UTF-8-SIG"):
+                return "Fichier conforme", 200
             else:
                 return "Le fichier doit être codé en UTF-8", 405            
         content = content.decode('utf8')
@@ -1057,7 +1059,7 @@ def verifierTexte():
         #content.close()
         
         print(content)
-        texte = content
+        # texte = content
 
         # Supprimer le document du dossier static
         os.remove(fa)
@@ -1180,6 +1182,9 @@ def importerTexte():
             if (result['encoding'] == "ISO-8859-1"):
                 content = content.decode('iso-8859-1').encode('utf8')
                 #return "Le fichier doit être en UTF-8", 405
+            elif (result['encoding'] == "UTF-8-SIG"):
+                print("Alright")
+                #return "Fichier conforme", 200
             else:
                 return "Le fichier doit être codé en UTF-8", 405            
         content = content.decode('utf8')

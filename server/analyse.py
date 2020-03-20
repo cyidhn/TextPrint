@@ -21,7 +21,7 @@ import os
 
 # Thread
 from threading import Thread
-
+import re 
 
 # Fonction analyse global
 def analyse_global(chemin, id_texte, n_version):
@@ -29,6 +29,7 @@ def analyse_global(chemin, id_texte, n_version):
     # Texte que l'on va analyser
     content = open(chemin, "r", encoding='utf8',errors="ignore")
     texte = content.read()
+    texte = re.sub(r'[!"’«»#$%&()*+,-./:;<=>?@[\]^_`{|}~]','',texte)
     content.close()
 
     # Impression
@@ -49,6 +50,7 @@ def analyse_global(chemin, id_texte, n_version):
     elif (langue == 'en'):
         nlp = spacy.load('en')
     else:
+        nlp = spacy.load('fr')
         print("ERREUR - La langue du texte doit être en français, en anglais ou en espagnol.")
         #message_langue_inconnue()
 
