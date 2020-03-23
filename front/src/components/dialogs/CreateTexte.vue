@@ -72,6 +72,7 @@
                     'Autre'
                   ]"
                   v-model="typeDoc1"
+                  :rules="typeDocRules"
                   label="Type de document*"
                   @change="handleChangeType1()"
                   required
@@ -202,12 +203,13 @@ export default {
     paternite: "Non spécifié",
     paterniteRules: [v => !!v || "Le type de paternité est requis."],
     // Type de document
-    typeDoc1: "Non spécifié",
+    typeDoc1: "",
     getTypeDoc2: [],
     viewTypeDoc2: false,
     typeDoc2: "",
     viewTypeDocAutre: false,
     typeDocAutre: "",
+    typeDocRules: [v => !!v || "Le type de document requis."],
     // Spécification
     specification: "",
     // Type d'écriture
