@@ -92,6 +92,7 @@
         </v-col>
       </v-row>
       <!-- Affichage profils -->
+      <hr class="mt-8 mb-8" />
       <v-row>
         <v-col cols="6" align="start">
           <h2>Association avec les Profils</h2>
@@ -134,6 +135,7 @@
         show-select
         class="elevation-1"
       ></v-data-table>
+      <hr class="mt-8 mb-8" />
       <!-- /Affichage profils -->
       <v-row class="mt-8">
         <v-col cols="12" class="mt-8">
@@ -246,6 +248,51 @@
           >
         </v-col>
       </v-row>
+      <!-- Version -->
+      <hr class="mt-8 mb-8" />
+      <v-row>
+        <v-col cols="6" align="start">
+          <h2>Versions</h2>
+        </v-col>
+        <!-- <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary" @click="ajouterCollections"
+            >Ajouter un dossier</v-btn
+          >
+          <v-btn
+            small
+            color="error"
+            :disabled="disabledCollections"
+            @click="deleteCollections"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col> -->
+      </v-row>
+      <v-row>
+        <v-col cols="12" align="start">
+          <v-text-field
+            class="mx-2"
+            v-model="searchVersions"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <br />
+      <v-data-table
+        no-data-text="Aucune version de texte trouvée"
+        no-results-text="Aucune version de texte trouvée"
+        loading-text="Chargement en cours..."
+        :headers="headersVersions"
+        :items="versions"
+        :search="searchVersions"
+        item-key="id"
+        show-select
+        class="elevation-1"
+      ></v-data-table>
+      <hr class="mt-8 mb-8" />
+      <!-- /Ajout un element -->
+      <!-- /Version -->
     </v-container>
   </div>
 </template>
@@ -267,6 +314,17 @@ export default {
     paternite: "",
     linkAnalyse: "",
     link: "",
+    // Ajout d'une version
+    searchVersions: "",
+    selectedVersions: [],
+    headersVersions: [
+      { text: "Titre", value: "titre" },
+      { text: "# de mots", value: "nbmots" },
+      { text: "Type de prétraitement", value: "typepretraitement" },
+      { text: "Spécifications", value: "specification" },
+      { text: "Commentaires", value: "commentaires" }
+    ],
+    versions: [],
     // Ajouter profil
     searchProfils: "",
     selectedProfils: [],
