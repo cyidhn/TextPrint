@@ -35,7 +35,7 @@
       </v-snackbar>
       <!-- /Snackbar Supprimé avec succès -->
       <!-- Modal global -->
-      <v-dialog v-model="dialogGlobal" max-width="500px" persistent scrollable>
+      <v-dialog v-model="dialogGlobal" max-width="800px" persistent scrollable>
         <v-card>
           <v-card-title>
             <span class="headline">
@@ -56,6 +56,7 @@
                 v-model="selectedAjoutsGlobal"
                 :headers="headersGlobal"
                 :items="contentGlobal"
+                :search="searchGlobal"
                 :items-per-page="5"
                 item-key="id"
                 show-select
@@ -68,7 +69,7 @@
             <v-btn color="blue darken-1" text @click="fermerGlobal"
               >Retour</v-btn
             >
-            <v-btn color="blue darken-1" text @click="associerGlobal"
+            <v-btn color="blue darken-1" text @click="addElementToGlobal"
               >Ajouter les éléments sélectionnés</v-btn
             >
           </v-card-actions>
@@ -587,7 +588,10 @@ export default {
       rapports: [],
       headersGlobal: [
         { text: "Type", value: "type" },
-        { text: "Titre", value: "titre" }
+        { text: "Titre", value: "titre" },
+        { text: "Alias", value: "alias" },
+        { text: "Prénom", value: "prenom" },
+        { text: "Nom", value: "nom" }
       ],
       contentGlobal: [],
       // Ajouts profils
@@ -613,6 +617,40 @@ export default {
     };
   },
   methods: {
+    addElementToGlobal() {
+      if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
+        let formData = new FormData();
+        this.selectedAjoutsGlobal.map(e => {
+          if (e.type == "Dossiers") {
+            e.type = "Dossier";
+          }
+          if (e.type == "Collections") {
+            e.type = "Collection";
+          }
+          formData = new FormData();
+          formData.append("champs1", "Dossier");
+          formData.append("champs2", e.type);
+          formData.append("idchamps1", this.content.id);
+          formData.append("idchamps2", e.id);
+          // Appel avec axios
+          axios
+            .post(
+              process.env.VUE_APP_SERVEUR + "/associer-generalement",
+              formData
+            )
+            .then(response => {
+              console.log(response.data);
+              this.majDossier();
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
+        this.selectedAjoutsGlobal = [];
+        AddData.close();
+        this.dialogGlobal = false;
+      }
+    },
     shuffleContent(a) {
       var j, x, i;
       for (i = a.length - 1; i > 0; i--) {
@@ -628,7 +666,7 @@ export default {
         .get(process.env.VUE_APP_SERVEUR + "/test")
         .then(response => {
           this.contentGlobal = response.data;
-          this.contentGlobal = this.shuffleContent(this.content);
+          this.contentGlobal = this.shuffleContent(this.contentGlobal);
         })
         .catch(e => {
           this.getError = true;

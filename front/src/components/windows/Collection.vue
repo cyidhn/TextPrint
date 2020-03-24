@@ -34,6 +34,48 @@
         <v-btn dark text @click="snackbarSupprimer = false">Fermer</v-btn>
       </v-snackbar>
       <!-- /Snackbar Supprimé avec succès -->
+      <!-- Modal global -->
+      <v-dialog v-model="dialogGlobal" max-width="800px" persistent scrollable>
+        <v-card>
+          <v-card-title>
+            <span class="headline">
+              <b>Ajouter des éléments</b>
+            </span>
+          </v-card-title>
+          <v-card-text>
+            <v-card class="mx-auto" max-width="800" tile>
+              <v-text-field
+                v-model="searchGlobal"
+                label="Rechercher dans la base de données"
+                required
+              ></v-text-field>
+              <v-data-table
+                no-data-text="Aucun élément trouvé"
+                no-results-text="Aucun élément trouvé"
+                loading-text="Chargement en cours..."
+                v-model="selectedAjoutsGlobal"
+                :headers="headersGlobal"
+                :items="contentGlobal"
+                :search="searchGlobal"
+                :items-per-page="5"
+                item-key="id"
+                show-select
+                class="elevation-1"
+              ></v-data-table>
+            </v-card>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="fermerGlobal"
+              >Retour</v-btn
+            >
+            <v-btn color="blue darken-1" text @click="addElementToGlobal"
+              >Ajouter les éléments sélectionnés</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- /Modal global -->
       <!-- Modal ajouter un texte -->
       <v-dialog v-model="dialogTextes" max-width="500px" persistent scrollable>
         <v-card>
@@ -473,6 +515,7 @@
 // Importations
 import axios from "axios";
 import { TabsData } from "../../flux/Tabs";
+import { AddData } from "../../flux/Add";
 import { DialogsData } from "../../flux/Dialogs";
 
 // Exportations
@@ -540,6 +583,14 @@ export default {
         { text: "Type de rapport", value: "type" }
       ],
       rapports: [],
+      headersGlobal: [
+        { text: "Type", value: "type" },
+        { text: "Titre", value: "titre" },
+        { text: "Alias", value: "alias" },
+        { text: "Prénom", value: "prenom" },
+        { text: "Nom", value: "nom" }
+      ],
+      contentGlobal: [],
       // Ajouts profils
       dialogProfils: false,
       rechercheAjoutsProfils: "",
@@ -554,10 +605,73 @@ export default {
       dialogCollections: false,
       rechercheAjoutsCollections: "",
       selectedAjoutsCollections: [],
-      contentCollections: []
+      contentCollections: [],
+      // Ajout Global
+      dialogGlobal: false,
+      searchGlobal: ""
     };
   },
   methods: {
+    addElementToGlobal() {
+      if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
+        let formData = new FormData();
+        this.selectedAjoutsGlobal.map(e => {
+          if (e.type == "Dossiers") {
+            e.type = "Dossier";
+          }
+          if (e.type == "Collections") {
+            e.type = "Collection";
+          }
+          formData = new FormData();
+          formData.append("champs1", "Collection");
+          formData.append("champs2", e.type);
+          formData.append("idchamps1", this.content.id);
+          formData.append("idchamps2", e.id);
+          // Appel avec axios
+          axios
+            .post(
+              process.env.VUE_APP_SERVEUR + "/associer-generalement",
+              formData
+            )
+            .then(response => {
+              console.log(response.data);
+              this.majDossier();
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        });
+        this.selectedAjoutsGlobal = [];
+        AddData.close();
+        this.dialogGlobal = false;
+      }
+    },
+    shuffleContent(a) {
+      var j, x, i;
+      for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+      }
+      return a;
+    },
+    updateContent() {
+      axios
+        .get(process.env.VUE_APP_SERVEUR + "/test")
+        .then(response => {
+          this.contentGlobal = response.data;
+          this.contentGlobal = this.shuffleContent(this.contentGlobal);
+        })
+        .catch(e => {
+          this.getError = true;
+          console.error("Impossible de charger les données", e);
+        });
+    },
+    fermerGlobal() {
+      AddData.close();
+      this.dialogGlobal = false;
+    },
     nouveauTexte() {
       DialogsData.open("texte");
       DialogsData.addToFolder("Collection", this.content.id);
@@ -1148,6 +1262,12 @@ export default {
       .catch(error => {
         console.log(error);
       });
+
+    // Si la fenetre est ouverte
+    if (AddData.state.openWindow) {
+      this.dialogGlobal = true;
+      this.updateContent();
+    }
 
     // Ajout du titre en variable
     this.titre = this.content.titre;
