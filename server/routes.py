@@ -531,7 +531,7 @@ def assoc():
                 statsTexte += """
                 {
                     "id": %s,
-                    "type": "Profil %s",
+                    "type": "%s",
                     "alias": "%s",
                     "nom": "%s",
                     "delete": %s

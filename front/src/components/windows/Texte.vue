@@ -13,7 +13,7 @@
       </v-snackbar>
       <!-- /Snackbar Ajouté avec succès -->
       <!-- Modal ajouter un profil -->
-      <v-dialog v-model="dialogProfils" max-width="500px" persistent scrollable>
+      <v-dialog v-model="dialogProfils" max-width="800px" persistent scrollable>
         <v-card>
           <v-card-title>
             <span class="headline">
@@ -32,7 +32,7 @@
                 no-results-text="Aucun élément trouvé"
                 loading-text="Chargement en cours..."
                 v-model="selectedAjoutsProfils"
-                :headers="headersProfils"
+                :headers="headersProfilsT"
                 :items="filteredList"
                 :items-per-page="5"
                 item-key="id"
@@ -95,7 +95,7 @@
       <hr class="mt-8 mb-8" />
       <v-row>
         <v-col cols="6" align="start">
-          <h2>Association avec les Profils</h2>
+          <h2>Profils</h2>
         </v-col>
         <v-col cols="6" align="end">
           <v-btn small class="mx-2" color="primary" @click="ajouterProfils"
@@ -248,7 +248,7 @@
           >
         </v-col>
       </v-row>
-      <!-- Version -->
+      <!-- Versions -->
       <hr class="mt-8 mb-8" />
       <v-row>
         <v-col cols="6" align="start">
@@ -292,7 +292,172 @@
       ></v-data-table>
       <hr class="mt-8 mb-8" />
       <!-- /Ajout un element -->
-      <!-- /Version -->
+      <!-- /Versions -->
+      <!-- Collections -->
+      <v-row>
+        <v-col cols="6" align="start">
+          <h2>Collections</h2>
+        </v-col>
+        <!-- <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary" @click="ajouterCollections"
+            >Ajouter un dossier</v-btn
+          >
+          <v-btn
+            small
+            color="error"
+            :disabled="disabledCollections"
+            @click="deleteCollections"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col> -->
+      </v-row>
+      <v-row>
+        <v-col cols="12" align="start">
+          <v-text-field
+            class="mx-2"
+            v-model="searchCollections"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <br />
+      <v-data-table
+        no-data-text="Aucune collection trouvée"
+        no-results-text="Aucune collection trouvée"
+        loading-text="Chargement en cours..."
+        v-model="selectedCollections"
+        :headers="headersCollections"
+        :items="collections"
+        :search="searchCollections"
+        item-key="id"
+        show-select
+        class="elevation-1"
+      ></v-data-table>
+      <hr class="mt-8 mb-8" />
+      <!-- /Collections -->
+      <!-- Dossiers -->
+      <v-row>
+        <v-col cols="6" align="start">
+          <h2>Dossiers</h2>
+        </v-col>
+        <!-- <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary" @click="ajouterCollections"
+            >Ajouter un dossier</v-btn
+          >
+          <v-btn
+            small
+            color="error"
+            :disabled="disabledCollections"
+            @click="deleteCollections"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col> -->
+      </v-row>
+      <v-row>
+        <v-col cols="12" align="start">
+          <v-text-field
+            class="mx-2"
+            v-model="searchCollections"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <br />
+      <v-data-table
+        no-data-text="Aucun dossier trouvé"
+        no-results-text="Aucun dossier trouvé"
+        loading-text="Chargement en cours..."
+        v-model="selectedCollections"
+        :headers="headersCollections"
+        :items="collections"
+        :search="searchCollections"
+        item-key="id"
+        show-select
+        class="elevation-1"
+      ></v-data-table>
+      <hr class="mt-8 mb-8" />
+      <!-- /Dossiers -->
+      <!-- Analyses -->
+      <v-row>
+        <v-col cols="6" align="start">
+          <h2>Analyses</h2>
+        </v-col>
+        <!-- <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary">Ajouter une analyse</v-btn>
+          <v-btn small color="error" :disabled="true"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col> -->
+      </v-row>
+      <v-row>
+        <v-col cols="12" align="start">
+          <v-text-field
+            class="mx-2"
+            v-model="searchAnalyses"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <br />
+      <v-data-table
+        no-data-text="Aucun élément trouvé"
+        no-results-text="Aucun élément trouvé"
+        loading-text="Chargement en cours..."
+        v-model="selectedCollections"
+        :headers="headersAnalyses"
+        :items="analyses"
+        :search="searchAnalyses"
+        item-key="id"
+        show-select
+        class="elevation-1"
+      ></v-data-table>
+      <hr class="mt-8 mb-8" />
+      <!-- /Analyses -->
+      <!-- Rapports -->
+      <v-row>
+        <v-col cols="6" align="start">
+          <h2>Rapports</h2>
+        </v-col>
+        <!-- <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary" @click="ajouterTextes"
+            >Ajouter un rapport</v-btn
+          >
+          <v-btn small color="error" :disabled="true"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col> -->
+      </v-row>
+      <v-row>
+        <v-col cols="12" align="start">
+          <v-text-field
+            class="mx-2"
+            v-model="searchRapports"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <br />
+      <v-data-table
+        no-data-text="Aucun élément trouvé"
+        no-results-text="Aucun élément trouvé"
+        loading-text="Chargement en cours..."
+        v-model="selectedRapports"
+        :headers="headersRapports"
+        :items="rapports"
+        :search="searchRapports"
+        item-key="id"
+        show-select
+        class="elevation-1"
+      ></v-data-table>
+      <!-- /Rapports -->
     </v-container>
   </div>
 </template>
@@ -314,6 +479,23 @@ export default {
     paternite: "",
     linkAnalyse: "",
     link: "",
+    // Ajout d'une analyse
+    searchAnalyses: "",
+    selectedAnalyses: [],
+    headersAnalyses: [
+      { text: "Titre", value: "titre" },
+      { text: "Type d'analyse", value: "type" },
+      { text: "Ressources de l'auteur", value: "ressources" }
+    ],
+    analyses: [],
+    // Ajout d'un rapport
+    searchRapports: "",
+    selectedRapports: [],
+    headersRapports: [
+      { text: "Titre", value: "titre" },
+      { text: "Type de rapport", value: "type" }
+    ],
+    rapports: [],
     // Ajout d'une version
     searchVersions: "",
     selectedVersions: [],
@@ -325,11 +507,42 @@ export default {
       { text: "Commentaires", value: "commentaires" }
     ],
     versions: [],
+    // Ajout d'une collection
+    selectedCollections: [],
+    searchCollections: "",
+    headersCollections: [
+      { text: "Titre", value: "titre" },
+      { text: "# de textes par l'auteur", value: "nbtextes" },
+      { text: "# de mots par l'auteur", value: "nbmots" }
+    ],
+    collections: [],
+    dialogCollections: false,
+    rechercheAjoutsCollections: "",
+    selectedAjoutsCollections: [],
+    contentCollections: [],
+    // Ajout d'un dossier
+    selectedDossiers: [],
+    searchDossiers: "",
+    headersDossiers: [
+      { text: "Titre", value: "titre" },
+      { text: "# de textes par l'auteur", value: "nbtextes" },
+      { text: "# de mots par l'auteur", value: "nbmots" }
+    ],
+    dossiers: [],
+    dialogDossiers: false,
+    rechercheAjoutsDossiers: "",
+    selectedAjoutsDossiers: [],
+    contentDossiers: [],
     // Ajouter profil
     searchProfils: "",
     selectedProfils: [],
     headersProfils: [
       { text: "Type", value: "type" },
+      { text: "Alias", value: "alias" },
+      { text: "Prénom NOM", value: "nom" }
+    ],
+    headersProfilsT: [
+      { text: "Type", value: "typeP" },
       { text: "Alias", value: "alias" },
       { text: "Prénom NOM", value: "nom" }
     ],

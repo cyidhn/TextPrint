@@ -526,6 +526,7 @@ export default {
   },
   data() {
     return {
+      selectedAjoutsGlobal: [],
       // Snackbar
       snackbarAjoute: false,
       snackbarSupprimer: false,
