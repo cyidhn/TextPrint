@@ -1258,17 +1258,17 @@ def test():
     for r in req2:
         if i > 0:
             result += ","
-        result += '{"type": "Texte", "id": %s, "fichier": "%s", "titre": "%s", "paternite": "%s", "typeDocument1": "%s", "specification": "%s", "typeEcriture": "%s", "segmentation": "%s", "langue": "%s", "registre": "%s", "commentaire": "%s", "typeDocument2": "%s", "typeDocument3": "%s"}' % (str(r[0]), r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10], r[11], r[12])
+        result += '{"type": "Texte", "id": %s, "fichier": "%s", "titre": "%s", "paternite": "%s", "typeDocument1": "%s", "specification": "%s", "typeEcriture": "%s", "segmentation": "%s", "langue": "%s", "registre": "%s", "commentaire": "%s", "typeDocument2": "%s", "typeDocument3": "%s"}' % (escape(str(r[0])), escape(r[1]), escape(r[2]), escape(r[3]), escape(r[4]), escape(r[5]), escape(r[6]), escape(r[7]), escape(r[8]), escape(r[9]), escape(r[10]), escape(r[11]), escape(r[12]))
         i += 1
     for r in req3:
         if i > 0:
             result += ","
-        result += '{"type": "Dossiers", "id": %s, "titre": "%s"}' % (str(r[0]), r[1])
+        result += '{"type": "Dossiers", "id": %s, "titre": "%s"}' % (escape(str(r[0])), escape(r[1]))
         i += 1
     for r in req4:
         if i > 0:
             result += ","
-        result += '{"type": "Collections", "id": %s, "titre": "%s"}' % (str(r[0]), r[1])
+        result += '{"type": "Collections", "id": %s, "titre": "%s"}' % (escape(str(r[0])), escape(r[1]))
         i += 1
     for r in req:
         if i > 0:
@@ -1276,7 +1276,7 @@ def test():
         age = "0"
         if r[4] is not "":
             age = r[4]
-        result += '{"type": "Profil", "typeP": "%s", "alias": "%s", "id": %s, "prenom": "%s", "nom": "%s", "age": "%s", "sexe": "%s", "education": "%s", "sociale": "%s", "commentaire": "%s"}' % (r[9], r[1], str(r[0]), r[2], r[3], str(age), r[5], r[6], r[7], r[8])
+        result += '{"type": "Profil", "typeP": "%s", "alias": "%s", "id": %s, "prenom": "%s", "nom": "%s", "age": "%s", "sexe": "%s", "education": "%s", "sociale": "%s", "commentaire": "%s"}' % (escape(r[9]), escape(r[1]), escape(str(r[0])), escape(r[2]), escape(r[3]), escape(str(age)), escape(r[5]), escape(r[6]), escape(r[7]), escape(r[8]))
         i += 1
     result += "]"
 

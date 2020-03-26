@@ -129,7 +129,7 @@
                   :items="['Non spécifiée', 'Français', 'Anglais', 'Espagnol']"
                   v-model="langue"
                   label="Langue (automatique)"
-                  @change="changeLangue"
+                  @change="changeLangue()"
                   required
                 ></v-select>
                 <v-select
@@ -249,18 +249,25 @@ export default {
           alert(error.response.data);
         });
     },
-    changeLangue() {
-      if (this.langueO != this.langue) {
-        if (confirm("Êtes-vous sûr de vouloir changer la langue ?")) {
-          this.langueO = this.langue;
-          console.log(`Ici c'est ${this.langue}`);
-        } else {
-          this.langueOriginal();
-        }
-      }
-    },
     langueOriginal() {
       this.langue = this.langueO;
+    },
+    changeLangue() {
+      console.log("Changement de la langue...");
+      if (this.langueO != this.langue) {
+        console.log(this.langueO);
+        if (confirm("Êtes-vous sûr de vouloir changer la langue ?")) {
+          setTimeout(function() {
+            this.langueO = this.langue;
+            console.log(`Ici c'est ${this.langue}`);
+          }, 1000);
+        } else {
+          setTimeout(function() {
+            this.langue = this.langueO;
+            console.log(`Ici c'est ${this.langue}`);
+          }, 1000);
+        }
+      }
     },
     checkDialog() {
       this.reset();
