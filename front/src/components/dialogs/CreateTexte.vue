@@ -540,7 +540,7 @@ export default {
     },
     validateNext() {
       console.log(this.paternite);
-      if (this.paternite == "Non spécifié") {
+      if (this.paternite == "Non spécifié" || this.paternite == "") {
         alert("Le champs type de paternité doit obligatoirement être rempli.");
       } else {
         if (this.$refs.form.validate()) {
@@ -615,7 +615,8 @@ export default {
                 });
               // /end
               console.log(response);
-              this.reset();
+              this.resetValidation();
+              // this.reset();
               DialogsData.close("texte");
             })
             .catch(error => {
@@ -626,10 +627,17 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation();
-      this.sexe = "Non spécifié";
-      this.education = "Non spécifié";
-      this.sociale = "Non spécifiée";
+      this.$refs.form.reset();
+      this.nextStep = false;
+      document.getElementById("documentTexte").value = "";
+      this.paternite = "Non spécifié";
+      this.typeDoc1 = "";
+      this.typeEcriture = "Non spécifié";
+      this.segmentation = "Non spécifiée";
+      this.disabledModifLangue = true;
       this.disabledImport = false;
+      this.registre = "Non spécifié";
+      this.commentaire = "";
     }
   }
 };
