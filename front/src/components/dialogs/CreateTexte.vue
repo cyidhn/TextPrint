@@ -572,7 +572,6 @@ export default {
                   console.log(idTexte);
                   // Si le folder est activé
                   if (DialogsData.state.stateInFolder == true) {
-                    console.log("ok");
                     formData = new FormData();
                     formData.append("champs1", DialogsData.state.nameFolder);
                     formData.append("champs2", "Texte");
