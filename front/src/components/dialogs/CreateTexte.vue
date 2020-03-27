@@ -129,9 +129,19 @@
                   :items="['Non spécifiée', 'Français', 'Anglais', 'Espagnol']"
                   v-model="langue"
                   label="Langue (automatique)"
-                  @change="changeLangue()"
+                  :disabled="disabledModifLangue"
                   required
                 ></v-select>
+                <div v-if="disabledModifLangue">
+                  <v-btn
+                    block
+                    small
+                    color="error"
+                    class="mt-1 mb-12"
+                    @click="modifLangue()"
+                    >Modifier la langue du texte</v-btn
+                  >
+                </div>
                 <v-select
                   :items="['Non spécifié', 'Courant', 'Familier', 'Soutenu']"
                   v-model="registre"
@@ -218,6 +228,7 @@ export default {
     segmentation: "Non spécifiée",
     // Langue
     langue: "Non spécifiée",
+    disabledModifLangue: true,
     langueO: "",
     // Registre
     registre: "Non spécifié",
@@ -251,6 +262,15 @@ export default {
     },
     langueOriginal() {
       this.langue = this.langueO;
+    },
+    modifLangue() {
+      if (
+        confirm(
+          "Êtes-vous sûr de vouloir changer la langue par défaut du texte ?"
+        )
+      ) {
+        this.disabledModifLangue = false;
+      }
     },
     changeLangue() {
       console.log("Changement de la langue...");
