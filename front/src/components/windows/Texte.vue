@@ -757,7 +757,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     console.log(this.content);
     this.titre = this.content.titre;
     this.paternite = this.content.paternite;
