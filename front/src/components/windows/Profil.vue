@@ -10,7 +10,7 @@
             small
             color="primary"
             @click="changeTypeProfil"
-            >Change à profil anonyme</v-btn
+            >Changer à profil anonyme</v-btn
           >
           <v-btn @click="removeProfil" depressed small color="error"
             >Supprimer</v-btn
@@ -25,7 +25,7 @@
             small
             color="primary"
             @click="changeTypeProfil"
-            >Change à profil connu</v-btn
+            >Changer à profil connu</v-btn
           >
           <v-btn @click="removeProfil" depressed small color="error"
             >Supprimer</v-btn
