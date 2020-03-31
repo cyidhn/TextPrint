@@ -146,6 +146,184 @@
           >
         </v-col>
       </v-row>
+      <!-- Ajout un element -->
+      <v-row class="mt-12">
+        <v-col cols="6" align="start">
+          <h2>Association avec les Textes</h2>
+        </v-col>
+        <!-- <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary" @click="ajouterTextes"
+            >Ajouter un texte</v-btn
+          >
+          <v-btn
+            small
+            color="error"
+            :disabled="disabledTextes"
+            @click="deleteTextes"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col> -->
+      </v-row>
+      <v-row>
+        <v-col cols="6" align="start">
+          <v-text-field
+            class="mx-2"
+            v-model="searchTextes"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <br />
+      <v-data-table
+        no-data-text="Aucun élément trouvé"
+        no-results-text="Aucun élément trouvé"
+        loading-text="Chargement en cours..."
+        :loading="loadingTextes"
+        v-model="selectedTextes"
+        :headers="headersTextes"
+        :items="textes"
+        :search="searchTextes"
+        item-key="id"
+        show-select
+        class="elevation-1"
+      ></v-data-table>
+      <br />
+      <br />
+      <br />
+      <!-- /Ajout un element -->
+      <!-- Ajout un element -->
+      <v-row>
+        <v-col cols="6" align="start">
+          <h2>Association avec les Collections</h2>
+        </v-col>
+        <!-- <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary" @click="ajouterCollections"
+            >Ajouter une collection</v-btn
+          >
+          <v-btn
+            small
+            color="error"
+            :disabled="disabledCollections"
+            @click="deleteCollections"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col> -->
+      </v-row>
+      <v-row>
+        <v-col cols="6" align="start">
+          <v-text-field
+            class="mx-2"
+            v-model="searchCollections"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <br />
+      <v-data-table
+        no-data-text="Aucun élément trouvé"
+        no-results-text="Aucun élément trouvé"
+        loading-text="Chargement en cours..."
+        :loading="loadingTextes"
+        v-model="selectedCollections"
+        :headers="headersCollections"
+        :items="collections"
+        :search="searchCollections"
+        item-key="id"
+        show-select
+        class="elevation-1"
+      ></v-data-table>
+      <br />
+      <br />
+      <br />
+      <!-- /Ajout un element -->
+      <!-- Ajout un element -->
+      <v-row>
+        <v-col cols="6" align="start">
+          <h2>Association avec les Analyses</h2>
+        </v-col>
+        <!-- <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary" @click="ajouterTextes"
+            >Ajouter une analyse</v-btn
+          >
+          <v-btn small color="error" :disabled="true"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col> -->
+      </v-row>
+      <v-row>
+        <v-col cols="6" align="start">
+          <v-text-field
+            class="mx-2"
+            v-model="searchAnalyses"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <br />
+      <v-data-table
+        no-data-text="Aucun élément trouvé"
+        no-results-text="Aucun élément trouvé"
+        loading-text="Chargement en cours..."
+        v-model="selectedCollections"
+        :headers="headersAnalyses"
+        :items="analyses"
+        :search="searchAnalyses"
+        item-key="id"
+        show-select
+        class="elevation-1"
+      ></v-data-table>
+      <br />
+      <br />
+      <br />
+      <!-- /Ajout un element -->
+      <!-- Ajout un element -->
+      <v-row>
+        <v-col cols="6" align="start">
+          <h2>Association avec les Rapports</h2>
+        </v-col>
+        <!-- <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary" @click="ajouterTextes"
+            >Ajouter un rapport</v-btn
+          >
+          <v-btn small color="error" :disabled="true"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col> -->
+      </v-row>
+      <v-row>
+        <v-col cols="6" align="start">
+          <v-text-field
+            class="mx-2"
+            v-model="searchRapports"
+            label="Filtrer"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <br />
+      <v-data-table
+        no-data-text="Aucun élément trouvé"
+        no-results-text="Aucun élément trouvé"
+        loading-text="Chargement en cours..."
+        v-model="selectedRapports"
+        :headers="headersRapports"
+        :items="rapports"
+        :search="searchRapports"
+        item-key="id"
+        show-select
+        class="elevation-1"
+      ></v-data-table>
+      <br />
+      <br />
+      <br />
+      <!-- /Ajout un element -->
     </v-container>
   </div>
 </template>
@@ -163,11 +341,136 @@ export default {
   },
 
   data: () => ({
+    // Gestion formulaire
     formulaire: [],
-    identification: ""
+    identification: "",
+    // Autre
+    // Desactive
+    disabledProfils: true,
+    disabledTextes: true,
+    disabledCollections: true,
+    disabledAnalyses: true,
+    disabledRapports: true,
+    // Recherche
+    searchProfils: "",
+    searchTextes: "",
+    searchCollections: "",
+    searchAnalyses: "",
+    searchRapports: "",
+    searchGlobal: "",
+    // Selection
+    selectedProfils: [],
+    selectedTextes: [],
+    selectedCollections: [],
+    selectedAnalyses: [],
+    selectedRapports: [],
+    // Headers et contenus
+    headersTextes: [
+      { text: "Titre", value: "titre" },
+      { text: "# Versions", value: "version" },
+      { text: "Type de document", value: "typedoc" },
+      { text: "Type d'écriture", value: "ecriture" },
+      { text: "Segmentation", value: "segmentation" },
+      { text: "Langue", value: "langue" },
+      { text: "Thèmes", value: "themes" },
+      { text: "Registre", value: "registre" },
+      { text: "Audience", value: "audience" }
+    ],
+    textes: [],
+    headersCollections: [
+      { text: "Titre", value: "titre" },
+      { text: "# de textes par l'auteur", value: "nbtextes" },
+      { text: "# de mots par l'auteur", value: "nbmots" }
+    ],
+    collections: [],
+    headersAnalyses: [
+      { text: "Titre", value: "titre" },
+      { text: "Type d'analyse", value: "type" },
+      { text: "Ressources de l'auteur", value: "ressources" }
+    ],
+    analyses: [],
+    headersRapports: [
+      { text: "Titre", value: "titre" },
+      { text: "Type de rapport", value: "type" }
+    ],
+    rapports: [],
+    headersGlobal: [
+      { text: "Type", value: "type" },
+      { text: "Titre", value: "titre" },
+      { text: "Alias", value: "alias" },
+      { text: "Prénom", value: "prenom" },
+      { text: "Nom", value: "nom" }
+    ],
+    contentGlobal: [],
+    // Ajouts profils
+    dialogProfils: false,
+    rechercheAjoutsProfils: "",
+    selectedAjoutsProfils: [],
+    contentProfils: [],
+    loadingProfils: true,
+    // Ajouts textes
+    dialogTextes: false,
+    rechercheAjoutsTextes: "",
+    selectedAjoutsTextes: [],
+    contentTextes: [],
+    loadingTextes: true,
+    // Ajouts collections
+    dialogCollections: false,
+    rechercheAjoutsCollections: "",
+    selectedAjoutsCollections: [],
+    contentCollections: [],
+    loadingCollections: true
   }),
 
   methods: {
+    majProfil() {
+      // Variable
+      let formData = new FormData();
+
+      // TypeTextes
+      // Ajout en formulaire
+      formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("type", "Texte");
+      formData.append("get", "Profil");
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+        .then(response => {
+          let result = JSON.parse(response.data);
+          this.textes = result;
+          console.log("Textes :");
+          console.log(this.textes);
+          this.loadingTextes = false;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loadingTextes = false;
+        });
+      // /TypeTextes
+
+      // TypeCollections
+      // Ajout en formulaire
+      formData = new FormData();
+      formData.append("id", this.content.id);
+      formData.append("type", "Dossier");
+      formData.append("get", "Collection");
+
+      // Appel avec axios
+      axios
+        .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
+        .then(response => {
+          let result = JSON.parse(response.data);
+          this.collections = result;
+          this.loadingCollections = false;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loadingCollections = false;
+        });
+      // /TypeCollection
+    },
     changeTypeProfil() {
       if (confirm("Êtes-vous sûr de vouloir changer le type de profil ?")) {
         // Contenu des fichiers
@@ -218,8 +521,11 @@ export default {
               TabsData.state.nowId,
               this.formulaire.prenom + " " + this.formulaire.nom
             );
+            this.identification =
+              this.formulaire.prenom + " " + this.formulaire.nom;
           } else {
             TabsData.changeName(TabsData.state.nowId, this.formulaire.alias);
+            this.identification = this.formulaire.alias;
           }
           console.log(response);
         })
@@ -329,6 +635,7 @@ export default {
     // Anciennes modifications
     this.fetchProps();
     this.modifsOldVersion();
+    this.majProfil();
   }
 };
 </script>

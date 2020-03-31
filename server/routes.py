@@ -509,6 +509,7 @@ def assoc():
 
     # Requete de donnees
     req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s' AND champs2 = '%s'" % (idElement, typeElement, getElement)
+    #req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s' AND champs2 = '%s'" % (idElement, typeElement, getElement)
 
     # Executer la requete
     data = db_search(req)
