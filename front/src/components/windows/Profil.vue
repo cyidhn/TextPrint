@@ -210,6 +210,17 @@ export default {
         .post(process.env.VUE_APP_SERVEUR + "/modifier-profil", formData)
         .then(response => {
           alert("Sauvegarde effectuée");
+          if (
+            this.formulaire.alias == "" ||
+            this.formulaire.alias == undefined
+          ) {
+            TabsData.changeName(
+              TabsData.state.nowId,
+              this.formulaire.prenom + " " + this.formulaire.nom
+            );
+          } else {
+            TabsData.changeName(TabsData.state.nowId, this.formulaire.alias);
+          }
           console.log(response);
         })
         .catch(error => {
