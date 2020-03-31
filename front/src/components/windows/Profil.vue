@@ -2,10 +2,30 @@
   <div>
     <h1>Profil {{ formulaire.typeP }} : {{ identification }}</h1>
     <v-container fluid class="mt-8">
-      <v-row>
+      <v-row v-if="formulaire.typeP === 'connu'">
         <v-col cols="12">
-          <v-btn class="mr-3" depressed small color="primary"
-            >Associer à des éléments</v-btn
+          <v-btn
+            class="mr-3"
+            depressed
+            small
+            color="primary"
+            @click="changeTypeProfil"
+            >Change à profil anonyme</v-btn
+          >
+          <v-btn @click="removeProfil" depressed small color="error"
+            >Supprimer</v-btn
+          >
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col cols="12">
+          <v-btn
+            class="mr-3"
+            depressed
+            small
+            color="primary"
+            @click="changeTypeProfil"
+            >Change à profil connu</v-btn
           >
           <v-btn @click="removeProfil" depressed small color="error"
             >Supprimer</v-btn
@@ -148,6 +168,30 @@ export default {
   }),
 
   methods: {
+    changeTypeProfil() {
+      if (confirm("Êtes-vous sûr de vouloir changer le type de profil ?")) {
+        // Contenu des fichiers
+        let formData = new FormData();
+        formData.append("id", this.content.id);
+        formData.append("type", this.formulaire.typeP);
+
+        // Appel avec axios
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/changer-type-profil", formData)
+          .then(response => {
+            if (this.formulaire.typeP == "connu") {
+              this.formulaire.typeP = "anonyme";
+            } else {
+              this.formulaire.typeP = "connu";
+            }
+            alert("Le type de profil a bien été modifié");
+            console.log(response);
+          })
+          .catch(error => {
+            alert(error);
+          });
+      }
+    },
     modifierProfil() {
       // Contenu des fichiers
       let formData = new FormData();
