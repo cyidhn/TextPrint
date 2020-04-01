@@ -47,10 +47,10 @@
               >Retour</v-btn
             >
             <v-btn color="blue darken-1" text @click="nouveauProfil"
-              >Nouveau profil</v-btn
+              >Nouveau</v-btn
             >
             <v-btn color="blue darken-1" text @click="associerProfils"
-              >Ajouter des profils</v-btn
+              >Ajouter</v-btn
             >
           </v-card-actions>
         </v-card>
