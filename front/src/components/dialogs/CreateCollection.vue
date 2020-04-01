@@ -116,7 +116,7 @@ export default {
                     .then(response => {
                       if (
                         confirm(
-                          "La collection a bien été créée. Souhaitez-vous ajoutez des éléments maintenant à celle-ci ?"
+                          "La collection a bien été créée. Souhaitez-vous ajouter des éléments maintenant à celle-ci ?"
                         )
                       ) {
                         this.addWindow();
@@ -131,7 +131,7 @@ export default {
                 } else {
                   if (
                     confirm(
-                      "La collection a bien été créée. Souhaitez-vous ajoutez des éléments maintenant à celle-ci ?"
+                      "La collection a bien été créée. Souhaitez-vous ajouter des éléments maintenant à celle-ci ?"
                     )
                   ) {
                     this.addWindow();

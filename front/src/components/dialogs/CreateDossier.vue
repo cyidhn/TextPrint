@@ -116,7 +116,7 @@ export default {
                     .then(response => {
                       if (
                         confirm(
-                          "La dossier a bien été crée. Souhaitez-vous ajoutez des éléments maintenant à celui-ci ?"
+                          "La dossier a bien été crée. Souhaitez-vous ajouter des éléments maintenant à celui-ci ?"
                         )
                       ) {
                         this.addWindow();
@@ -131,7 +131,7 @@ export default {
                 } else {
                   if (
                     confirm(
-                      "La dossier a bien été crée. Souhaitez-vous ajoutez des éléments maintenant à celui-ci ?"
+                      "La dossier a bien été crée. Souhaitez-vous ajouter des éléments maintenant à celui-ci ?"
                     )
                   ) {
                     this.addWindow();
