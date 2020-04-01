@@ -30,7 +30,7 @@
         color="error"
         :timeout="3000"
       >
-        Les éléments ont bien été supprimés.
+        Les éléments on bien été retirés de la liste.
         <v-btn dark text @click="snackbarSupprimer = false">Fermer</v-btn>
       </v-snackbar>
       <!-- /Snackbar Supprimé avec succès -->
@@ -613,7 +613,7 @@ export default {
   },
   methods: {
     addElementToGlobal() {
-      if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
+      if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
         this.selectedAjoutsGlobal.map(e => {
           if (e.type == "Dossiers") {
@@ -1048,7 +1048,7 @@ export default {
       }
     },
     deleteProfils() {
-      if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
+      if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
         this.selectedProfils.map(e => {
           formData = new FormData();
@@ -1092,7 +1092,7 @@ export default {
       }
     },
     deleteCollections() {
-      if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
+      if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
         this.selectedCollections.map(e => {
           formData = new FormData();
@@ -1135,7 +1135,7 @@ export default {
       }
     },
     deleteTextes() {
-      if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
+      if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
         this.selectedTextes.map(e => {
           formData = new FormData();

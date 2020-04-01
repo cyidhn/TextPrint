@@ -30,7 +30,7 @@
         color="error"
         :timeout="3000"
       >
-        Les éléments ont bien été supprimés.
+        Les éléments on bien été retirés de la liste.
         <v-btn dark text @click="snackbarSupprimer = false">Fermer</v-btn>
       </v-snackbar>
       <!-- /Snackbar Supprimé avec succès -->
@@ -298,7 +298,7 @@
             color="error"
             :disabled="disabledProfils"
             @click="deleteProfils"
-            >Supprimer la sélection</v-btn
+            >Supprimer de la liste</v-btn
           >
         </v-col>
       </v-row>
@@ -345,7 +345,7 @@
             color="error"
             :disabled="disabledTextes"
             @click="deleteTextes"
-            >Supprimer la sélection</v-btn
+            >Supprimer de la liste</v-btn
           >
         </v-col>
       </v-row>
@@ -392,7 +392,7 @@
             color="error"
             :disabled="disabledCollections"
             @click="deleteCollections"
-            >Supprimer la sélection</v-btn
+            >Supprimer de la liste</v-btn
           >
         </v-col>
       </v-row>
@@ -435,7 +435,7 @@
             >Ajouter une analyse</v-btn
           >
           <v-btn small color="error" :disabled="true"
-            >Supprimer la sélection</v-btn
+            >Supprimer de la liste</v-btn
           >
         </v-col>
       </v-row>
@@ -477,7 +477,7 @@
             >Ajouter un rapport</v-btn
           >
           <v-btn small color="error" :disabled="true"
-            >Supprimer la sélection</v-btn
+            >Supprimer de la liste</v-btn
           >
         </v-col>
       </v-row>
@@ -618,7 +618,7 @@ export default {
   },
   methods: {
     addElementToGlobal() {
-      if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
+      if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
         this.selectedAjoutsGlobal.map(e => {
           if (e.type == "Dossiers") {
@@ -970,7 +970,7 @@ export default {
     },
     deleteProfils() {
       // Message de suppression de profil
-      if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
+      if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
         this.selectedProfils.map(e => {
           formData = new FormData();
@@ -1014,7 +1014,7 @@ export default {
       }
     },
     deleteCollections() {
-      if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
+      if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
         this.selectedCollections.map(e => {
           formData = new FormData();
@@ -1152,7 +1152,7 @@ export default {
       this.titre = this.content.titre;
     },
     deleteTextes() {
-      if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
+      if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
         this.selectedTextes.map(e => {
           formData = new FormData();
