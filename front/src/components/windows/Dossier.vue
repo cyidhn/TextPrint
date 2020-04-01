@@ -30,7 +30,7 @@
         color="error"
         :timeout="3000"
       >
-        Les éléments on bien été retirés de la liste.
+        Les éléments ont bien été retirés de la liste.
         <v-btn dark text @click="snackbarSupprimer = false">Fermer</v-btn>
       </v-snackbar>
       <!-- /Snackbar Supprimé avec succès -->
@@ -39,7 +39,7 @@
         <v-card>
           <v-card-title>
             <span class="headline">
-              <b>Ajouter des éléments</b>
+              <b>Associer ces éléments au dossier</b>
             </span>
           </v-card-title>
           <v-card-text>
@@ -618,7 +618,7 @@ export default {
   },
   methods: {
     addElementToGlobal() {
-      if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
+      if (confirm("Voulez-vous ajouter cette sélection à votre dossier ?")) {
         let formData = new FormData();
         this.selectedAjoutsGlobal.map(e => {
           if (e.type == "Dossiers") {
