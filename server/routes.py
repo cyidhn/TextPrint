@@ -16,6 +16,7 @@ import os.path
 import calendar
 import time
 from analyse import *
+from analyse_idhn import *
 from langdetect import detect
 import chardet    
 import io
@@ -52,6 +53,67 @@ def connexion():
 #
 # Route dynamique
 #
+
+# 
+# Code pour IDHN
+# A supprimer en prod!!!
+# 
+@app.route("/importer-texte-idhn", methods=["POST"])
+def importerTexteIdhn():
+    if request.method == 'POST':  
+
+        # Ajout du fichier
+        path = 'static/textes'
+        ts = calendar.timegm(time.gmtime())
+        f = request.files['importer-texte']  
+        name = str(ts) + ".txt"
+        name_return = str(ts)
+        fa = os.path.join(path, name)
+        f.save(fa)  
+        content = open(fa, "rb").read()
+        result = chardet.detect(content)
+        if (result['encoding'] != "utf-8"):
+            if (result['encoding'] == "ISO-8859-1"):
+                content = content.decode('iso-8859-1').encode('utf8')
+                #return "Le fichier doit être en UTF-8", 405
+            elif (result['encoding'] == "UTF-8-SIG"):
+                print("Alright")
+                #return "Fichier conforme", 200
+            else:
+                return "Le fichier doit être codé en UTF-8", 405            
+        content = content.decode('utf8')
+        fi = open(fa, "w")
+        fi.write(content)
+        fi.close()
+
+        # Premieres analyses
+        analyse_global_idhn(fa, "1", "1")
+
+        # Detecter langue
+        content = open(fa, "r")
+        texte = content.read()
+        content.close()
+        langue = detect(texte)
+
+        # Affichage langue
+        if (langue == 'fr'):
+            langue = "Français"
+        elif (langue == 'es'):
+            langue = "Espagnol"
+        elif (langue == 'en'):
+            langue = "Anglais"
+        else:
+            langue = "Non spécifiée"
+
+        # Return
+        return jsonify(
+            langue=langue,
+            name=name_return
+        )
+        #return name_return, 201
+
+    # return "Problem"
+
 
 #
 # Impression avec template
