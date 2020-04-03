@@ -326,7 +326,14 @@
         item-key="id"
         show-select
         class="elevation-1"
-      ></v-data-table>
+      >
+        <!-- Template view -->
+        <template v-slot:item.actions="{ item }">
+          <v-icon small class="ml-1" @click="viewItem(item)">
+            mdi-eye
+          </v-icon>
+        </template>
+      </v-data-table>
       <br />
       <br />
       <br />
@@ -561,7 +568,8 @@ export default {
       headersProfils: [
         { text: "Type", value: "type" },
         { text: "Alias", value: "alias" },
-        { text: "Prénom NOM", value: "nom" }
+        { text: "Prénom NOM", value: "nom" },
+        { text: "Voir", value: "actions", sortable: false }
       ],
       profils: [],
       headersTextes: [
@@ -617,6 +625,9 @@ export default {
     };
   },
   methods: {
+    viewItem(item) {
+      console.log(item);
+    },
     addElementToGlobal() {
       if (confirm("Voulez-vous ajouter cette sélection à votre dossier ?")) {
         let formData = new FormData();

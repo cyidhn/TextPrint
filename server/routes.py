@@ -20,7 +20,9 @@ from analyse_idhn import *
 from langdetect import detect
 import chardet    
 import io
-
+import sys
+# For IDHN
+from zipfile import *
 
 #
 # Route de base
@@ -58,6 +60,24 @@ def connexion():
 # Code pour IDHN
 # A supprimer en prod!!!
 # 
+#
+# ZIP file
+#
+@app.route('/download-idhn/<elementId>')
+def downloadIdhn(elementId):
+    path = 'static/textes'
+    myZip = os.path.join(path, elementId + '.zip')
+    # create a ZipFile object
+    zipObj = ZipFile(myZip, 'w')
+    
+    # Add multiple files to the zip
+    zipObj.write(os.path.join(path, elementId + '.txt'))
+    zipObj.write(os.path.join(path, elementId + '_analyse.html'))
+    
+    # close the Zip File
+    zipObj.close()
+    return redirect('/static/textes/' + elementId + '.zip')
+
 @app.route("/importer-texte-idhn", methods=["POST"])
 def importerTexteIdhn():
     if request.method == 'POST':  
