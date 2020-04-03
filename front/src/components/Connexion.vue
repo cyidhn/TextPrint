@@ -47,7 +47,8 @@ export default {
     connexion() {
       if (
         (this.login === "idhn" && this.mdp === "idhn3") ||
-        (this.login === "alexandra" && this.mdp === "idhn_chemiirita")
+        (this.login === "alexandra" && this.mdp === "idhn_chemiirita") ||
+        (this.login === "julien" && this.mdp === "idhn2020!")
       ) {
         this.setCookie("ctex", "3", 1);
         ConnectData.connexion();
