@@ -651,6 +651,17 @@ export default {
       // /Suppression du doublon
       return contentTexte;
     },
+    suppressionFolder(texte, type) {
+      // Suppression du doublon
+      for (let i = 0; i < texte.length; i++) {
+        if (texte[i].type == type) {
+          texte.splice(i, 1);
+          i--;
+        }
+      }
+      // /Suppression du doublon
+      return texte;
+    },
     viewItem(item) {
       let formData = new FormData();
       // Pour les profils
@@ -765,6 +776,10 @@ export default {
         .then(response => {
           this.contentGlobal = response.data;
           this.contentGlobal = this.shuffleContent(this.contentGlobal);
+          this.contentGlobal = this.suppressionFolder(
+            this.contentGlobal,
+            "Collections"
+          );
         })
         .catch(e => {
           this.getError = true;

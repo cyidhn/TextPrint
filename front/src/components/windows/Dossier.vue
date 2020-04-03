@@ -755,6 +755,10 @@ export default {
         .then(response => {
           this.contentGlobal = response.data;
           this.contentGlobal = this.shuffleContent(this.contentGlobal);
+          this.contentGlobal = this.suppressionFolder(
+            this.contentGlobal,
+            "Dossiers"
+          );
         })
         .catch(e => {
           this.getError = true;
@@ -886,6 +890,17 @@ export default {
       }
       // /Suppression du doublon
       return contentTexte;
+    },
+    suppressionFolder(texte, type) {
+      // Suppression du doublon
+      for (let i = 0; i < texte.length; i++) {
+        if (texte[i].type == type) {
+          texte.splice(i, 1);
+          i--;
+        }
+      }
+      // /Suppression du doublon
+      return texte;
     },
     ajouterTextes() {
       let formData = new FormData();
