@@ -614,12 +614,13 @@ def assoc():
                 statsTexte += """
                 {
                     "id": %s,
+                    "cle_id": %s,
                     "type": "%s",
                     "alias": "%s",
                     "nom": "%s",
                     "delete": %s
                 }
-                """ % (str(idEl), t[9], t[1], t[2] + " " + nom, r[0])
+                """ % (str(idEl), r[4], t[9], t[1], t[2] + " " + nom, r[0])
                 idEl += 1
         if r[1] == "Collection" and r[2] == "Profil":
             req = "SELECT * FROM tpProfils WHERE id = %s" % (r[4])
@@ -631,12 +632,13 @@ def assoc():
                 statsTexte += """
                 {
                     "id": %s,
+                    "cle_id": %s,
                     "type": "Profil %s",
                     "alias": "%s",
                     "nom": "%s",
                     "delete": %s
                 }
-                """ % (str(idEl), t[9], t[1], t[2] + " " + nom, r[0])
+                """ % (str(idEl), r[4], t[9], t[1], t[2] + " " + nom, r[0])
                 idEl += 1
         if r[1] == "Collection" and r[2] == "Texte":
             req = "SELECT * FROM tpTexte WHERE id = %s" % (r[4])
@@ -648,12 +650,13 @@ def assoc():
                 statsTexte += """
                 {
                     "id": %s,
+                    "cle_id": %s,
                     "type": "Texte",
                     "titre": "%s",
                     "version": 1,
                     "delete": %s
                 }
-                """ % (str(idEl), t[2], r[0])
+                """ % (str(idEl), r[4], t[2], r[0])
                 idEl += 1
         if r[1] == "Collection" and r[2] == "Dossier":
             req = "SELECT * FROM tpDossiers WHERE id = %s" % (r[4])
@@ -664,12 +667,13 @@ def assoc():
                 statsTexte += """
                 {
                     "id": %s,
+                    "cle_id": %s,
                     "type": "Dossier",
                     "titre": "%s",
                     "commentaire": "%s",
                     "delete": %s
                 }
-                """ % (str(idEl), t[1], t[2], r[0])
+                """ % (str(idEl), r[4], t[1], t[2], r[0])
                 idEl += 1
         if r[1] == "Dossier" and r[2] == "Texte":
             req = "SELECT * FROM tpTexte WHERE id = %s" % (r[4])
@@ -681,12 +685,13 @@ def assoc():
                 statsTexte += """
                 {
                     "id": %s,
+                    "cle_id": %s,
                     "type": "Texte",
                     "titre": "%s",
                     "version": 1,
                     "delete": %s
                 }
-                """ % (str(idEl), t[2], r[0])
+                """ % (str(idEl), r[4], t[2], r[0])
                 idEl += 1
         if r[1] == "Dossier" and r[2] == "Collection":
             req = "SELECT * FROM tpCollections WHERE id = %s" % (r[4])
@@ -697,12 +702,13 @@ def assoc():
                 statsTexte += """
                 {
                     "id": %s,
+                    "cle_id": %s,
                     "type": "Collection",
                     "titre": "%s",
                     "commentaire": "%s",
                     "delete": %s
                 }
-                """ % (str(idEl), t[1], t[2], r[0])
+                """ % (str(idEl), r[4], t[1], t[2], r[0])
                 idEl += 1
         if r[1] == "Dossier" and r[2] == "Profil":
             req = "SELECT * FROM tpProfils WHERE id = %s" % (r[4])
@@ -715,11 +721,12 @@ def assoc():
                 {
                     "id": %s,
                     "type": "Profil %s",
+                    "cle_id": %s,
                     "alias": "%s",
                     "nom": "%s",
                     "delete": %s
                 }
-                """ % (str(idEl), t[9], t[1], t[2] + " " + nom, r[0])
+                """ % (str(idEl), t[9], r[4], t[1], t[2] + " " + nom, r[0])
                 idEl += 1
     statsTexte += "]"
     #result = json.loads(statsTexte)

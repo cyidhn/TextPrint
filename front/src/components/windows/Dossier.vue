@@ -380,7 +380,14 @@
         item-key="id"
         show-select
         class="elevation-1"
-      ></v-data-table>
+      >
+        <!-- Template view -->
+        <template v-slot:item.actions="{ item }">
+          <v-icon small class="ml-1" @click="viewItem(item)">
+            mdi-eye
+          </v-icon>
+        </template>
+      </v-data-table>
       <br />
       <br />
       <br />
@@ -427,7 +434,14 @@
         item-key="id"
         show-select
         class="elevation-1"
-      ></v-data-table>
+      >
+        <!-- Template view -->
+        <template v-slot:item.actions="{ item }">
+          <v-icon small class="ml-1" @click="viewItem(item)">
+            mdi-eye
+          </v-icon>
+        </template>
+      </v-data-table>
       <br />
       <br />
       <br />
@@ -574,13 +588,15 @@ export default {
       profils: [],
       headersTextes: [
         { text: "Titre", value: "titre" },
-        { text: "# Versions", value: "version" }
+        { text: "# Versions", value: "version" },
+        { text: "Voir", value: "actions", sortable: false }
       ],
       textes: [],
       headersCollections: [
         { text: "Titre", value: "titre" },
         { text: "# de textes par l'auteur", value: "nbtextes" },
-        { text: "# de mots par l'auteur", value: "nbmots" }
+        { text: "# de mots par l'auteur", value: "nbmots" },
+        { text: "Voir", value: "actions", sortable: false }
       ],
       collections: [],
       headersAnalyses: [
@@ -626,6 +642,67 @@ export default {
   },
   methods: {
     viewItem(item) {
+      let formData = new FormData();
+      // Pour les profils
+      if (item.type == "Profil connu" || item.type == "Profil anonyme") {
+        formData = new FormData();
+        formData.append("req", item.cle_id);
+        // Appel avec axios
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/search-profil", formData)
+          .then(response => {
+            console.log(response.data);
+            TabsData.add(item.alias + " " + item.nom, response.data[0]);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+      // Pour les textes
+      if (item.type == "Texte") {
+        formData = new FormData();
+        formData.append("req", item.cle_id);
+        // Appel avec axios
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/search-texte", formData)
+          .then(response => {
+            console.log(response.data);
+            TabsData.add(item.titre, response.data[0]);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+      // Pour les collections
+      if (item.type == "Collection") {
+        formData = new FormData();
+        formData.append("req", item.cle_id);
+        // Appel avec axios
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/search-collection", formData)
+          .then(response => {
+            console.log(response.data);
+            TabsData.add(item.titre, response.data[0]);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+      // Pour les dossiers
+      if (item.type == "Dossier") {
+        formData = new FormData();
+        formData.append("req", item.cle_id);
+        // Appel avec axios
+        axios
+          .post(process.env.VUE_APP_SERVEUR + "/search-dossier", formData)
+          .then(response => {
+            console.log(response.data);
+            TabsData.add(item.titre, response.data[0]);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
       console.log(item);
     },
     addElementToGlobal() {
