@@ -860,6 +860,12 @@ export default {
         .post(process.env.VUE_APP_SERVEUR + "/searchprofil", formData)
         .then(response => {
           this.contentProfils = response.data;
+          // Suppression du doublon
+          this.contentProfils = this.suppressionDoublon(
+            this.profils,
+            this.contentProfils
+          );
+          // /Suppression du doublon
         })
         .catch(e => {
           this.getError = true;
@@ -868,14 +874,40 @@ export default {
       this.dialogProfils = !this.dialogProfils;
       console.log("Ok");
     },
+    suppressionDoublon(texte, contentTexte) {
+      // Suppression du doublon
+      for (let i = 0; i < texte.length; i++) {
+        for (let l = 0; l < contentTexte.length; l++) {
+          if (texte[i].cle_id == contentTexte[l].id) {
+            contentTexte.splice(l, 1);
+            l--;
+          }
+        }
+      }
+      // /Suppression du doublon
+      return contentTexte;
+    },
     ajouterTextes() {
       let formData = new FormData();
       formData.append("req", "");
       axios
         .post(process.env.VUE_APP_SERVEUR + "/searchtextes", formData)
         .then(response => {
-          console.log("reponse :", response.data);
           this.contentTextes = response.data;
+          this.contentTextes = this.suppressionDoublon(
+            this.textes,
+            this.contentTextes
+          );
+          // // Suppression du doublon
+          // for (let i = 0; i < this.textes.length; i++) {
+          //   for (let l = 0; l < this.contentTextes.length; l++) {
+          //     if (this.textes[i].cle_id == this.contentTextes[l].id) {
+          //       this.contentTextes.splice(l, 1);
+          //       l--;
+          //     }
+          //   }
+          // }
+          // // /Suppression du doublon
         })
         .catch(e => {
           this.getError = true;
@@ -892,6 +924,12 @@ export default {
         .then(response => {
           console.log("reponse :", response.data);
           this.contentCollections = response.data;
+          // Suppression du doublon
+          this.contentCollections = this.suppressionDoublon(
+            this.collections,
+            this.contentCollections
+          );
+          // /Suppression du doublon
         })
         .catch(e => {
           this.getError = true;

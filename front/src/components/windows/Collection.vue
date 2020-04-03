@@ -638,6 +638,19 @@ export default {
     };
   },
   methods: {
+    suppressionDoublon(texte, contentTexte) {
+      // Suppression du doublon
+      for (let i = 0; i < texte.length; i++) {
+        for (let l = 0; l < contentTexte.length; l++) {
+          if (texte[i].cle_id == contentTexte[l].id) {
+            contentTexte.splice(l, 1);
+            l--;
+          }
+        }
+      }
+      // /Suppression du doublon
+      return contentTexte;
+    },
     viewItem(item) {
       let formData = new FormData();
       // Pour les profils
@@ -957,6 +970,10 @@ export default {
         .post(process.env.VUE_APP_SERVEUR + "/searchprofil", formData)
         .then(response => {
           this.contentProfils = response.data;
+          this.contentProfils = this.suppressionDoublon(
+            this.profils,
+            this.contentProfils
+          );
         })
         .catch(e => {
           this.getError = true;
@@ -973,6 +990,10 @@ export default {
         .then(response => {
           console.log("reponse :", response.data);
           this.contentTextes = response.data;
+          this.contentTextes = this.suppressionDoublon(
+            this.textes,
+            this.contentTextes
+          );
         })
         .catch(e => {
           this.getError = true;
@@ -989,6 +1010,10 @@ export default {
         .then(response => {
           console.log("reponse :", response.data);
           this.contentCollections = response.data;
+          this.contentCollections = this.suppressionDoublon(
+            this.collections,
+            this.contentCollections
+          );
         })
         .catch(e => {
           this.getError = true;
