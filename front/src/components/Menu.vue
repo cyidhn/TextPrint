@@ -9,7 +9,19 @@
           </h1>
         </v-list-item>
       </template>
-
+      <div
+        v-shortkey="['ctrl', 'c']"
+        @shortkey="eventClick('profil-connu')"
+      ></div>
+      <div
+        v-shortkey="['ctrl', 'a']"
+        @shortkey="eventClick('profil-anonyme')"
+      ></div>
+      <div v-shortkey="['ctrl', 'd']" @shortkey="eventClick('dossier')"></div>
+      <div
+        v-shortkey="['ctrl', 'o']"
+        @shortkey="eventClick('collection')"
+      ></div>
       <v-divider></v-divider>
 
       <v-list dense>
@@ -22,11 +34,7 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title
-              :v-shortkey="item.command ? item.command : []"
-              @shortkey="eventClick(item.link)"
-              v-html="item.title"
-            ></v-list-item-title>
+            <v-list-item-title v-html="item.title"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -81,7 +89,6 @@ export default {
         title: "Profil anonyme",
         icon: "mdi-account",
         link: "profil-anonyme",
-        command: '["ctrl", "a"]',
       },
       { title: "Texte", icon: "mdi-file", link: "texte" },
       { title: "Dossier", icon: "mdi-folder", link: "dossier" },
