@@ -9,6 +9,27 @@
           </h1>
         </v-list-item>
       </template>
+      <div v-shortkey="['ctrl', 't']" @shortkey="eventClick('texte')"></div>
+      <div
+        v-shortkey="['ctrl', 'alt', 't']"
+        @shortkey="eventClick('texte')"
+      ></div>
+      <div
+        v-shortkey="['ctrl', 'alt', 'c']"
+        @shortkey="eventClick('profil-connu')"
+      ></div>
+      <div
+        v-shortkey="['ctrl', 'alt', 'a']"
+        @shortkey="eventClick('profil-anonyme')"
+      ></div>
+      <div
+        v-shortkey="['ctrl', 'alt', 'd']"
+        @shortkey="eventClick('dossier')"
+      ></div>
+      <div
+        v-shortkey="['ctrl', 'alt', 'o']"
+        @shortkey="eventClick('collection')"
+      ></div>
       <div
         v-shortkey="['ctrl', 'c']"
         @shortkey="eventClick('profil-connu')"
