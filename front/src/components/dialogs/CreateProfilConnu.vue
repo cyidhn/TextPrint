@@ -77,7 +77,7 @@
                     'Primaire',
                     'Secondaire 1',
                     'Secondaire 2',
-                    'Supérieur'
+                    'Supérieur',
                   ]"
                   v-model="education"
                   label="Niveau d'éducation"
@@ -89,7 +89,7 @@
                     'Non spécifiée',
                     'Classe populaire',
                     'Classe moyenne',
-                    'Classe aisée'
+                    'Classe aisée',
                   ]"
                   v-model="sociale"
                   label="Classe sociale"
@@ -110,7 +110,14 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="blue darken-1" text @click="checkDialog">Fermer</v-btn>
+          <v-btn
+            v-shortkey="['ctrl', 'x']"
+            @shortkey="checkDialog"
+            color="blue darken-1"
+            text
+            @click="checkDialog"
+            >Fermer</v-btn
+          >
           <v-btn color="blue darken-1" text @click="changerType" v-if="connu"
             >Changer à profil anonyme</v-btn
           >
@@ -143,22 +150,22 @@ export default {
     valid: true,
     alias: "",
     nom: "",
-    nomRules: [v => !!v || "Le nom est requis."],
+    nomRules: [(v) => !!v || "Le nom est requis."],
     prenom: "",
-    prenomRules: [v => !!v || "Le prénom est requis."],
+    prenomRules: [(v) => !!v || "Le prénom est requis."],
     age: "",
     ageRules: [
-      v => !!v || "L'âge est requis.",
-      v =>
+      (v) => !!v || "L'âge est requis.",
+      (v) =>
         /^(([9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
-        "L'âge doit être compris entre 9 et 120"
+        "L'âge doit être compris entre 9 et 120",
     ],
     ageTexte: "Âge",
     ageType: "number",
     sexe: "Non spécifié",
     education: "Non spécifié",
     sociale: "Non spécifiée",
-    commentaire: ""
+    commentaire: "",
   }),
   methods: {
     addWindow() {
@@ -168,12 +175,12 @@ export default {
       // Appel avec axios
       axios
         .get(process.env.VUE_APP_SERVEUR + "/lastid-profil")
-        .then(response => {
+        .then((response) => {
           formData.append("req", response.data[0].id);
           console.log(response.data[0].id);
           axios
             .post(process.env.VUE_APP_SERVEUR + "/search-profil", formData)
-            .then(response2 => {
+            .then((response2) => {
               console.log("Result___");
               console.log(response2);
               console.log(response2.data[0]);
@@ -189,11 +196,11 @@ export default {
                 TabsData.add(response2.data[0].alias, response2.data[0]);
               }
             })
-            .catch(error => {
+            .catch((error) => {
               alert(error.response.data);
             });
         })
-        .catch(error => {
+        .catch((error) => {
           alert(error.response.data);
         });
     },
@@ -208,24 +215,24 @@ export default {
       // Changement du rôle de l'âge
       if (this.connu === true) {
         this.ageRules = [
-          v => !!v || "L'âge est requis.",
-          v =>
+          (v) => !!v || "L'âge est requis.",
+          (v) =>
             /^(([9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
-            "L'âge doit être compris entre 9 et 120"
+            "L'âge doit être compris entre 9 et 120",
         ];
         this.ageTexte = "Âge*";
         this.ageType = "number";
       } else {
         this.ageRules = [
-          v => !!v || "L'âge estimé est requis.",
-          v =>
+          (v) => !!v || "L'âge estimé est requis.",
+          (v) =>
             /^[1-9][0-9][-](([1-9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(
               v
             ) ||
             "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120.",
-          v =>
+          (v) =>
             this.testAgeAnonyme(v) ||
-            "L'âge à gauche doit être plus petite qu'à droite..."
+            "L'âge à gauche doit être plus petite qu'à droite...",
         ];
         this.ageTexte = "Estimation de l'âge";
         this.ageType = "text";
@@ -271,12 +278,12 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/creer-profil-connu", formData)
-          .then(response => {
+          .then((response) => {
             // begin
             // Appel avec axios
             axios
               .get(process.env.VUE_APP_SERVEUR + "/lastid-profil")
-              .then(response => {
+              .then((response) => {
                 let idProfil = response.data[0].id;
                 console.log(idProfil);
                 // Si le folder est activé
@@ -293,7 +300,7 @@ export default {
                       process.env.VUE_APP_SERVEUR + "/associer-generalement",
                       formData
                     )
-                    .then(response => {
+                    .then((response) => {
                       if (
                         confirm(
                           "Le profil a bien été crée et ajouté. Souhaitez-vous l'ouvrir dans une nouvelle fenêtre ?"
@@ -303,7 +310,7 @@ export default {
                       }
                       console.log(response.data);
                     })
-                    .catch(error => {
+                    .catch((error) => {
                       console.error(error);
                     });
                 } else {
@@ -316,7 +323,7 @@ export default {
                   }
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 alert(error.response.data);
               });
             // /end
@@ -324,7 +331,7 @@ export default {
             this.reset();
             DialogsData.close("profil-connu");
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       }
@@ -334,7 +341,7 @@ export default {
       this.sexe = "Non spécifié";
       this.education = "Non spécifié";
       this.sociale = "Non spécifiée";
-    }
-  }
+    },
+  },
 };
 </script>

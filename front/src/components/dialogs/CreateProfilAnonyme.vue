@@ -77,7 +77,7 @@
                     'Primaire',
                     'Secondaire 1',
                     'Secondaire 2',
-                    'Supérieur'
+                    'Supérieur',
                   ]"
                   v-model="education"
                   label="Niveau d'éducation"
@@ -89,7 +89,7 @@
                     'Non spécifiée',
                     'Classe populaire',
                     'Classe moyenne',
-                    'Classe aisée'
+                    'Classe aisée',
                   ]"
                   v-model="sociale"
                   label="Classe sociale"
@@ -110,7 +110,14 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="blue darken-1" text @click="checkDialog">Fermer</v-btn>
+          <v-btn
+            v-shortkey="['ctrl', 'x']"
+            @shortkey="checkDialog"
+            color="blue darken-1"
+            text
+            @click="checkDialog"
+            >Fermer</v-btn
+          >
           <v-btn color="blue darken-1" text @click="changerType" v-if="connu"
             >Changer à profil anonyme</v-btn
           >
@@ -142,35 +149,35 @@ export default {
     valid: true,
     alias: "",
     nom: "",
-    nomRules: [v => !!v || "Le nom est requis."],
+    nomRules: [(v) => !!v || "Le nom est requis."],
     prenom: "",
-    prenomRules: [v => !!v || "Le prénom est requis."],
+    prenomRules: [(v) => !!v || "Le prénom est requis."],
     age: "",
     ageRules: [
-      v => !!v || "L'âge estimé est requis.",
-      v =>
+      (v) => !!v || "L'âge estimé est requis.",
+      (v) =>
         /^[1-9][0-9][-](([1-9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
         "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120.",
-      v =>
+      (v) =>
         this.testAgeAnonyme(v) ||
-        "L'âge à gauche doit être plus petite qu'à droite..."
+        "L'âge à gauche doit être plus petite qu'à droite...",
     ],
     ageTexte: "Âge",
     ageType: "number",
     sexe: "Non spécifié",
     education: "Non spécifié",
     sociale: "Non spécifiée",
-    commentaire: ""
+    commentaire: "",
   }),
-  mounted: function() {
+  mounted: function () {
     this.ageRules = [
-      v => !!v || "L'âge estimé est requis.",
-      v =>
+      (v) => !!v || "L'âge estimé est requis.",
+      (v) =>
         /^[1-9][0-9][-](([1-9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
         "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120.",
-      v =>
+      (v) =>
         this.testAgeAnonyme(v) ||
-        "L'âge à gauche doit être plus petite qu'à droite..."
+        "L'âge à gauche doit être plus petite qu'à droite...",
     ];
     this.ageTexte = "Estimation de l'âge";
     this.ageType = "text";
@@ -200,21 +207,21 @@ export default {
       // Changement du rôle de l'âge
       if (this.connu === true) {
         this.ageRules = [
-          v => !!v || "L'âge est requis.",
-          v =>
+          (v) => !!v || "L'âge est requis.",
+          (v) =>
             /^(([9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(v) ||
-            "L'âge doit être compris entre 9 et 120"
+            "L'âge doit être compris entre 9 et 120",
         ];
         this.ageTexte = "Âge*";
         this.ageType = "number";
       } else {
         this.ageRules = [
-          v => !!v || "L'âge estimé est requis.",
-          v =>
+          (v) => !!v || "L'âge estimé est requis.",
+          (v) =>
             /^[1-9][0-9][-](([1-9])|([1-9][0-9])|([1][0-1][0-9])|120)$/.test(
               v
             ) ||
-            "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120."
+            "L'âge doit être estimé. Exemple de saisie : 25-30. La plage de saisie va de 10 à 120.",
         ];
         this.ageTexte = "Estimation de l'âge*";
         this.ageType = "text";
@@ -248,14 +255,14 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/creer-profil-connu", formData)
-          .then(response => {
+          .then((response) => {
             // Message profil bien crée
             alert("Le profil à bien été crée");
             console.log(response);
             this.reset();
             DialogsData.close("profil-connu");
           })
-          .catch(error => {
+          .catch((error) => {
             // Affichage erreur
             console.log(error);
           });
@@ -267,7 +274,7 @@ export default {
       this.sexe = "Non spécifié";
       this.education = "Non spécifié";
       this.sociale = "Non spécifiée";
-    }
-  }
+    },
+  },
 };
 </script>

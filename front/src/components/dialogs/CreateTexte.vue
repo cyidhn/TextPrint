@@ -159,7 +159,14 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="blue darken-1" text @click="checkDialog">Fermer</v-btn>
+          <v-btn
+            v-shortkey="['ctrl', 'x']"
+            @shortkey="checkDialog"
+            color="blue darken-1"
+            text
+            @click="checkDialog"
+            >Fermer</v-btn
+          >
           <v-btn
             color="blue darken-1"
             v-if="!nextStep"

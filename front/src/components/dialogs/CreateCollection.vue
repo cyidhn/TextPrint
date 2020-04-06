@@ -22,7 +22,14 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="blue darken-1" text @click="checkDialog">Fermer</v-btn>
+          <v-btn
+            text
+            v-shortkey="['ctrl', 'x']"
+            @shortkey="checkDialog"
+            color="blue darken-1"
+            @click="checkDialog"
+            >Fermer</v-btn
+          >
           <v-btn color="blue darken-1" :disabled="!valid" text @click="validate"
             >Créer</v-btn
           >
@@ -48,7 +55,7 @@ export default {
     dialog: false,
     valid: true,
     nom: "",
-    nomRules: [v => !!v || "Le nom de la collection est requise."]
+    nomRules: [(v) => !!v || "Le nom de la collection est requise."],
   }),
   methods: {
     addWindow() {
@@ -58,21 +65,21 @@ export default {
       // Appel avec axios
       axios
         .get(process.env.VUE_APP_SERVEUR + "/lastid-collection")
-        .then(response => {
+        .then((response) => {
           formData.append("req", response.data[0].id);
           console.log(response.data[0].id);
           axios
             .post(process.env.VUE_APP_SERVEUR + "/search-collection", formData)
-            .then(response2 => {
+            .then((response2) => {
               console.log(response2);
               AddData.open();
               TabsData.add(response2.data[0].titre, response2.data[0]);
             })
-            .catch(error => {
+            .catch((error) => {
               alert(error.response.data);
             });
         })
-        .catch(error => {
+        .catch((error) => {
           alert(error.response.data);
         });
     },
@@ -91,12 +98,12 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/creer-collection", formData)
-          .then(response => {
+          .then((response) => {
             // begin
             // Appel avec axios
             axios
               .get(process.env.VUE_APP_SERVEUR + "/lastid-collection")
-              .then(response => {
+              .then((response) => {
                 let idCollection = response.data[0].id;
                 console.log(idCollection);
                 // Si le folder est activé
@@ -113,7 +120,7 @@ export default {
                       process.env.VUE_APP_SERVEUR + "/associer-generalement",
                       formData
                     )
-                    .then(response => {
+                    .then((response) => {
                       if (
                         confirm(
                           "La collection a bien été créée. Souhaitez-vous ajouter des éléments maintenant à celle-ci ?"
@@ -125,7 +132,7 @@ export default {
                       }
                       console.log(response.data);
                     })
-                    .catch(error => {
+                    .catch((error) => {
                       console.error(error);
                     });
                 } else {
@@ -138,7 +145,7 @@ export default {
                   }
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 alert(error.response.data);
               });
             // end
@@ -146,14 +153,14 @@ export default {
             this.reset();
             DialogsData.close("collection");
           })
-          .catch(error => {
+          .catch((error) => {
             alert(error.response.data);
           });
       }
     },
     resetValidation() {
       this.$refs.form.resetValidation();
-    }
-  }
+    },
+  },
 };
 </script>
