@@ -48,7 +48,7 @@ export default {
     dialog: false,
     valid: true,
     nom: "",
-    nomRules: [v => !!v || "Le nom du dossier est requis."]
+    nomRules: [(v) => !!v || "Le nom du dossier est requis."],
   }),
   methods: {
     checkDialog() {
@@ -64,21 +64,21 @@ export default {
       // Appel avec axios
       axios
         .get(process.env.VUE_APP_SERVEUR + "/lastid-dossier")
-        .then(response => {
+        .then((response) => {
           formData.append("req", response.data[0].id);
           console.log(response.data[0].id);
           axios
             .post(process.env.VUE_APP_SERVEUR + "/search-dossier", formData)
-            .then(response2 => {
+            .then((response2) => {
               console.log(response2);
               AddData.open();
               TabsData.add(response2.data[0].titre, response2.data[0]);
             })
-            .catch(error => {
+            .catch((error) => {
               alert(error.response.data);
             });
         })
-        .catch(error => {
+        .catch((error) => {
           alert(error.response.data);
         });
     },
@@ -91,12 +91,12 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/creer-dossier", formData)
-          .then(response => {
+          .then((response) => {
             // begin
             // Appel avec axios
             axios
               .get(process.env.VUE_APP_SERVEUR + "/lastid-dossier")
-              .then(response => {
+              .then((response) => {
                 let idCollection = response.data[0].id;
                 console.log(idCollection);
                 // Si le folder est activé
@@ -113,7 +113,7 @@ export default {
                       process.env.VUE_APP_SERVEUR + "/associer-generalement",
                       formData
                     )
-                    .then(response => {
+                    .then((response) => {
                       if (
                         confirm(
                           "La dossier a bien été crée. Souhaitez-vous ajouter des éléments maintenant à celui-ci ?"
@@ -125,7 +125,7 @@ export default {
                       }
                       console.log(response.data);
                     })
-                    .catch(error => {
+                    .catch((error) => {
                       console.error(error);
                     });
                 } else {
@@ -138,7 +138,7 @@ export default {
                   }
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 alert(error.response.data);
               });
             // end
@@ -146,14 +146,14 @@ export default {
             this.reset();
             DialogsData.close("dossier");
           })
-          .catch(error => {
+          .catch((error) => {
             alert(error.response.data);
           });
       }
     },
     resetValidation() {
       this.$refs.form.resetValidation();
-    }
-  }
+    },
+  },
 };
 </script>

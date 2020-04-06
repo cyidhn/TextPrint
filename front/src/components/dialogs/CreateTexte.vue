@@ -69,7 +69,7 @@
                     'Rédactions littéraires',
                     'Rédactions judiciaires',
                     'Documents à intérêts judiciaires',
-                    'Autre'
+                    'Autre',
                   ]"
                   v-model="typeDoc1"
                   :rules="typeDocRules"
@@ -103,7 +103,7 @@
                     'Manuscrite',
                     'Tapuscrite',
                     'Dactylographié',
-                    'Autre'
+                    'Autre',
                   ]"
                   v-model="typeEcriture"
                   label="Type d'écriture"
@@ -114,7 +114,7 @@
                     'Non spécifiée',
                     'D\'origine',
                     'Passage',
-                    'Compilation'
+                    'Compilation',
                   ]"
                   v-model="segmentation"
                   label="Segmentation"
@@ -185,6 +185,7 @@
 // Importations
 import { DialogsData } from "../../flux/Dialogs";
 import { TabsData } from "../../flux/Tabs";
+import { AddData } from "../../flux/Add";
 import axios from "axios";
 
 // Exportation de la fonction
@@ -208,10 +209,10 @@ export default {
     nomFichier: "",
     // Titre
     nom: "",
-    nomRules: [v => !!v || "Le titre est requis."],
+    nomRules: [(v) => !!v || "Le titre est requis."],
     // Paternité
     paternite: "Non spécifié",
-    paterniteRules: [v => !!v || "Le type de paternité est requis."],
+    paterniteRules: [(v) => !!v || "Le type de paternité est requis."],
     // Type de document
     typeDoc1: "",
     getTypeDoc2: [],
@@ -219,7 +220,7 @@ export default {
     typeDoc2: "",
     viewTypeDocAutre: false,
     typeDocAutre: "",
-    typeDocRules: [v => !!v || "Le type de document requis."],
+    typeDocRules: [(v) => !!v || "Le type de document requis."],
     // Spécification
     specification: "",
     // Type d'écriture
@@ -233,7 +234,7 @@ export default {
     // Registre
     registre: "Non spécifié",
     // Commentaire
-    commentaire: ""
+    commentaire: "",
   }),
   methods: {
     addWindow() {
@@ -243,20 +244,21 @@ export default {
       // Appel avec axios
       axios
         .get(process.env.VUE_APP_SERVEUR + "/lastid-texte")
-        .then(response => {
+        .then((response) => {
           formData.append("req", response.data[0].id);
           console.log(response.data[0].id);
           axios
             .post(process.env.VUE_APP_SERVEUR + "/search-texte", formData)
-            .then(response2 => {
+            .then((response2) => {
               console.log(response2);
+              AddData.open();
               TabsData.add(response2.data[0].titre, response2.data[0]);
             })
-            .catch(error => {
+            .catch((error) => {
               alert(error.response.data);
             });
         })
-        .catch(error => {
+        .catch((error) => {
           alert(error.response.data);
         });
     },
@@ -277,12 +279,12 @@ export default {
       if (this.langueO != this.langue) {
         console.log(this.langueO);
         if (confirm("Êtes-vous sûr de vouloir changer la langue ?")) {
-          setTimeout(function() {
+          setTimeout(function () {
             this.langueO = this.langue;
             console.log(`Ici c'est ${this.langue}`);
           }, 1000);
         } else {
-          setTimeout(function() {
+          setTimeout(function () {
             this.langue = this.langueO;
             console.log(`Ici c'est ${this.langue}`);
           }, 1000);
@@ -336,7 +338,7 @@ export default {
         this.getTypeDoc2 = [
           "Jounal / Entrée d'un journal",
           "Notes personnelles",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -354,7 +356,7 @@ export default {
           "Carte postale",
           "Lettre",
           "Email",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -385,7 +387,7 @@ export default {
           "Publication sur Facebook",
           "Billet de blog",
           "Commentaires et interactions",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -418,7 +420,7 @@ export default {
           "Rapport",
           "Revue scientifique",
           "Livre d'instruction",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -439,7 +441,7 @@ export default {
           "Fable",
           "Autobiographie ou mémoire",
           "Biographie",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -469,7 +471,7 @@ export default {
           "Lettre de menace",
           "Demande de rançon",
           "Testament",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -496,19 +498,19 @@ export default {
         axios
           .post(process.env.VUE_APP_SERVEUR + "/verifier-texte", formData, {
             headers: {
-              "Content-Type": "multipart/form-data"
-            }
+              "Content-Type": "multipart/form-data",
+            },
           })
-          .then(response => {
+          .then((response) => {
             console.log(response);
             this.checkProgress = true;
             axios
               .post(process.env.VUE_APP_SERVEUR + "/importer-texte", formData, {
                 headers: {
-                  "Content-Type": "multipart/form-data"
-                }
+                  "Content-Type": "multipart/form-data",
+                },
               })
-              .then(response2 => {
+              .then((response2) => {
                 // Ajour des informations
                 this.langue = response2.data.langue;
                 this.langueO = response2.data.langue;
@@ -520,7 +522,7 @@ export default {
                 this.checkProgress = false;
                 //DialogsData.close("profil-connu");
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
                 this.loadingText = false;
                 this.errorText = true;
@@ -529,7 +531,7 @@ export default {
               });
             //DialogsData.close("profil-connu");
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
             this.loadingText = false;
             this.errorText = true;
@@ -562,12 +564,12 @@ export default {
           // Appel avec axios
           axios
             .post(process.env.VUE_APP_SERVEUR + "/importer-texte-bdd", formData)
-            .then(response => {
+            .then((response) => {
               // begin
               // Appel avec axios
               axios
                 .get(process.env.VUE_APP_SERVEUR + "/lastid-texte")
-                .then(response => {
+                .then((response) => {
                   let idTexte = response.data[0].id;
                   console.log(idTexte);
                   // Si le folder est activé
@@ -586,30 +588,30 @@ export default {
                         process.env.VUE_APP_SERVEUR + "/associer-generalement",
                         formData
                       )
-                      .then(response => {
+                      .then((response) => {
                         if (
                           confirm(
-                            "Le texte a bien été crée et ajouté. Souhaitez-vous l'ouvrir dans une autre fenêtre ?"
+                            "Le texte a bien été crée et ajouté. Souhaitez-vous l'ouvrir et l'attribuer à un auteur ?"
                           )
                         ) {
                           this.addWindow();
                         }
                         console.log(response.data);
                       })
-                      .catch(error => {
+                      .catch((error) => {
                         console.error(error);
                       });
                   } else {
                     if (
                       confirm(
-                        "Le texte a bien été crée. Souhaitez-vous l'ouvrir dans une autre fenêtre ?"
+                        "Le texte a bien été crée. Souhaitez-vous l'ouvrir et l'attribuer à un auteur ?"
                       )
                     ) {
                       this.addWindow();
                     }
                   }
                 })
-                .catch(error => {
+                .catch((error) => {
                   alert(error.response.data);
                 });
               // /end
@@ -618,7 +620,7 @@ export default {
               // this.reset();
               DialogsData.close("texte");
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         }
@@ -637,7 +639,7 @@ export default {
       this.disabledImport = false;
       this.registre = "Non spécifié";
       this.commentaire = "";
-    }
-  }
+    },
+  },
 };
 </script>

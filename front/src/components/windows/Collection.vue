@@ -544,7 +544,7 @@ import { DialogsData } from "../../flux/Dialogs";
 // Exportations
 export default {
   props: {
-    content: Object
+    content: Object,
   },
   data() {
     return {
@@ -582,31 +582,31 @@ export default {
         { text: "Type", value: "type" },
         { text: "Alias", value: "alias" },
         { text: "Prénom NOM", value: "nom" },
-        { text: "Voir", value: "actions", sortable: false }
+        { text: "Voir", value: "actions", sortable: false },
       ],
       profils: [],
       headersTextes: [
         { text: "Titre", value: "titre" },
         { text: "# Versions", value: "version" },
-        { text: "Voir", value: "actions", sortable: false }
+        { text: "Voir", value: "actions", sortable: false },
       ],
       textes: [],
       headersCollections: [
         { text: "Titre", value: "titre" },
         { text: "# de textes par l'auteur", value: "nbtextes" },
         { text: "# de mots par l'auteur", value: "nbmots" },
-        { text: "Voir", value: "actions", sortable: false }
+        { text: "Voir", value: "actions", sortable: false },
       ],
       collections: [],
       headersAnalyses: [
         { text: "Titre", value: "titre" },
         { text: "Type d'analyse", value: "type" },
-        { text: "Ressources de l'auteur", value: "ressources" }
+        { text: "Ressources de l'auteur", value: "ressources" },
       ],
       analyses: [],
       headersRapports: [
         { text: "Titre", value: "titre" },
-        { text: "Type de rapport", value: "type" }
+        { text: "Type de rapport", value: "type" },
       ],
       rapports: [],
       headersGlobal: [
@@ -614,7 +614,7 @@ export default {
         { text: "Titre", value: "titre" },
         { text: "Alias", value: "alias" },
         { text: "Prénom", value: "prenom" },
-        { text: "Nom", value: "nom" }
+        { text: "Nom", value: "nom" },
       ],
       contentGlobal: [],
       // Ajouts profils
@@ -634,7 +634,7 @@ export default {
       contentCollections: [],
       // Ajout Global
       dialogGlobal: false,
-      searchGlobal: ""
+      searchGlobal: "",
     };
   },
   methods: {
@@ -671,11 +671,11 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/search-profil", formData)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             TabsData.add(item.alias + " " + item.nom, response.data[0]);
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       }
@@ -686,11 +686,11 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/search-texte", formData)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             TabsData.add(item.titre, response.data[0]);
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       }
@@ -701,11 +701,11 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/search-collection", formData)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             TabsData.add(item.titre, response.data[0]);
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       }
@@ -716,11 +716,11 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/search-dossier", formData)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             TabsData.add(item.titre, response.data[0]);
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       }
@@ -729,7 +729,7 @@ export default {
     addElementToGlobal() {
       if (confirm("Voulez-vous ajouter cette sélection à votre collection ?")) {
         let formData = new FormData();
-        this.selectedAjoutsGlobal.map(e => {
+        this.selectedAjoutsGlobal.map((e) => {
           if (e.type == "Dossiers") {
             e.type = "Dossier";
           }
@@ -747,11 +747,11 @@ export default {
               process.env.VUE_APP_SERVEUR + "/associer-generalement",
               formData
             )
-            .then(response => {
+            .then((response) => {
               console.log(response.data);
               this.majDossier();
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         });
@@ -773,7 +773,7 @@ export default {
     updateContent() {
       axios
         .get(process.env.VUE_APP_SERVEUR + "/test")
-        .then(response => {
+        .then((response) => {
           this.contentGlobal = response.data;
           this.contentGlobal = this.shuffleContent(this.contentGlobal);
           this.contentGlobal = this.suppressionFolder(
@@ -781,7 +781,7 @@ export default {
             "Collections"
           );
         })
-        .catch(e => {
+        .catch((e) => {
           this.getError = true;
           console.error("Impossible de charger les données", e);
         });
@@ -828,7 +828,7 @@ export default {
       // Appel avec axios
       axios
         .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
-        .then(response => {
+        .then((response) => {
           let result = JSON.parse(response.data);
           // Traitement
           for (let i = 0; i < result.length; i++) {
@@ -844,7 +844,7 @@ export default {
           }
           this.profils = result;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
       // /TypeProfils
@@ -859,11 +859,11 @@ export default {
       // Appel avec axios
       axios
         .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
-        .then(response => {
+        .then((response) => {
           let result = JSON.parse(response.data);
           this.textes = result;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
       // /TypeTextes
@@ -878,11 +878,11 @@ export default {
       // Appel avec axios
       axios
         .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
-        .then(response => {
+        .then((response) => {
           let result = JSON.parse(response.data);
           this.collections = result;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
       // /TypeCollections
@@ -892,13 +892,13 @@ export default {
       formData.append("req", this.content.id);
       axios
         .post(process.env.VUE_APP_SERVEUR + "/search-collection", formData)
-        .then(response => {
+        .then((response) => {
           this.commentaire = response.data[0].commentaire;
           if (this.commentaire == "None") {
             this.commentaire = "";
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
 
@@ -927,13 +927,13 @@ export default {
         formData.append("titre", this.titre);
         axios
           .post(process.env.VUE_APP_SERVEUR + "/modifier-collection", formData)
-          .then(response => {
+          .then((response) => {
             this.snackbarModifie = true;
             TabsData.changeName(TabsData.state.nowId, this.titre);
             this.content.titre = this.titre;
             console.log(response);
           })
-          .catch(error => {
+          .catch((error) => {
             alert(error);
           });
       }
@@ -948,11 +948,11 @@ export default {
         formData.append("titre", this.content.titre);
         axios
           .post(process.env.VUE_APP_SERVEUR + "/modifier-collection", formData)
-          .then(response => {
+          .then((response) => {
             this.snackbarModifie = true;
             console.log(response);
           })
-          .catch(error => {
+          .catch((error) => {
             alert(error);
           });
       }
@@ -968,12 +968,12 @@ export default {
         formData.append("id", this.content.id);
         axios
           .post(process.env.VUE_APP_SERVEUR + "/supprimer-collection", formData)
-          .then(response => {
+          .then((response) => {
             alert("La collection a bien été supprimée");
             TabsData.remove(TabsData.state.nowId);
             console.log(response);
           })
-          .catch(error => {
+          .catch((error) => {
             alert(error);
           });
       }
@@ -983,14 +983,14 @@ export default {
       formData.append("req", "");
       axios
         .post(process.env.VUE_APP_SERVEUR + "/searchprofil", formData)
-        .then(response => {
+        .then((response) => {
           this.contentProfils = response.data;
           this.contentProfils = this.suppressionDoublon(
             this.profils,
             this.contentProfils
           );
         })
-        .catch(e => {
+        .catch((e) => {
           this.getError = true;
           console.error("Impossible de charger les données", e);
         });
@@ -1002,7 +1002,7 @@ export default {
       formData.append("req", "");
       axios
         .post(process.env.VUE_APP_SERVEUR + "/searchtextes", formData)
-        .then(response => {
+        .then((response) => {
           console.log("reponse :", response.data);
           this.contentTextes = response.data;
           this.contentTextes = this.suppressionDoublon(
@@ -1010,7 +1010,7 @@ export default {
             this.contentTextes
           );
         })
-        .catch(e => {
+        .catch((e) => {
           this.getError = true;
           console.error("Impossible de charger les données", e);
         });
@@ -1022,7 +1022,7 @@ export default {
       formData.append("req", "");
       axios
         .post(process.env.VUE_APP_SERVEUR + "/search-dossier", formData)
-        .then(response => {
+        .then((response) => {
           console.log("reponse :", response.data);
           this.contentCollections = response.data;
           this.contentCollections = this.suppressionDoublon(
@@ -1030,7 +1030,7 @@ export default {
             this.contentCollections
           );
         })
-        .catch(e => {
+        .catch((e) => {
           this.getError = true;
           console.error("Impossible de charger les données", e);
         });
@@ -1040,7 +1040,7 @@ export default {
     associerProfils() {
       if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
         let formData = new FormData();
-        this.selectedAjoutsProfils.map(e => {
+        this.selectedAjoutsProfils.map((e) => {
           formData = new FormData();
           formData.append("champs1", "Collection");
           formData.append("champs2", "Profil");
@@ -1052,7 +1052,7 @@ export default {
               process.env.VUE_APP_SERVEUR + "/associer-generalement",
               formData
             )
-            .then(response => {
+            .then((response) => {
               console.log(response.data);
               // TypeProfils
               // Ajout en formulaire
@@ -1064,18 +1064,18 @@ export default {
               // Appel avec axios
               axios
                 .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
-                .then(response => {
+                .then((response) => {
                   let result = JSON.parse(response.data);
                   this.profils = result;
                   this.snackbarAjoute = true;
                 })
-                .catch(error => {
+                .catch((error) => {
                   this.profils = [];
                   console.log(error);
                 });
               // /TypeProfils
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         });
@@ -1086,7 +1086,7 @@ export default {
     associerTextes() {
       if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
         let formData = new FormData();
-        this.selectedAjoutsTextes.map(e => {
+        this.selectedAjoutsTextes.map((e) => {
           formData = new FormData();
           formData.append("champs1", "Collection");
           formData.append("champs2", "Texte");
@@ -1098,7 +1098,7 @@ export default {
               process.env.VUE_APP_SERVEUR + "/associer-generalement",
               formData
             )
-            .then(response => {
+            .then((response) => {
               console.log(response.data);
               // TypeProfils
               // Ajout en formulaire
@@ -1110,19 +1110,19 @@ export default {
               // Appel avec axios
               axios
                 .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
-                .then(response => {
+                .then((response) => {
                   let result = JSON.parse(response.data);
                   this.textes = result;
                   this.snackbarAjoute = true;
                 })
-                .catch(error => {
+                .catch((error) => {
                   this.textes = [];
                   this.snackbarAjoute = true;
                   console.log(error);
                 });
               // /TypeProfils
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         });
@@ -1133,7 +1133,7 @@ export default {
     associerCollections() {
       if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
         let formData = new FormData();
-        this.selectedAjoutsCollections.map(e => {
+        this.selectedAjoutsCollections.map((e) => {
           formData = new FormData();
           formData.append("champs1", "Collection");
           formData.append("champs2", "Dossier");
@@ -1145,7 +1145,7 @@ export default {
               process.env.VUE_APP_SERVEUR + "/associer-generalement",
               formData
             )
-            .then(response => {
+            .then((response) => {
               console.log(response.data);
               // TypeProfils
               // Ajout en formulaire
@@ -1157,19 +1157,19 @@ export default {
               // Appel avec axios
               axios
                 .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
-                .then(response => {
+                .then((response) => {
                   let result = JSON.parse(response.data);
                   this.collections = result;
                   this.snackbarAjoute = true;
                 })
-                .catch(error => {
+                .catch((error) => {
                   this.collections = [];
                   this.snackbarAjoute = true;
                   console.error(error);
                 });
               // /TypeProfils
             })
-            .catch(error => {
+            .catch((error) => {
               console.error(error);
             });
         });
@@ -1180,7 +1180,7 @@ export default {
     deleteProfils() {
       if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
-        this.selectedProfils.map(e => {
+        this.selectedProfils.map((e) => {
           formData = new FormData();
           formData.append("id", e.delete);
           // Appel avec axios
@@ -1189,7 +1189,7 @@ export default {
               process.env.VUE_APP_SERVEUR + "/supprimer-association",
               formData
             )
-            .then(response => {
+            .then((response) => {
               console.log(response);
               // TypeProfils
               // Ajout en formulaire
@@ -1201,20 +1201,20 @@ export default {
               // Appel avec axios
               axios
                 .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
-                .then(response => {
+                .then((response) => {
                   let result = JSON.parse(response.data);
                   this.profils = result;
                   this.majDossier();
                   this.snackbarSupprimer = true;
                 })
-                .catch(error => {
+                .catch((error) => {
                   this.profils = [];
                   this.snackbarSupprimer = true;
                   console.log(error);
                 });
               // /TypeProfils
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         });
@@ -1224,7 +1224,7 @@ export default {
     deleteCollections() {
       if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
-        this.selectedCollections.map(e => {
+        this.selectedCollections.map((e) => {
           formData = new FormData();
           formData.append("id", e.delete);
           // Appel avec axios
@@ -1233,7 +1233,7 @@ export default {
               process.env.VUE_APP_SERVEUR + "/supprimer-association",
               formData
             )
-            .then(response => {
+            .then((response) => {
               console.log(response);
               // TypeProfils
               // Ajout en formulaire
@@ -1245,19 +1245,19 @@ export default {
               // Appel avec axios
               axios
                 .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
-                .then(response => {
+                .then((response) => {
                   let result = JSON.parse(response.data);
                   this.collections = result;
                   this.snackbarSupprimer = true;
                 })
-                .catch(error => {
+                .catch((error) => {
                   this.collections = [];
                   this.snackbarSupprimer = true;
                   console.log(error);
                 });
               // /TypeProfils
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         });
@@ -1267,7 +1267,7 @@ export default {
     deleteTextes() {
       if (confirm("Voulez-vous retirer la sélection de cette liste ?")) {
         let formData = new FormData();
-        this.selectedTextes.map(e => {
+        this.selectedTextes.map((e) => {
           formData = new FormData();
           formData.append("id", e.delete);
           // Appel avec axios
@@ -1276,7 +1276,7 @@ export default {
               process.env.VUE_APP_SERVEUR + "/supprimer-association",
               formData
             )
-            .then(response => {
+            .then((response) => {
               console.log(response);
               // TypeProfils
               // Ajout en formulaire
@@ -1288,27 +1288,27 @@ export default {
               // Appel avec axios
               axios
                 .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
-                .then(response => {
+                .then((response) => {
                   let result = JSON.parse(response.data);
                   this.textes = result;
                   this.snackbarSupprimer = true;
                 })
-                .catch(error => {
+                .catch((error) => {
                   this.textes = [];
                   this.snackbarSupprimer = true;
                   console.log(error);
                 });
               // /TypeProfils
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         });
         this.selectedTextes = [];
       }
-    }
+    },
   },
-  mounted: function() {
+  mounted: function () {
     // TypeProfils
     // Ajout en formulaire
     let formData = new FormData();
@@ -1319,7 +1319,7 @@ export default {
     // Appel avec axios
     axios
       .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
-      .then(response => {
+      .then((response) => {
         let result = JSON.parse(response.data);
         // Traitement
         for (let i = 0; i < result.length; i++) {
@@ -1335,7 +1335,7 @@ export default {
         }
         this.profils = result;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
     // /TypeProfils
@@ -1350,11 +1350,11 @@ export default {
     // Appel avec axios
     axios
       .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
-      .then(response => {
+      .then((response) => {
         let result = JSON.parse(response.data);
         this.textes = result;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
     // /TypeTextes
@@ -1369,11 +1369,11 @@ export default {
     // Appel avec axios
     axios
       .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
-      .then(response => {
+      .then((response) => {
         let result = JSON.parse(response.data);
         this.collections = result;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
     // /TypeCollections
@@ -1383,13 +1383,13 @@ export default {
     formData.append("req", this.content.id);
     axios
       .post(process.env.VUE_APP_SERVEUR + "/search-collection", formData)
-      .then(response => {
+      .then((response) => {
         this.commentaire = response.data[0].commentaire;
         if (this.commentaire == "None") {
           this.commentaire = "";
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
@@ -1402,7 +1402,7 @@ export default {
     // Ajout du titre en variable
     this.titre = this.content.titre;
   },
-  updated: function() {
+  updated: function () {
     // Profils
     if (this.selectedProfils.length > 0) {
       this.disabledProfils = false;
@@ -1425,7 +1425,7 @@ export default {
   },
   computed: {
     filteredList() {
-      return this.contentProfils.filter(p => {
+      return this.contentProfils.filter((p) => {
         try {
           return p.titre
             .toLowerCase()
@@ -1438,19 +1438,19 @@ export default {
       });
     },
     filteredListTextes() {
-      return this.contentTextes.filter(p => {
+      return this.contentTextes.filter((p) => {
         return p.titre
           .toLowerCase()
           .includes(this.rechercheAjoutsTextes.toLowerCase());
       });
     },
     filteredListCollections() {
-      return this.contentCollections.filter(p => {
+      return this.contentCollections.filter((p) => {
         return p.titre
           .toLowerCase()
           .includes(this.rechercheAjoutsCollections.toLowerCase());
       });
-    }
-  }
+    },
+  },
 };
 </script>

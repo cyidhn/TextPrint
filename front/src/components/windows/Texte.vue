@@ -181,7 +181,7 @@
               'Rédactions littéraires',
               'Rédactions judiciaires',
               'Documents à intérêts judiciaires',
-              'Autre'
+              'Autre',
             ]"
             v-model="content.typeDocument1"
             label="Type de document*"
@@ -214,7 +214,7 @@
               'Manuscrite',
               'Tapuscrite',
               'Dactylographié',
-              'Autre'
+              'Autre',
             ]"
             v-model="content.typeEcriture"
             label="Type d'écriture"
@@ -472,12 +472,13 @@
 // Importations
 import axios from "axios";
 import { TabsData } from "../../flux/Tabs";
+import { AddData } from "../../flux/Add";
 import { DialogsData } from "../../flux/Dialogs";
 
 // Exportation de la fonction
 export default {
   props: {
-    content: Object
+    content: Object,
   },
   data: () => ({
     // Type de docs
@@ -496,7 +497,7 @@ export default {
     headersAnalyses: [
       { text: "Titre", value: "titre" },
       { text: "Type d'analyse", value: "type" },
-      { text: "Ressources de l'auteur", value: "ressources" }
+      { text: "Ressources de l'auteur", value: "ressources" },
     ],
     analyses: [],
     // Ajout d'un rapport
@@ -504,7 +505,7 @@ export default {
     selectedRapports: [],
     headersRapports: [
       { text: "Titre", value: "titre" },
-      { text: "Type de rapport", value: "type" }
+      { text: "Type de rapport", value: "type" },
     ],
     rapports: [],
     // Ajout d'une version
@@ -515,7 +516,7 @@ export default {
       { text: "# de mots", value: "nbmots" },
       { text: "Type de prétraitement", value: "typepretraitement" },
       { text: "Spécifications", value: "specification" },
-      { text: "Commentaires", value: "commentaires" }
+      { text: "Commentaires", value: "commentaires" },
     ],
     versions: [],
     // Ajout d'une collection
@@ -524,7 +525,7 @@ export default {
     headersCollections: [
       { text: "Titre", value: "titre" },
       { text: "# de textes par l'auteur", value: "nbtextes" },
-      { text: "# de mots par l'auteur", value: "nbmots" }
+      { text: "# de mots par l'auteur", value: "nbmots" },
     ],
     collections: [],
     dialogCollections: false,
@@ -537,7 +538,7 @@ export default {
     headersDossiers: [
       { text: "Titre", value: "titre" },
       { text: "# de textes par l'auteur", value: "nbtextes" },
-      { text: "# de mots par l'auteur", value: "nbmots" }
+      { text: "# de mots par l'auteur", value: "nbmots" },
     ],
     dossiers: [],
     dialogDossiers: false,
@@ -551,12 +552,12 @@ export default {
       { text: "Type", value: "type" },
       { text: "Alias", value: "alias" },
       { text: "Prénom NOM", value: "nom" },
-      { text: "Voir", value: "actions", sortable: false }
+      { text: "Voir", value: "actions", sortable: false },
     ],
     headersProfilsT: [
       { text: "Type", value: "typeP" },
       { text: "Alias", value: "alias" },
-      { text: "Prénom NOM", value: "nom" }
+      { text: "Prénom NOM", value: "nom" },
     ],
     profils: [],
     disabledProfils: true,
@@ -564,7 +565,7 @@ export default {
     rechercheAjoutsProfils: "",
     selectedAjoutsProfils: [],
     contentProfils: [],
-    loadingProfils: true
+    loadingProfils: true,
   }),
   methods: {
     viewItem(item) {
@@ -581,11 +582,11 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/search-profil", formData)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             TabsData.add(item.alias + " " + item.nom, response.data[0]);
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       }
@@ -596,11 +597,11 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/search-texte", formData)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             TabsData.add(item.titre, response.data[0]);
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       }
@@ -611,11 +612,11 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/search-collection", formData)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             TabsData.add(item.titre, response.data[0]);
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       }
@@ -626,11 +627,11 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/search-dossier", formData)
-          .then(response => {
+          .then((response) => {
             console.log(response.data);
             TabsData.add(item.titre, response.data[0]);
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       }
@@ -666,7 +667,7 @@ export default {
         this.getTypeDoc2 = [
           "Jounal / Entrée d'un journal",
           "Notes personnelles",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -684,7 +685,7 @@ export default {
           "Carte postale",
           "Lettre",
           "Email",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -715,7 +716,7 @@ export default {
           "Publication sur Facebook",
           "Billet de blog",
           "Commentaires et interactions",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -750,7 +751,7 @@ export default {
           "Rapport",
           "Revue scientifique",
           "Livre d'instruction",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -771,7 +772,7 @@ export default {
           "Fable",
           "Autobiographie ou mémoire",
           "Biographie",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -801,7 +802,7 @@ export default {
           "Lettre de menace",
           "Demande de rançon",
           "Testament",
-          "Autre"
+          "Autre",
         ];
         this.typeDoc2 = this.getTypeDoc2[0];
       }
@@ -824,7 +825,7 @@ export default {
       // Appel avec axios
       axios
         .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
-        .then(response => {
+        .then((response) => {
           let result = JSON.parse(response.data);
           console.log("The result :");
           console.log(result);
@@ -843,7 +844,7 @@ export default {
           this.profils = result;
           this.loadingProfils = false;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.loadingProfils = false;
         });
@@ -858,10 +859,10 @@ export default {
       formData.append("req", "");
       axios
         .post(process.env.VUE_APP_SERVEUR + "/searchprofil", formData)
-        .then(response => {
+        .then((response) => {
           this.contentProfils = response.data;
         })
-        .catch(e => {
+        .catch((e) => {
           this.getError = true;
           console.error("Impossible de charger les données", e);
         });
@@ -871,7 +872,7 @@ export default {
     associerProfils() {
       if (confirm("Voulez-vous vraiment ajouter cette association ?")) {
         let formData = new FormData();
-        this.selectedAjoutsProfils.map(e => {
+        this.selectedAjoutsProfils.map((e) => {
           formData = new FormData();
           formData.append("champs1", "Texte");
           formData.append("champs2", "Profil");
@@ -883,7 +884,7 @@ export default {
               process.env.VUE_APP_SERVEUR + "/associer-generalement",
               formData
             )
-            .then(response => {
+            .then((response) => {
               console.log(response.data);
               // TypeProfils
               // Ajout en formulaire
@@ -895,28 +896,30 @@ export default {
               // Appel avec axios
               axios
                 .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
-                .then(response => {
+                .then((response) => {
                   let result = JSON.parse(response.data);
                   this.profils = result;
                   this.snackbarAjoute = true;
                 })
-                .catch(error => {
+                .catch((error) => {
                   this.profils = [];
                   console.log(error);
                 });
               // /TypeProfils
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         });
         this.selectedAjoutsProfils = [];
+        AddData.close();
         this.dialogProfils = false;
       }
     },
     fermerProfils() {
       DialogsData.init();
       this.majTexte();
+      AddData.close();
       this.dialogProfils = false;
     },
     sauvegarder() {
@@ -935,11 +938,11 @@ export default {
       // Appel avec axios
       axios
         .post(process.env.VUE_APP_SERVEUR + "/modifier-texte", formData)
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.snackbarAjoute = true;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -959,12 +962,12 @@ export default {
         formData.append("id", this.content.id);
         axios
           .post(process.env.VUE_APP_SERVEUR + "/supprimer-texte", formData)
-          .then(response => {
+          .then((response) => {
             alert("Le texte a bien été supprimé");
             TabsData.remove(TabsData.state.nowId);
             console.log(response);
           })
-          .catch(error => {
+          .catch((error) => {
             alert(error);
           });
       }
@@ -973,7 +976,7 @@ export default {
       // Message de suppression de profil
       if (confirm("Voulez-vous vraiment supprimer cette association ?")) {
         let formData = new FormData();
-        this.selectedProfils.map(e => {
+        this.selectedProfils.map((e) => {
           formData = new FormData();
           formData.append("id", e.delete);
           // Appel avec axios
@@ -982,7 +985,7 @@ export default {
               process.env.VUE_APP_SERVEUR + "/supprimer-association",
               formData
             )
-            .then(response => {
+            .then((response) => {
               console.log(response);
               // TypeProfils
               // Ajout en formulaire
@@ -994,26 +997,26 @@ export default {
               // Appel avec axios
               axios
                 .post(process.env.VUE_APP_SERVEUR + "/assoc", newFormData)
-                .then(response => {
+                .then((response) => {
                   let result = JSON.parse(response.data);
                   this.profils = result;
                   this.snackbarSupprimer = true;
                   this.majTexte();
                 })
-                .catch(error => {
+                .catch((error) => {
                   this.profils = [];
                   this.snackbarSupprimer = true;
                   console.log(error);
                 });
               // /TypeProfils
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         });
         this.selectedProfils = [];
       }
-    }
+    },
   },
   created() {
     this.handleChangeType1();
@@ -1035,7 +1038,7 @@ export default {
   },
   computed: {
     filteredList() {
-      return this.contentProfils.filter(p => {
+      return this.contentProfils.filter((p) => {
         try {
           return p.titre
             .toLowerCase()
@@ -1046,9 +1049,14 @@ export default {
             .includes(this.rechercheAjoutsProfils.toLowerCase());
         }
       });
+    },
+  },
+  mounted: function () {
+    if (AddData.state.openWindow) {
+      this.ajouterProfils();
     }
   },
-  updated: function() {
+  updated: function () {
     // Profils
     if (this.selectedProfils.length > 0) {
       this.disabledProfils = false;
@@ -1056,7 +1064,7 @@ export default {
       this.disabledProfils = true;
     }
     // Textes
-  }
+  },
 };
 </script>
 
