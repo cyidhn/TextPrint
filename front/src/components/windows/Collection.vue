@@ -35,7 +35,7 @@
       </v-snackbar>
       <!-- /Snackbar Supprimé avec succès -->
       <!-- Modal global -->
-      <v-dialog v-model="dialogGlobal" max-width="800px" persistent scrollable>
+      <v-dialog v-model="dialogGlobal" max-width="1200px" persistent scrollable>
         <v-card>
           <v-card-title>
             <span class="headline">
@@ -43,26 +43,50 @@
             </span>
           </v-card-title>
           <v-card-text>
-            <v-card class="mx-auto" max-width="800" tile>
-              <v-text-field
-                v-model="searchGlobal"
-                label="Rechercher dans la base de données"
-                required
-              ></v-text-field>
-              <v-data-table
-                no-data-text="Aucun élément trouvé"
-                no-results-text="Aucun élément trouvé"
-                loading-text="Chargement en cours..."
-                v-model="selectedAjoutsGlobal"
-                :headers="headersGlobal"
-                :items="contentGlobal"
-                :search="searchGlobal"
-                :items-per-page="5"
-                item-key="id"
-                show-select
-                class="elevation-1"
-              >
-              </v-data-table>
+            <v-card class="mx-auto" max-width="1200" tile>
+              <v-container fluid>
+                <v-text-field
+                  v-model="searchGlobal"
+                  label="Rechercher dans la base de données"
+                  required
+                ></v-text-field>
+                <v-row>
+                  <v-col cols="6">
+                    <h2 class="mt-8 mb-6"><b>Séléctionner des éléments</b></h2>
+                    <v-data-table
+                      no-data-text="Aucun élément trouvé"
+                      no-results-text="Aucun élément trouvé"
+                      loading-text="Chargement en cours..."
+                      v-model="selectedAjoutsGlobal"
+                      :headers="headersGlobal"
+                      :items="contentGlobal"
+                      :search="searchGlobal"
+                      :items-per-page="5"
+                      item-key="id"
+                      show-select
+                      class="elevation-1"
+                    ></v-data-table>
+                  </v-col>
+                  <v-col cols="6">
+                    <h2 class="mt-8 mb-6">
+                      <b>Éléments ajouté à la collection</b>
+                    </h2>
+                    <v-data-table
+                      no-data-text="Aucun élément ajouté"
+                      no-results-text="Aucun élément trouvé"
+                      loading-text="Chargement en cours..."
+                      v-model="selectedAjoutsGlobal"
+                      :headers="headersGlobal"
+                      :items="selectedAjoutsGlobal"
+                      :search="searchGlobal"
+                      :items-per-page="5"
+                      item-key="id"
+                      show-select
+                      class="elevation-1"
+                    ></v-data-table>
+                  </v-col>
+                </v-row>
+              </v-container>
             </v-card>
           </v-card-text>
           <v-card-actions>
