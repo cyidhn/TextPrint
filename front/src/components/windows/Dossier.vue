@@ -47,6 +47,7 @@
               <v-container fluid>
                 <v-text-field
                   v-model="searchGlobal"
+                  @click="updateContent()"
                   label="Rechercher dans la base de données"
                   required
                 ></v-text-field>
@@ -92,6 +93,9 @@
             <v-btn color="blue darken-1" text @click="fermerGlobal"
               >Retour</v-btn
             >
+            <v-btn color="blue darken-1" text @click="sheet = !sheet"
+              >Nouveau</v-btn
+            >
             <v-btn color="blue darken-1" text @click="addElementToGlobal"
               >Ajouter</v-btn
             >
@@ -99,6 +103,26 @@
         </v-card>
       </v-dialog>
       <!-- /Modal global -->
+      <!-- Bottom menu -->
+      <v-bottom-sheet v-model="sheet">
+        <v-sheet class="text-center" height="200px">
+          <div class="pt-8">
+            <b>Sélectionnez le nouvel élément à créer :</b>
+          </div>
+          <div class="mt-4" @click="sheet = false">
+            <v-btn class="ms-2" color="primary" @click="nouveauTexte" text
+              >Texte</v-btn
+            >
+            <v-btn class="ms-2" color="primary" @click="nouvelleCollection" text
+              >Collection</v-btn
+            >
+            <v-btn class="ms-2" color="primary" @click="nouveauProfil" text
+              >Profil</v-btn
+            >
+          </div>
+        </v-sheet>
+      </v-bottom-sheet>
+      <!-- Bottom menu -->
       <!-- Modal ajouter un texte -->
       <v-dialog v-model="dialogTextes" max-width="500px" persistent scrollable>
         <v-card>
@@ -571,6 +595,7 @@ export default {
   },
   data() {
     return {
+      sheet: false,
       selectedAjoutsGlobal: [],
       // Snackbar
       snackbarAjoute: false,
@@ -759,6 +784,7 @@ export default {
         });
         this.selectedAjoutsGlobal = [];
         AddData.close();
+        this.majDossier();
         this.dialogGlobal = false;
       }
     },
