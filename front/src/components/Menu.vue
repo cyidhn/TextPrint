@@ -22,7 +22,11 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-html="item.title"></v-list-item-title>
+            <v-list-item-title
+              :v-shortkey="item.command ? item.command : []"
+              @shortkey="eventClick(item.link)"
+              v-html="item.title"
+            ></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -43,48 +47,53 @@ export default {
       { title: "Analyses", icon: "mdi-file-find", link: "analyses" },
       { title: "Rapports", icon: "mdi-folder-lock", link: "rapports" },
       { title: "Bases de données", icon: "mdi-database", link: "database" },
-      { title: "Paramètres", icon: "mdi-message-alert", link: "params" }
+      { title: "Paramètres", icon: "mdi-message-alert", link: "params" },
     ],
     fichier: [
       {
         title: "<b>Retour</b>",
         icon: "mdi-keyboard-backspace",
-        link: "retour"
+        link: "retour",
       },
       { title: "Ouvrir", icon: "mdi-file", link: "ouvrir" },
-      { title: "Importer", icon: "mdi-pencil", link: "importer" }
+      { title: "Importer", icon: "mdi-pencil", link: "importer" },
     ],
     params: [
       {
         title: "<b>Retour</b>",
         icon: "mdi-keyboard-backspace",
-        link: "retour"
+        link: "retour",
       },
-      { title: "Déconnexion", icon: "mdi-run", link: "deconnexion" }
+      { title: "Déconnexion", icon: "mdi-run", link: "deconnexion" },
     ],
     nouveau: [
       {
         title: "<b>Retour</b>",
         icon: "mdi-keyboard-backspace",
-        link: "retour"
+        link: "retour",
       },
       {
         title: "Profil connu",
         icon: "mdi-account-outline",
-        link: "profil-connu"
+        link: "profil-connu",
       },
-      { title: "Profil anonyme", icon: "mdi-account", link: "profil-anonyme" },
+      {
+        title: "Profil anonyme",
+        icon: "mdi-account",
+        link: "profil-anonyme",
+        command: '["ctrl", "a"]',
+      },
       { title: "Texte", icon: "mdi-file", link: "texte" },
       { title: "Dossier", icon: "mdi-folder", link: "dossier" },
       {
         title: "Collection",
         icon: "mdi-folder-multiple",
-        link: "collection"
-      }
+        link: "collection",
+      },
     ],
-    items: []
+    items: [],
   }),
-  mounted: function() {
+  mounted: function () {
     this.items = [...this.principal];
   },
   methods: {
@@ -135,7 +144,7 @@ export default {
         this.setCookie("ctex", "1", 1);
         ConnectData.deconnexion();
       }
-    }
-  }
+    },
+  },
 };
 </script>

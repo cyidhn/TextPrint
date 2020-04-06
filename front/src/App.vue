@@ -34,14 +34,14 @@ export default {
     Tabs,
     Menu,
     Dialogs,
-    Connexion
+    Connexion,
   },
 
-  mounted: function() {
+  mounted: function () {
     console.log(`TextPrint - Version 1.02 | Laboratoire IDHN`);
   },
 
-  created: function() {
+  created: function () {
     let result = this.getCookie("ctex");
     if (result == "3") {
       ConnectData.connexion();
@@ -69,12 +69,12 @@ export default {
         }
       }
       return "";
-    }
+    },
   },
 
   data: () => ({
-    etat: ConnectData.state
-  })
+    etat: ConnectData.state,
+  }),
 };
 </script>
 

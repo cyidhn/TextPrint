@@ -4,7 +4,7 @@
     <div v-if="contentTabs.nowId === 1">
       <transition name="slide-fade">
         <div
-          style="overflow: scroll; padding-bottom:300px"
+          style="overflow: scroll; padding-bottom: 300px;"
           :key="id"
           class="taille-f"
         >
@@ -19,9 +19,15 @@
     <!-- Texte -->
     <div v-if="type === 'Texte'">
       <transition name="slide-fade">
-        <div style="overflow: scroll" :key="id" class="taille-f">
+        <div style="overflow: scroll;" :key="id" class="taille-f">
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
-            <v-btn @click="removeTab" depressed small color="error"
+            <v-btn
+              @click="removeTab"
+              v-shortkey="['ctrl', 'x']"
+              @shortkey="removeTab()"
+              depressed
+              small
+              color="error"
               >X Fermer la fenêtre</v-btn
             >
           </div>
@@ -41,9 +47,15 @@
     <!-- Dossiers -->
     <div v-if="type === 'Dossiers'">
       <transition name="slide-fade">
-        <div style="overflow: scroll" :key="id" class="taille-f">
+        <div style="overflow: scroll;" :key="id" class="taille-f">
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
-            <v-btn @click="removeTab" depressed small color="error"
+            <v-btn
+              @click="removeTab"
+              v-shortkey="['ctrl', 'x']"
+              @shortkey="removeTab()"
+              depressed
+              small
+              color="error"
               >X Fermer la fenêtre</v-btn
             >
           </div>
@@ -61,9 +73,15 @@
     <!-- Collections -->
     <div v-if="type === 'Collections'">
       <transition name="slide-fade">
-        <div style="overflow: scroll" :key="id" class="taille-f">
+        <div style="overflow: scroll;" :key="id" class="taille-f">
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
-            <v-btn @click="removeTab" depressed small color="error"
+            <v-btn
+              @click="removeTab"
+              v-shortkey="['ctrl', 'x']"
+              @shortkey="removeTab()"
+              depressed
+              small
+              color="error"
               >X Fermer la fenêtre</v-btn
             >
           </div>
@@ -81,9 +99,15 @@
     <!-- Profil -->
     <div v-if="type === 'Profil'">
       <transition name="slide-fade">
-        <div style="overflow: scroll" :key="id" class="taille-f">
+        <div style="overflow: scroll;" :key="id" class="taille-f">
           <div class="my-2 float-right" v-if="contentTabs.nowId != 1">
-            <v-btn @click="removeTab" depressed small color="error"
+            <v-btn
+              v-shortkey="['ctrl', 'x']"
+              @shortkey="removeTab()"
+              @click="removeTab"
+              depressed
+              small
+              color="error"
               >X Fermer la fenêtre</v-btn
             >
           </div>
@@ -116,18 +140,18 @@ export default {
     Texte,
     Dossier,
     Collection,
-    Profil
+    Profil,
   },
   props: {
     id: Number,
-    content: Array
+    content: Array,
   },
 
   data: () => ({
     title: "",
     type: "",
     save: [],
-    contentTabs: TabsData.state
+    contentTabs: TabsData.state,
   }),
 
   methods: {
@@ -143,7 +167,7 @@ export default {
 
     removeTab() {
       TabsData.remove(TabsData.state.nowId);
-    }
+    },
   },
 
   beforeUpdate() {
@@ -152,7 +176,7 @@ export default {
 
   mounted() {
     this.fetchProps();
-  }
+  },
 };
 </script>
 

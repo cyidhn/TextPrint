@@ -103,7 +103,7 @@
               'Primaire',
               'Secondaire 1',
               'Secondaire 2',
-              'Supérieur'
+              'Supérieur',
             ]"
             label="Niveau d'éducation"
             required
@@ -118,7 +118,7 @@
               'Non spécifiée',
               'Classe populaire',
               'Classe moyenne',
-              'Classe aisée'
+              'Classe aisée',
             ]"
             label="Classe sociale"
             required
@@ -337,7 +337,7 @@ import { TabsData } from "../../flux/Tabs";
 export default {
   props: {
     content: Object,
-    personne: String
+    personne: String,
   },
 
   data: () => ({
@@ -374,24 +374,24 @@ export default {
       { text: "Langue", value: "langue" },
       { text: "Thèmes", value: "themes" },
       { text: "Registre", value: "registre" },
-      { text: "Audience", value: "audience" }
+      { text: "Audience", value: "audience" },
     ],
     textes: [],
     headersCollections: [
       { text: "Titre", value: "titre" },
       { text: "# de textes par l'auteur", value: "nbtextes" },
-      { text: "# de mots par l'auteur", value: "nbmots" }
+      { text: "# de mots par l'auteur", value: "nbmots" },
     ],
     collections: [],
     headersAnalyses: [
       { text: "Titre", value: "titre" },
       { text: "Type d'analyse", value: "type" },
-      { text: "Ressources de l'auteur", value: "ressources" }
+      { text: "Ressources de l'auteur", value: "ressources" },
     ],
     analyses: [],
     headersRapports: [
       { text: "Titre", value: "titre" },
-      { text: "Type de rapport", value: "type" }
+      { text: "Type de rapport", value: "type" },
     ],
     rapports: [],
     headersGlobal: [
@@ -399,7 +399,7 @@ export default {
       { text: "Titre", value: "titre" },
       { text: "Alias", value: "alias" },
       { text: "Prénom", value: "prenom" },
-      { text: "Nom", value: "nom" }
+      { text: "Nom", value: "nom" },
     ],
     contentGlobal: [],
     // Ajouts profils
@@ -419,7 +419,7 @@ export default {
     rechercheAjoutsCollections: "",
     selectedAjoutsCollections: [],
     contentCollections: [],
-    loadingCollections: true
+    loadingCollections: true,
   }),
 
   methods: {
@@ -437,14 +437,14 @@ export default {
       // Appel avec axios
       axios
         .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
-        .then(response => {
+        .then((response) => {
           let result = JSON.parse(response.data);
           this.textes = result;
           console.log("Textes :");
           console.log(this.textes);
           this.loadingTextes = false;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.loadingTextes = false;
         });
@@ -460,12 +460,12 @@ export default {
       // Appel avec axios
       axios
         .post(process.env.VUE_APP_SERVEUR + "/assoc", formData)
-        .then(response => {
+        .then((response) => {
           let result = JSON.parse(response.data);
           this.collections = result;
           this.loadingCollections = false;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.loadingCollections = false;
         });
@@ -481,7 +481,7 @@ export default {
         // Appel avec axios
         axios
           .post(process.env.VUE_APP_SERVEUR + "/changer-type-profil", formData)
-          .then(response => {
+          .then((response) => {
             if (this.formulaire.typeP == "connu") {
               this.formulaire.typeP = "anonyme";
             } else {
@@ -490,7 +490,7 @@ export default {
             alert("Le type de profil a bien été modifié");
             console.log(response);
           })
-          .catch(error => {
+          .catch((error) => {
             alert(error);
           });
       }
@@ -511,7 +511,7 @@ export default {
       // Appel avec axios
       axios
         .post(process.env.VUE_APP_SERVEUR + "/modifier-profil", formData)
-        .then(response => {
+        .then((response) => {
           alert("Sauvegarde effectuée");
           if (
             this.formulaire.alias == "" ||
@@ -529,7 +529,7 @@ export default {
           }
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           alert(error);
         });
     },
@@ -544,12 +544,12 @@ export default {
         formData.append("id", this.content.id);
         axios
           .post(process.env.VUE_APP_SERVEUR + "/supprimer-profil", formData)
-          .then(response => {
+          .then((response) => {
             alert("Le profil a bien été supprimé");
             TabsData.remove(TabsData.state.nowId);
             console.log(response);
           })
-          .catch(error => {
+          .catch((error) => {
             alert(error);
           });
       }
@@ -628,7 +628,7 @@ export default {
       if (this.formulaire.commentaire === "undefined") {
         this.formulaire.commentaire = "";
       }
-    }
+    },
   },
 
   mounted() {
@@ -636,6 +636,6 @@ export default {
     this.fetchProps();
     this.modifsOldVersion();
     this.majProfil();
-  }
+  },
 };
 </script>
