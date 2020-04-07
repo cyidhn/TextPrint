@@ -16,18 +16,17 @@
 </template>
 
 <script>
-import Content from "./Content";
 import { TabsData } from "../flux/Tabs";
 
 export default {
   data: () => ({
     contentTabs: TabsData.state,
     textTitle: "",
-    length: 2
+    length: 2,
   }),
 
   components: {
-    Content
+    Content: () => import("./Content"),
   },
 
   methods: {
@@ -43,7 +42,7 @@ export default {
 
     callEvent(id) {
       TabsData.change(id);
-    }
-  }
+    },
+  },
 };
 </script>
