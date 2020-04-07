@@ -20,10 +20,6 @@
 </template>
 
 <script>
-import Tabs from "./components/Tabs";
-import Menu from "./components/Menu";
-import Dialogs from "./components/Dialogs";
-import Connexion from "./components/Connexion";
 import { ConnectData } from "./flux/Connect";
 // import CreateProfil from "./components/dialogs/CreateProfilConnu";
 
@@ -31,10 +27,10 @@ export default {
   name: "App",
 
   components: {
-    Tabs,
-    Menu,
-    Dialogs,
-    Connexion,
+    Tabs: () => import("./components/Tabs"),
+    Menu: () => import("./components/Menu"),
+    Dialogs: () => import("./components/Dialogs"),
+    Connexion: () => import("./components/Connexion"),
   },
 
   mounted: function () {

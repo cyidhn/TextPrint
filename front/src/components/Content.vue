@@ -127,20 +127,15 @@
 <script>
 // Importations
 import { TabsData } from "../flux/Tabs";
-import Search from "./Search";
-import Texte from "./windows/Texte";
-import Dossier from "./windows/Dossier";
-import Collection from "./windows/Collection";
-import Profil from "./windows/Profil";
 
 // Exportation de la fonction
 export default {
   components: {
-    Search,
-    Texte,
-    Dossier,
-    Collection,
-    Profil,
+    Search: () => import("./Search"),
+    Texte: () => import("./windows/Texte"),
+    Dossier: () => import("./windows/Dossier"),
+    Collection: () => import("./windows/Collection"),
+    Profil: () => import("./windows/Profil"),
   },
   props: {
     id: Number,
