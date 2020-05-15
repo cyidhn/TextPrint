@@ -59,9 +59,6 @@ def analyse_global_idhn(chemin, id_texte, n_version):
     doc.user_data["title"] = "Analyse du texte"
 
     # Analyse du texte
-    # Analyse des entites
-    entities=[(i, i.label_, i.label) for i in doc.ents]
-    htmlEntities = displacy.render(doc, style = "ent",page=True)
 
     # Declaration des variables à analyser
     nbChars = len(texte)
@@ -182,12 +179,10 @@ def analyse_global_idhn(chemin, id_texte, n_version):
                 <h1>Statistiques du texte :</h1>
                 %(stats)s
                 <hr>
-                <h1>Entités nommées :</h5>
-                %(entites)s
             </div>
         </body>
     </html>
-    """ % {"stats": statsHtml, "entites": htmlEntities}
+    """ % {"stats": statsHtml}
 
     # Message importation reussie
     # message_importation_reussie()
@@ -197,7 +192,7 @@ def analyse_global_idhn(chemin, id_texte, n_version):
     linkDoc = "file://" + str(output_path)
     print(linkDoc)
     output_path.open("w", encoding="utf-8",errors="ignore").write("<meta charset='utf-8'>" + baseHtml)
-
+    return linkDoc
     # Afficher le texte du fichier
     #init_window(f)
     #fichier = open(newDoc, "r")

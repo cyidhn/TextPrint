@@ -59,10 +59,6 @@ def analyse_global(chemin, id_texte, n_version):
     doc.user_data["title"] = "Analyse du texte"
 
     # Analyse du texte
-    # Analyse des entites
-    entities=[(i, i.label_, i.label) for i in doc.ents]
-    htmlEntities = displacy.render(doc, style = "ent",page=True)
-
     # Declaration des variables à analyser
     nbChars = len(texte)
     nbMots = len([token.text for token in doc if token.is_punct != True])
@@ -182,15 +178,13 @@ def analyse_global(chemin, id_texte, n_version):
                 <h1 class="text-center font-weight-bold">Texte 1</h1>
                 <h3 class="text-center">Version : 1</h3>
                 <hr>
-                <h5>// Premières statistiques :</h5>
+                <h5>// Fiche de statistiques :</h5>
                 %(stats)s
                 <hr>
-                <h5>// Entités :</h5>
-                %(entites)s
             </div>
         </body>
     </html>
-    """ % {"stats": statsHtml, "entites": htmlEntities}
+    """ % {"stats": statsHtml}
 
     # Message importation reussie
     # message_importation_reussie()
