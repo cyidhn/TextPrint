@@ -87,14 +87,20 @@
 				},
 				{ title: "// Racines", icon: "mdi-file", link: "rien" },
 				{ title: "// Lemmes", icon: "mdi-file", link: "rien" },
-				{ title: "Étiquettes grammaticales", link: "egram" },
-				{ title: "N-grammes", link: "ngrammes" },
+				{ title: "Étiquettes grammaticales", icon: "mdi-file", link: "egram" },
+				{ title: "N-grammes", icon: "mdi-file", link: "ngrammes" },
 			],
 			egram: [
 				{
 					title: "<b>Retour</b>",
 					icon: "mdi-keyboard-backspace",
 					link: "versions",
+				},
+				{ title: "Catégories grammaticales", icon: "mdi-file", link: "rien" },
+				{
+					title: "Mots outils vs Mots lexicaux",
+					icon: "mdi-file",
+					link: "rien",
 				},
 			],
 			ngrammes: [
@@ -103,6 +109,15 @@
 					icon: "mdi-keyboard-backspace",
 					link: "versions",
 				},
+				{ title: "N-grammes de caractères", icon: "mdi-file", link: "rien" },
+				{ title: "N-grammes de mots", icon: "mdi-file", link: "ngmots" },
+				{
+					title: "N-grammes de catégories grammaticales",
+					icon: "mdi-file",
+					link: "rien",
+				},
+				{ title: "// N-grammes de racines", icon: "mdi-file", link: "rien" },
+				{ title: "// N-grammes de lemmes", icon: "mdi-file", link: "rien" },
 			],
 			fichier: [
 				{
@@ -184,6 +199,9 @@
 				}
 				if (ref === "database") {
 					TabsData.bdd();
+				}
+				if (ref === "ngmots") {
+					DialogsData.open("ngmots");
 				}
 				if (ref === "profil-connu") {
 					DialogsData.open("profil-connu");

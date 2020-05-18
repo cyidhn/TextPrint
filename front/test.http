@@ -1,0 +1,15 @@
+
+
+GET http://localhost:9200/
+
+
+# 
+# Envoi d'une requete texte
+POST chemi-auteurs/_doc/
+{
+    "auteur": "Jérémy DEMANGE",
+    "description": "Ceci est une description de l'auteur"
+}
+
+# Search
+GET /chemi-*/_search?q=titre:texte&size=5&terminate_after=5
