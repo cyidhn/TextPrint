@@ -16,9 +16,10 @@ import os.path
 import calendar
 import time
 from analyse import *
+from ngrammes import analyse_ngrammes_mots
 from analyse_idhn import *
 from langdetect import detect
-import chardet    
+import chardet
 import io
 import sys
 # For IDHN
@@ -26,7 +27,7 @@ from zipfile import *
 
 #
 # Route de base
-# 
+#
 @app.route('/')
 def index():
     db_init()
@@ -35,6 +36,7 @@ def index():
             return redirect('/page')
     return render_template('index.html')
 
+
 @app.route('/page')
 def page():
     if 'connect' in session:
@@ -42,10 +44,12 @@ def page():
             return render_template('page.html')
     return redirect('/')
 
+
 @app.route('/deconnexion')
 def deconnexion():
     session['connect'] = 0
     return redirect('/')
+
 
 @app.route('/connexion')
 def connexion():
@@ -56,36 +60,36 @@ def connexion():
 # Route dynamique
 #
 
-# 
+#
 # Code pour IDHN
 # A supprimer en prod!!!
-# 
+#
 #
 # ZIP file
 #
 @app.route("/importer-image-idhn", methods=["POST"])
 def importerImg():
-    if request.method == 'POST':  
+    if request.method == 'POST':
 
         # Ajout du fichier
         path = 'static/idhn_image'
         ts = calendar.timegm(time.gmtime())
-        f = request.files['import']  
+        f = request.files['import']
         name = str(ts) + ".txt"
         name_return = str(ts)
         fa = os.path.join(path, name)
-        f.save(fa)  
+        f.save(fa)
         content = open(fa, "rb").read()
         result = chardet.detect(content)
         if (result['encoding'] != "utf-8"):
             if (result['encoding'] == "ISO-8859-1"):
                 content = content.decode('iso-8859-1').encode('utf8')
-                #return "Le fichier doit être en UTF-8", 405
+                # return "Le fichier doit être en UTF-8", 405
             elif (result['encoding'] == "UTF-8-SIG"):
                 print("Alright")
-                #return "Fichier conforme", 200
+                # return "Fichier conforme", 200
             else:
-                return "Le fichier doit être codé en UTF-8", 405            
+                return "Le fichier doit être codé en UTF-8", 405
         content = content.decode('utf8')
         fi = open(fa, "w")
         fi.write(content)
@@ -115,9 +119,10 @@ def importerImg():
             langue=langue,
             name=name_return
         )
-        #return name_return, 201
+        # return name_return, 201
 
     # return "Problem"
+
 
 @app.route('/download-idhn/<elementId>')
 def downloadIdhn(elementId):
@@ -125,38 +130,39 @@ def downloadIdhn(elementId):
     myZip = os.path.join(path, elementId + '.zip')
     # create a ZipFile object
     zipObj = ZipFile(myZip, 'w')
-    
+
     # Add multiple files to the zip
     zipObj.write(os.path.join(path, elementId + '.txt'))
     zipObj.write(os.path.join(path, elementId + '_analyse.html'))
-    
+
     # close the Zip File
     zipObj.close()
     return redirect('/static/textes/' + elementId + '.zip')
 
+
 @app.route("/importer-texte-idhn", methods=["POST"])
 def importerTexteIdhn():
-    if request.method == 'POST':  
+    if request.method == 'POST':
 
         # Ajout du fichier
         path = 'static/idhn'
         ts = calendar.timegm(time.gmtime())
-        f = request.files['importer-texte']  
+        f = request.files['importer-texte']
         name = str(ts) + ".txt"
         name_return = str(ts)
         fa = os.path.join(path, name)
-        f.save(fa)  
+        f.save(fa)
         content = open(fa, "rb").read()
         result = chardet.detect(content)
         if (result['encoding'] != "utf-8"):
             if (result['encoding'] == "ISO-8859-1"):
                 content = content.decode('iso-8859-1').encode('utf8')
-                #return "Le fichier doit être en UTF-8", 405
+                # return "Le fichier doit être en UTF-8", 405
             elif (result['encoding'] == "UTF-8-SIG"):
                 print("Alright")
-                #return "Fichier conforme", 200
+                # return "Fichier conforme", 200
             else:
-                return "Le fichier doit être codé en UTF-8", 405            
+                return "Le fichier doit être codé en UTF-8", 405
         content = content.decode('utf8')
         fi = open(fa, "w")
         fi.write(content)
@@ -186,7 +192,7 @@ def importerTexteIdhn():
             langue=langue,
             name=name_return
         )
-        #return name_return, 201
+        # return name_return, 201
 
     # return "Problem"
 
@@ -221,7 +227,8 @@ def imprimerCollection(elementId):
         titre = r[1]
 
     # Requete de donnees
-    req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s'" % (elementId, 'Collection')
+    req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s'" % (
+        elementId, 'Collection')
 
     # Executer la requete
     data = db_search(req)
@@ -298,7 +305,8 @@ def imprimerDossier(elementId):
         titre = r[1]
 
     # Requete de donnees
-    req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s'" % (elementId, 'Dossier')
+    req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s'" % (
+        elementId, 'Dossier')
 
     # Executer la requete
     data = db_search(req)
@@ -367,6 +375,7 @@ def lastidprofil():
     # Faire un retour de resultat
     return jsonify(result)
 
+
 @app.route("/lastid-dossier", methods=["GET"])
 def lastiddossier():
 
@@ -382,6 +391,7 @@ def lastiddossier():
 
     # Faire un retour de resultat
     return jsonify(result)
+
 
 @app.route("/lastid-collection", methods=["GET"])
 def lastidcollection():
@@ -399,6 +409,7 @@ def lastidcollection():
     # Faire un retour de resultat
     return jsonify(result)
 
+
 @app.route("/lastid-texte", methods=["GET"])
 def lastidtexte():
 
@@ -414,6 +425,7 @@ def lastidtexte():
 
     # Faire un retour de resultat
     return jsonify(result)
+
 
 @app.route("/creer-dossier", methods=["POST"])
 def creerDossier():
@@ -444,14 +456,15 @@ def creerCollection():
     titre = escape(request.form["titre"])
 
     # Verifier si le titre existe deja
-    req = db_search("""SELECT * FROM tpCollections WHERE titre='%s'""" % (titre))
+    req = db_search(
+        """SELECT * FROM tpCollections WHERE titre='%s'""" % (titre))
 
     for r in req:
         return "Le titre attribué existe déjà. Merci de changer le nom de la collection.", 401
 
     # Requete pour inserer les donnees
     req = "INSERT INTO tpCollections (titre) VALUES ('%s')" % (titre)
-    
+
     # Inserer en bdd
     db_add(req)
 
@@ -483,10 +496,12 @@ def profil():
     # Faire un retour de resultat
     return alias
 
+
 @app.route("/ready-to-post", methods=["POST"])
 def readyToPost():
     alias = escape(request.form["alias"])
     return "Vous avez envoyé : " + alias, 201
+
 
 @app.route("/modifier-profil", methods=["POST"])
 def modifierProfil():
@@ -514,6 +529,7 @@ def modifierProfil():
     # Faire un retour de resultat
     return alias
 
+
 @app.route("/modifier-collection", methods=["POST"])
 def modifierCollectionO():
 
@@ -533,6 +549,7 @@ def modifierCollectionO():
 
     # Faire un retour de resultat
     return "ok"
+
 
 @app.route("/modifier-dossier", methods=["POST"])
 def modifierDossier():
@@ -554,6 +571,7 @@ def modifierDossier():
     # Faire un retour de resultat
     return "ok"
 
+
 @app.route("/modifier-collection", methods=["POST"])
 def modifierCollection():
 
@@ -573,6 +591,7 @@ def modifierCollection():
 
     # Faire un retour de resultat
     return "ok"
+
 
 @app.route("/modifier-texte", methods=["POST"])
 def modifierTexte():
@@ -607,7 +626,8 @@ def textesbyprofil():
     idProfil = escape(request.form["id"])
 
     # Requete de donnees
-    req = "SELECT * FROM tpAssociationProfilTextes WHERE id_profil = %s" % (idProfil)
+    req = "SELECT * FROM tpAssociationProfilTextes WHERE id_profil = %s" % (
+        idProfil)
 
     # Executer la requete
     data = db_search(req)
@@ -633,9 +653,9 @@ def textesbyprofil():
               </tr>
             """ % (t[2], t[4], t[6], t[7], t[8])
 
-
     # Faire un retour de resultat
     return statsTexte, 201
+
 
 @app.route("/assoc", methods=["POST"])
 def assoc():
@@ -646,7 +666,8 @@ def assoc():
     getElement = escape(request.form["get"])
 
     # Requete de donnees
-    req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s' AND champs2 = '%s'" % (idElement, typeElement, getElement)
+    req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s' AND champs2 = '%s'" % (
+        idElement, typeElement, getElement)
     #req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s' AND champs2 = '%s'" % (idElement, typeElement, getElement)
 
     # Executer la requete
@@ -791,7 +812,6 @@ def assoc():
     return jsonify(statsTexte), 201
 
 
-
 @app.route("/resultassocoiation", methods=["POST"])
 def resultassocoiation():
 
@@ -801,7 +821,8 @@ def resultassocoiation():
     getElement = escape(request.form["get"])
 
     # Requete de donnees
-    req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s' AND champs2 = '%s'" % (idElement, typeElement, getElement)
+    req = "SELECT * FROM tpAssociationGenerale WHERE idchamps1 = %s AND champs1 = '%s' AND champs2 = '%s'" % (
+        idElement, typeElement, getElement)
 
     # Executer la requete
     data = db_search(req)
@@ -921,6 +942,7 @@ def texte():
     # Faire un retour de resultat
     return titre, 201
 
+
 @app.route("/associer-profil-texte", methods=["POST"])
 def associerProfilTexte():
 
@@ -938,6 +960,7 @@ def associerProfilTexte():
     # Faire un retour de resultat
     return "Done", 201
 
+
 @app.route("/associer-generalement", methods=["POST"])
 def associerGeneralement():
 
@@ -948,7 +971,8 @@ def associerGeneralement():
     idchamps2 = escape(request.form["idchamps2"])
 
     # Verifier si le titre existe deja
-    req = db_search("""SELECT * FROM tpAssociationGenerale WHERE champs1='%s' AND champs2='%s' AND idchamps1=%s AND idchamps2=%s""" % (champs1, champs2, idchamps1, idchamps2))
+    req = db_search("""SELECT * FROM tpAssociationGenerale WHERE champs1='%s' AND champs2='%s' AND idchamps1=%s AND idchamps2=%s""" %
+                    (champs1, champs2, idchamps1, idchamps2))
 
     for r in req:
         return "L'assocoiation existe déjà.", 401
@@ -962,6 +986,7 @@ def associerGeneralement():
 
     # Faire un retour de resultat
     return "Done", 201
+
 
 @app.route("/search", methods=["POST", "GET"])
 def search():
@@ -987,6 +1012,7 @@ def supprimerProfil():
     db_add(req)
 
     return "Element supprimé.", 201
+
 
 @app.route("/supprimer-association", methods=["POST"])
 def supprimerAssociation():
@@ -1090,7 +1116,8 @@ def searchbyid():
         age = "0"
         if r[4] is not "":
             age = r[4]
-        result += '{"type": "Profil", "typeP": "%s", "alias": "%s", "id": %s, "prenom": "%s", "nom": "%s", "age": "%s", "sexe": "%s", "education": "%s", "sociale": "%s", "commentaire": "%s"}' % (r[9], r[1], str(r[0]), r[2], r[3], str(age), r[5], r[6], r[7], r[8])
+        result += '{"type": "Profil", "typeP": "%s", "alias": "%s", "id": %s, "prenom": "%s", "nom": "%s", "age": "%s", "sexe": "%s", "education": "%s", "sociale": "%s", "commentaire": "%s"}' % (
+            r[9], r[1], str(r[0]), r[2], r[3], str(age), r[5], r[6], r[7], r[8])
         i += 1
     result += "]"
 
@@ -1098,6 +1125,7 @@ def searchbyid():
 
     # Faire un retour de resultat
     return jsonify(result)
+
 
 @app.route("/search-texte", methods=["POST", "GET"])
 def searchtexte():
@@ -1119,7 +1147,8 @@ def searchtexte():
     for r in req:
         if i > 0:
             result += ","
-        result += '{"type": "Texte", "id": %s, "fichier": "%s", "titre": "%s", "paternite": "%s", "typeDocument1": "%s", "specification": "%s", "typeEcriture": "%s", "segmentation": "%s", "langue": "%s", "registre": "%s", "commentaire": "%s", "typeDocument2": "%s", "typeDocument3": "%s"}' % (str(r[0]), r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10], r[11], r[12])
+        result += '{"type": "Texte", "id": %s, "fichier": "%s", "titre": "%s", "paternite": "%s", "typeDocument1": "%s", "specification": "%s", "typeEcriture": "%s", "segmentation": "%s", "langue": "%s", "registre": "%s", "commentaire": "%s", "typeDocument2": "%s", "typeDocument3": "%s"}' % (
+            str(r[0]), r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10], r[11], r[12])
         i += 1
     result += "]"
 
@@ -1151,7 +1180,8 @@ def searchdossier():
     for r in req:
         if i > 0:
             result += ","
-        result += '{"type": "Dossiers", "id": %s, "titre": "%s", "commentaire": "%s"}' % (str(r[0]), r[1], r[2])
+        result += '{"type": "Dossiers", "id": %s, "titre": "%s", "commentaire": "%s"}' % (
+            str(r[0]), r[1], r[2])
         i += 1
     result += "]"
 
@@ -1159,6 +1189,7 @@ def searchdossier():
 
     # Faire un retour de resultat
     return jsonify(result)
+
 
 @app.route("/search-collection", methods=["POST", "GET"])
 def searchcollection():
@@ -1180,7 +1211,8 @@ def searchcollection():
     for r in req:
         if i > 0:
             result += ","
-        result += '{"type": "Collections", "id": %s, "titre": "%s", "commentaire": "%s"}' % (str(r[0]), r[1], r[2])
+        result += '{"type": "Collections", "id": %s, "titre": "%s", "commentaire": "%s"}' % (
+            str(r[0]), r[1], r[2])
         i += 1
     result += "]"
 
@@ -1189,17 +1221,18 @@ def searchcollection():
     # Faire un retour de resultat
     return jsonify(result)
 
+
 @app.route("/verifier-texte", methods=["POST"])
 def verifierTexte():
-    if request.method == 'POST':  
+    if request.method == 'POST':
 
         # Ajout du fichier
         path = 'static/textes'
         ts = calendar.timegm(time.gmtime())
-        f = request.files['importer-texte']  
+        f = request.files['importer-texte']
         name = str(ts) + ".txt"
         fa = os.path.join(path, name)
-        f.save(fa) 
+        f.save(fa)
 
         # Detection du fichier
         content = open(fa, 'rb').read()
@@ -1208,19 +1241,18 @@ def verifierTexte():
         if (result['encoding'] != "utf-8"):
             if (result['encoding'] == "ISO-8859-1"):
                 content = content.decode('iso-8859-1').encode('utf8')
-                #return "Le fichier doit être en UTF-8", 405
+                # return "Le fichier doit être en UTF-8", 405
             elif (result['encoding'] == "UTF-8-SIG"):
                 return "Fichier conforme", 200
             else:
-                return "Le fichier doit être codé en UTF-8", 405            
+                return "Le fichier doit être codé en UTF-8", 405
         content = content.decode('utf8')
-        
 
         # Texte que l'on va ouvrir
         #content = open(fa, "r")
         #texte = content.read().encode('utf8')
-        #content.close()
-        
+        # content.close()
+
         print(content)
         # texte = content
 
@@ -1237,6 +1269,7 @@ def verifierTexte():
         # Si tout se passe bien
         return "Fichier conforme", 200
 
+
 @app.route("/champs-personnalises-resultat", methods=["POST"])
 def champsPersonnalisesResultat():
 
@@ -1245,7 +1278,8 @@ def champsPersonnalisesResultat():
     #req = "1"
 
     # Recherche en DB
-    req = db_search("SELECT * FROM tpChampsPersonnalisesProfil WHERE idProfil = " + req)
+    req = db_search(
+        "SELECT * FROM tpChampsPersonnalisesProfil WHERE idProfil = " + req)
 
     # Boucle
     result = '['
@@ -1253,7 +1287,8 @@ def champsPersonnalisesResultat():
     for r in req:
         if i > 0:
             result += ","
-        result += '{"id": %s, "nomChamps": "%s", "contenu": "%s", "idProfil": "%s"}' % (r[0], r[1], r[2], r[3])
+        result += '{"id": %s, "nomChamps": "%s", "contenu": "%s", "idProfil": "%s"}' % (
+            r[0], r[1], r[2], r[3])
         i += 1
     result += "]"
 
@@ -1262,7 +1297,7 @@ def champsPersonnalisesResultat():
     # Faire un retour de resultat
     return jsonify(result)
 
-            
+
 @app.route("/ajouter-champs-personnalises", methods=["POST"])
 def ajouterChampsPersonnalises():
 
@@ -1278,7 +1313,7 @@ def ajouterChampsPersonnalises():
     # Enregistrer le type de profil
     db_add(req)
 
-    # Message 
+    # Message
     return "Champs personnalisés bien ajouté", 201
 
 
@@ -1296,7 +1331,7 @@ def supprimerChampsPersonnalises():
     # Enregistrer le type de profil
     db_add(req)
 
-    # Message 
+    # Message
     return "Champs personnalisés bien supprimés", 201
 
 
@@ -1326,30 +1361,29 @@ def changerTypeProfil():
     return "Type de profil modifié avec succès", 201
 
 
-
 @app.route("/importer-texte", methods=["POST"])
 def importerTexte():
-    if request.method == 'POST':  
+    if request.method == 'POST':
 
         # Ajout du fichier
         path = 'static/textes'
         ts = calendar.timegm(time.gmtime())
-        f = request.files['importer-texte']  
+        f = request.files['importer-texte']
         name = str(ts) + ".txt"
         name_return = str(ts)
         fa = os.path.join(path, name)
-        f.save(fa)  
+        f.save(fa)
         content = open(fa, "rb").read()
         result = chardet.detect(content)
         if (result['encoding'] != "utf-8"):
             if (result['encoding'] == "ISO-8859-1"):
                 content = content.decode('iso-8859-1').encode('utf8')
-                #return "Le fichier doit être en UTF-8", 405
+                # return "Le fichier doit être en UTF-8", 405
             elif (result['encoding'] == "UTF-8-SIG"):
                 print("Alright")
-                #return "Fichier conforme", 200
+                # return "Fichier conforme", 200
             else:
-                return "Le fichier doit être codé en UTF-8", 405            
+                return "Le fichier doit être codé en UTF-8", 405
         content = content.decode('utf8')
         fi = open(fa, "w")
         fi.write(content)
@@ -1379,9 +1413,10 @@ def importerTexte():
             langue=langue,
             name=name_return
         )
-        #return name_return, 201
+        # return name_return, 201
 
     # return "Problem"
+
 
 @app.route("/test", methods=["POST", "GET"])
 def test():
@@ -1393,10 +1428,13 @@ def test():
         form = ""
 
     # Recherche en DB
-    req = db_search("SELECT * FROM tpProfils WHERE alias LIKE '%" + form + "%' OR nom LIKE '%" + form + "%' OR prenom LIKE '%" + form + "%'")
+    req = db_search("SELECT * FROM tpProfils WHERE alias LIKE '%" + form +
+                    "%' OR nom LIKE '%" + form + "%' OR prenom LIKE '%" + form + "%'")
     req2 = db_search("SELECT * FROM tpTexte WHERE titre LIKE '%" + form + "%'")
-    req3 = db_search("SELECT * FROM tpDossiers WHERE titre LIKE '%" + form + "%'")
-    req4 = db_search("SELECT * FROM tpCollections WHERE titre LIKE '%" + form + "%'")
+    req3 = db_search(
+        "SELECT * FROM tpDossiers WHERE titre LIKE '%" + form + "%'")
+    req4 = db_search(
+        "SELECT * FROM tpCollections WHERE titre LIKE '%" + form + "%'")
 
     # Boucle
     result = '['
@@ -1404,17 +1442,20 @@ def test():
     for r in req2:
         if i > 0:
             result += ","
-        result += '{"type": "Texte", "id": %s, "fichier": "%s", "titre": "%s", "paternite": "%s", "typeDocument1": "%s", "specification": "%s", "typeEcriture": "%s", "segmentation": "%s", "langue": "%s", "registre": "%s", "commentaire": "%s", "typeDocument2": "%s", "typeDocument3": "%s"}' % (escape(str(r[0])), escape(r[1]), escape(r[2]), escape(r[3]), escape(r[4]), escape(r[5]), escape(r[6]), escape(r[7]), escape(r[8]), escape(r[9]), escape(r[10]), escape(r[11]), escape(r[12]))
+        result += '{"type": "Texte", "id": %s, "fichier": "%s", "titre": "%s", "paternite": "%s", "typeDocument1": "%s", "specification": "%s", "typeEcriture": "%s", "segmentation": "%s", "langue": "%s", "registre": "%s", "commentaire": "%s", "typeDocument2": "%s", "typeDocument3": "%s"}' % (
+            escape(str(r[0])), escape(r[1]), escape(r[2]), escape(r[3]), escape(r[4]), escape(r[5]), escape(r[6]), escape(r[7]), escape(r[8]), escape(r[9]), escape(r[10]), escape(r[11]), escape(r[12]))
         i += 1
     for r in req3:
         if i > 0:
             result += ","
-        result += '{"type": "Dossiers", "id": %s, "titre": "%s"}' % (escape(str(r[0])), escape(r[1]))
+        result += '{"type": "Dossiers", "id": %s, "titre": "%s"}' % (
+            escape(str(r[0])), escape(r[1]))
         i += 1
     for r in req4:
         if i > 0:
             result += ","
-        result += '{"type": "Collections", "id": %s, "titre": "%s"}' % (escape(str(r[0])), escape(r[1]))
+        result += '{"type": "Collections", "id": %s, "titre": "%s"}' % (
+            escape(str(r[0])), escape(r[1]))
         i += 1
     for r in req:
         if i > 0:
@@ -1422,7 +1463,8 @@ def test():
         age = "0"
         if r[4] is not "":
             age = r[4]
-        result += '{"type": "Profil", "typeP": "%s", "alias": "%s", "id": %s, "prenom": "%s", "nom": "%s", "age": "%s", "sexe": "%s", "education": "%s", "sociale": "%s", "commentaire": "%s"}' % (escape(r[9]), escape(r[1]), escape(str(r[0])), escape(r[2]), escape(r[3]), escape(str(age)), escape(r[5]), escape(r[6]), escape(r[7]), escape(r[8]))
+        result += '{"type": "Profil", "typeP": "%s", "alias": "%s", "id": %s, "prenom": "%s", "nom": "%s", "age": "%s", "sexe": "%s", "education": "%s", "sociale": "%s", "commentaire": "%s"}' % (
+            escape(r[9]), escape(r[1]), escape(str(r[0])), escape(r[2]), escape(r[3]), escape(str(age)), escape(r[5]), escape(r[6]), escape(r[7]), escape(r[8]))
         i += 1
     result += "]"
 
@@ -1431,6 +1473,7 @@ def test():
 
     # Faire un retour de resultat
     return jsonify(result)
+
 
 @app.route("/search-profil", methods=["POST", "GET"])
 def searchmyprofil():
@@ -1455,7 +1498,8 @@ def searchmyprofil():
         age = "0"
         if r[4] is not "":
             age = r[4]
-        result += '{"type": "Profil", "typeP": "%s", "alias": "%s", "id": %s, "prenom": "%s", "nom": "%s", "age": "%s", "sexe": "%s", "education": "%s", "sociale": "%s", "commentaire": "%s"}' % (r[9], r[1], str(r[0]), r[2], r[3], str(age), r[5], r[6], r[7], r[8])
+        result += '{"type": "Profil", "typeP": "%s", "alias": "%s", "id": %s, "prenom": "%s", "nom": "%s", "age": "%s", "sexe": "%s", "education": "%s", "sociale": "%s", "commentaire": "%s"}' % (
+            r[9], r[1], str(r[0]), r[2], r[3], str(age), r[5], r[6], r[7], r[8])
         i += 1
     result += "]"
 
@@ -1463,6 +1507,7 @@ def searchmyprofil():
 
     # Faire un retour de resultat
     return jsonify(result)
+
 
 @app.route("/searchprofil", methods=["POST", "GET"])
 def searchprofil():
@@ -1474,7 +1519,8 @@ def searchprofil():
         form = ""
 
     # Recherche en DB
-    req = db_search("SELECT * FROM tpProfils WHERE alias LIKE '%" + form + "%' OR nom LIKE '%" + form + "%' OR prenom LIKE '%" + form + "%'")
+    req = db_search("SELECT * FROM tpProfils WHERE alias LIKE '%" + form +
+                    "%' OR nom LIKE '%" + form + "%' OR prenom LIKE '%" + form + "%'")
 
     # Boucle
     result = '['
@@ -1485,7 +1531,8 @@ def searchprofil():
         age = "0"
         if r[4] is not "":
             age = r[4]
-        result += '{"type": "Profil", "typeP": "%s", "alias": "%s", "id": %s, "prenom": "%s", "nom": "%s", "age": "%s", "sexe": "%s", "education": "%s", "sociale": "%s", "commentaire": "%s"}' % (r[9], r[1], str(r[0]), r[2], r[3], str(age), r[5], r[6], r[7], r[8])
+        result += '{"type": "Profil", "typeP": "%s", "alias": "%s", "id": %s, "prenom": "%s", "nom": "%s", "age": "%s", "sexe": "%s", "education": "%s", "sociale": "%s", "commentaire": "%s"}' % (
+            r[9], r[1], str(r[0]), r[2], r[3], str(age), r[5], r[6], r[7], r[8])
         i += 1
     result += "]"
 
@@ -1494,6 +1541,7 @@ def searchprofil():
 
     # Faire un retour de resultat
     return jsonify(result)
+
 
 @app.route("/searchtextes", methods=["POST", "GET"])
 def searchetextes():
@@ -1513,7 +1561,8 @@ def searchetextes():
     for r in req:
         if i > 0:
             result += ","
-        result += '{"type": "Texte", "id": %s, "fichier": "%s", "titre": "%s", "paternite": "%s", "typeDocument1": "%s", "specification": "%s", "typeEcriture": "%s", "segmentation": "%s", "langue": "%s", "registre": "%s", "commentaire": "%s", "typeDocument2": "%s", "typeDocument3": "%s"}' % (str(r[0]), r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10], r[11], r[12])
+        result += '{"type": "Texte", "id": %s, "fichier": "%s", "titre": "%s", "paternite": "%s", "typeDocument1": "%s", "specification": "%s", "typeEcriture": "%s", "segmentation": "%s", "langue": "%s", "registre": "%s", "commentaire": "%s", "typeDocument2": "%s", "typeDocument3": "%s"}' % (
+            str(r[0]), r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10], r[11], r[12])
         i += 1
     result += "]"
 
@@ -1522,6 +1571,7 @@ def searchetextes():
 
     # Faire un retour de resultat
     return jsonify(result)
+
 
 @app.route("/searchcollections", methods=["POST", "GET"])
 def searchcollections():
@@ -1533,7 +1583,8 @@ def searchcollections():
         form = ""
 
     # Recherche en DB
-    req = db_search("SELECT * FROM tpCollections WHERE titre LIKE '%" + form + "%'")
+    req = db_search(
+        "SELECT * FROM tpCollections WHERE titre LIKE '%" + form + "%'")
 
     # Boucle
     result = '['
@@ -1541,7 +1592,8 @@ def searchcollections():
     for r in req:
         if i > 0:
             result += ","
-        result += '{"type": "Collections", "id": %s, "titre": "%s", "commentaire": "%s"}' % (str(r[0]), r[1], r[2])
+        result += '{"type": "Collections", "id": %s, "titre": "%s", "commentaire": "%s"}' % (
+            str(r[0]), r[1], r[2])
         i += 1
     result += "]"
 
@@ -1550,6 +1602,7 @@ def searchcollections():
 
     # Faire un retour de resultat
     return jsonify(result)
+
 
 @app.route("/searchthedossiers", methods=["POST", "GET"])
 def searchthedossiers():
@@ -1561,7 +1614,8 @@ def searchthedossiers():
         form = ""
 
     # Recherche en DB
-    req = db_search("SELECT * FROM tpDossiers WHERE titre LIKE '%" + form + "%'")
+    req = db_search(
+        "SELECT * FROM tpDossiers WHERE titre LIKE '%" + form + "%'")
 
     # Boucle
     result = '['
@@ -1569,7 +1623,8 @@ def searchthedossiers():
     for r in req:
         if i > 0:
             result += ","
-        result += '{"type": "Dossiers", "id": %s, "titre": "%s", "commentaire": "%s"}' % (str(r[0]), r[1], r[2])
+        result += '{"type": "Dossiers", "id": %s, "titre": "%s", "commentaire": "%s"}' % (
+            str(r[0]), r[1], r[2])
         i += 1
     result += "]"
 
