@@ -8,9 +8,6 @@ app = Flask(__name__)
 app.secret_key = 'dhbjnbhz68Gbzbzbhu'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app, support_credentials=True, resources={r"/*": {"origins": "*"}})
-
-
-
 from routes import *
 
 if __name__ == "__main__":

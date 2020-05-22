@@ -8,11 +8,12 @@
 					<v-form ref="form" v-model="valid" lazy-validation>
 						<v-row>
 							<v-col cols="12">
+								<p>Texte sélectionné : <b>Texte pour test (1)</b></p>
 								<v-text-field
 									v-model="nom"
-									label="Titre du dossier*"
+									label="Nombre de N"
 									autocomplete="nope"
-									hint="Donner un nom unique à votre nouveau dossier."
+									hint="Sélectionnez un chiffre entre 2 et 9."
 									:rules="nomRules"
 									required
 								></v-text-field>
@@ -31,7 +32,10 @@
 						>Fermer</v-btn
 					>
 					<v-btn color="blue darken-1" :disabled="!valid" text @click="validate"
-						>Créer</v-btn
+						>Retour</v-btn
+					>
+					<v-btn color="blue darken-1" :disabled="!valid" text @click="validate"
+						>Générer le résultat</v-btn
 					>
 				</v-card-actions>
 			</v-card>
