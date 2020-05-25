@@ -1127,6 +1127,33 @@ def searchbyid():
     return jsonify(result)
 
 
+@app.route("/search-versions", methods=["POST", "GET"])
+def searchversions():
+
+    # Recuperer les donnees
+    if request.method == 'POST':
+        req = request.form["reqText"]
+        req = db_search("SELECT * FROM tpVersions WHERE idText = " + req + "")
+    else:
+        req = db_search("SELECT * FROM tpVersions")
+
+    # Boucle
+    result = '['
+    i = 0
+    for r in req:
+        if i > 0:
+            result += ","
+        result += '{"id": %s, "pretraitement": "%s", "specification": "%s", "link": "%s"}' % (
+            str(r[0]), r[1], r[2], r[4])
+        i += 1
+    result += "]"
+
+    # result = json.loads(result)
+
+    # Faire un retour de resultat
+    return jsonify(result)
+
+
 @app.route("/search-texte", methods=["POST", "GET"])
 def searchtexte():
 

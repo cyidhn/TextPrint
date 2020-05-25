@@ -295,7 +295,14 @@
 				item-key="id"
 				show-select
 				class="elevation-1"
-			></v-data-table>
+			>
+				<!-- Template view -->
+				<template v-slot:item.actions="{ item }">
+					<v-icon small class="ml-1" @click="viewIframe(item.link)">
+						mdi-eye
+					</v-icon>
+				</template>
+			</v-data-table>
 			<hr class="mt-8 mb-8" />
 			<!-- /Ajout un element -->
 			<!-- /Versions -->
@@ -512,11 +519,9 @@
 			searchVersions: "",
 			selectedVersions: [],
 			headersVersions: [
-				{ text: "Titre", value: "titre" },
-				{ text: "# de mots", value: "nbmots" },
-				{ text: "Type de prétraitement", value: "typepretraitement" },
+				{ text: "Type de prétraitement", value: "pretraitement" },
 				{ text: "Spécifications", value: "specification" },
-				{ text: "Commentaires", value: "commentaires" },
+				{ text: "Voir", value: "actions", sortable: false },
 			],
 			versions: [],
 			// Ajout d'une collection
@@ -568,6 +573,9 @@
 			loadingProfils: true,
 		}),
 		methods: {
+			viewIframe(link) {
+				console.log("Lien : " + link);
+			},
 			viewItem(item) {
 				let formData = new FormData();
 				// Pour les profils
@@ -856,6 +864,26 @@
 					});
 				// /TypeProfils
 			},
+			addVersions() {
+				// Versions
+				// Ajout en formulaire
+				let formData = new FormData();
+				// formData.append("reqText", this.content.id);
+				formData.append("reqText", 1);
+
+				// Appel avec axios
+				axios
+					.post(process.env.VUE_APP_SERVEUR + "/search-versions", formData)
+					.then((response) => {
+						console.log("Les versions :");
+						this.versions = response.data;
+					})
+					.catch((error) => {
+						console.log("Erreur dans les versions...");
+						console.error(error);
+					});
+				// /Versions
+			},
 			nouveauProfil() {
 				DialogsData.open("profil-connu");
 				DialogsData.addToFolder("Texte", this.content.id);
@@ -1025,6 +1053,7 @@
 			},
 		},
 		created() {
+			this.addVersions();
 			this.handleChangeType1();
 			console.log(this.content);
 			this.titre = this.content.titre;
