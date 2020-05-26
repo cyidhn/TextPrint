@@ -39,7 +39,7 @@
 			</v-card>
 		</v-dialog>
 		<!-- /Modal ajouter un texte -->
-		<v-dialog v-model="data.ngmots" persistent scrollable max-width="500px">
+		<v-dialog v-model="data.ngchars" persistent scrollable max-width="500px">
 			<v-card>
 				<v-card-title>N-grammes de caractères</v-card-title>
 				<v-divider></v-divider>
@@ -166,7 +166,7 @@
 				console.log("Ok");
 			},
 			checkDialog() {
-				DialogsData.close("ngmots");
+				DialogsData.close("ngchars");
 			},
 			reset() {
 				this.$refs.form.reset();
@@ -182,7 +182,7 @@
 					// Appel avec axios
 					axios
 						.post(
-							process.env.VUE_APP_SERVEUR + "/ngrams-mots-generate",
+							process.env.VUE_APP_SERVEUR + "/ngrams-chars-generate",
 							formData
 						)
 						.then((response) => {
