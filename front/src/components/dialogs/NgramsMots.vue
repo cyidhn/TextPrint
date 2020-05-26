@@ -177,14 +177,18 @@
 					let formData = new FormData();
 					formData.append("id", this.selectedAjoutsTextes[0].id);
 					formData.append("fichier", this.selectedAjoutsTextes[0].fichier);
+					formData.append("mots", this.nom);
 
 					// Appel avec axios
 					axios
-						.post(process.env.VUE_APP_SERVEUR + "/creer-ngrams-mots", formData)
+						.post(
+							process.env.VUE_APP_SERVEUR + "/ngrams-mots-generate",
+							formData
+						)
 						.then((response) => {
 							// begin
 							// Appel avec axios
-							console.log(response);
+							console.log(response.data);
 							alert("La version à bien été ajoutée dans le texte.");
 							DialogsData.close("ngmots");
 						})
