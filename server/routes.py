@@ -1148,7 +1148,7 @@ def searchversions():
         i += 1
     result += "]"
 
-    # result = json.loads(result)
+    result = json.loads(result)
 
     # Faire un retour de resultat
     return jsonify(result)

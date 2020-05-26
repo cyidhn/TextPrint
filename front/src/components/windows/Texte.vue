@@ -1,6 +1,31 @@
 <template>
 	<div>
 		<v-container>
+			<v-dialog v-model="dialogIframe" max-width="800px" persistent scrollable>
+				<v-card>
+					<v-card-title>
+						<span class="headline">
+							<b>{{ titleIframe }}</b>
+						</span>
+					</v-card-title>
+					<v-card-text>
+						<v-card class="mx-auto" max-width="800" height="500px" tile>
+							<iframe
+								:src="iframeNow"
+								width="100%"
+								height="100%"
+								frameborder="0"
+							></iframe>
+						</v-card>
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="blue darken-1" text @click="dialogIframe = false"
+							>Retour</v-btn
+						>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
 			<!-- Snackbar Ajouté avec succès -->
 			<v-snackbar
 				v-model="snackbarAjoute"
@@ -298,7 +323,11 @@
 			>
 				<!-- Template view -->
 				<template v-slot:item.actions="{ item }">
-					<v-icon small class="ml-1" @click="viewIframe(item.link)">
+					<v-icon
+						small
+						class="ml-1"
+						@click="viewIframe(item.link, item.pretraitement)"
+					>
 						mdi-eye
 					</v-icon>
 				</template>
@@ -488,6 +517,10 @@
 			content: Object,
 		},
 		data: () => ({
+			// Gestion des iframes
+			iframeNow: "",
+			titleIframe: "",
+			dialogIframe: false,
 			// Type de docs
 			viewTypeDoc2: false,
 			getTypeDoc2: [],
@@ -573,8 +606,10 @@
 			loadingProfils: true,
 		}),
 		methods: {
-			viewIframe(link) {
-				console.log("Lien : " + link);
+			viewIframe(link, title) {
+				this.iframeNow = link;
+				this.titleIframe = title;
+				this.dialogIframe = true;
 			},
 			viewItem(item) {
 				let formData = new FormData();
