@@ -607,7 +607,7 @@
 		}),
 		methods: {
 			viewIframe(link, title) {
-				this.iframeNow = link;
+				this.iframeNow = process.env.VUE_APP_SERVEUR + "/static/textes/" + link;
 				this.titleIframe = title;
 				this.dialogIframe = true;
 			},
@@ -904,7 +904,7 @@
 				// Ajout en formulaire
 				let formData = new FormData();
 				// formData.append("reqText", this.content.id);
-				formData.append("reqText", 1);
+				formData.append("reqText", this.content.id);
 
 				// Appel avec axios
 				axios

@@ -34,7 +34,7 @@ def model_n_exists(ngrams):
 
 
 # Fonction N-grammes
-def analyse_ngrammes_mots(chemin, n_grammes=2, n_version=2):
+def analyse_ngrammes_mots(chemin, n_grammes, n_version=2):
 
     # Texte que l'on va analyser
     content = open(chemin, "r", encoding='utf8', errors="ignore")
@@ -116,6 +116,7 @@ def analyse_ngrammes_chars(chemin, n_grammes=2, n_version=3):
 
 
 # Test
-# analyse_ngrammes_mots("./static/textes/1578865117.txt", n_grammes = 2, n_version = 2)
+analyse_ngrammes_mots("./static/textes/1578865117.txt",
+                      n_grammes=5, n_version=2)
 # print(analyse_ngrammes_chars(
 #     "./static/textes/1578865117.txt", n_grammes=3, n_version=2))

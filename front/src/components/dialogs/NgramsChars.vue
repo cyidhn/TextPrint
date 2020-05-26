@@ -41,7 +41,7 @@
 		<!-- /Modal ajouter un texte -->
 		<v-dialog v-model="data.ngmots" persistent scrollable max-width="500px">
 			<v-card>
-				<v-card-title>N-grammes de mots</v-card-title>
+				<v-card-title>N-grammes de caractères</v-card-title>
 				<v-divider></v-divider>
 				<v-card-text style="height: 200px;">
 					<v-form ref="form" v-model="valid" lazy-validation>

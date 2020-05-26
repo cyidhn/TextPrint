@@ -377,7 +377,7 @@ def ngramMots():
         fichier = analyse_ngrammes_mots(fichier, n_grammes=mots, n_version=2)
         # Ajout en BD
         req = "INSERT INTO tpVersions (pretraitement, specification, idText, linkPretraitement) VALUES ('%s', '%s', %s,'%s')" % (
-            "N-grammes de mots", str(mots) + "(nombre de N)", idTexte, fichier)
+            "N-grammes de mots", str(mots) + " (nombre de N)", idTexte, fichier)
         db_add(req)
     except:
         return "Erreur survenue...", 500
