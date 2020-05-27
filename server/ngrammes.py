@@ -21,15 +21,25 @@ def ngrams(tokens, n):
 
 # Fonction pour générer soi-même son propre nombre de n-grams de chars
 def ngramsChars(tokens, n, exact=True):
+    # Pretraitement
+    text = ""
+    for t in tokens:
+        text += t
     # On retourne un tableau avec le nombre de n choisis
-    return ["".join(j) for j in zip(*[tokens[i:] for i in range(n)])]
+    return ["".join(j) for j in zip(*[text[i:] for i in range(n)])]
 
 
 # Création de la fonction pour compter les n-grams
-def model_n_exists(ngrams):
+def model_n_exists(ngrams, number):
     counter = collections.Counter()
     for n in ngrams:
-        counter.update(set(zip(n[:-1], n[1:])))
+        count = []
+        myWords = ""
+        for mots in n:
+            myWords += mots + " "
+        count.append(myWords)
+        # counter.update(set(zip(n[:-1], n[1:])))
+        counter.update(set(count))
     return counter
 
 
@@ -57,12 +67,12 @@ def analyse_ngrammes_mots(chemin, n_grammes, n_version=2):
 
     # Résultats
     N2result = list(ngrams(tok, n_grammes))
-    resultat = model_n_exists(N2result)
+    resultat = model_n_exists(N2result, n_grammes)
 
     # Boucle résultat
     baseHtml = ""
     for r in resultat.most_common():
-        baseHtml += str(r[0]) + "<br/>"
+        baseHtml += "<b>" + str(r[0]) + "</b><br/>"
         baseHtml += "Nombre de segments répétés : " + str(r[1]) + "<br/><br/>"
 
     # Enregistrement des résultats
@@ -97,8 +107,8 @@ def analyse_ngrammes_chars(chemin, n_grammes=2, n_version=3):
     tok = [token.text for token in tok if token.is_alpha]
 
     # Résultats
-    N2result = list(ngramsChars(tok, n_grammes + 1))
-    resultat = model_n_exists(N2result)
+    N2result = list(ngramsChars(tok, n_grammes))
+    resultat = model_n_exists(N2result, n_grammes)
 
     # Boucle résultat
     baseHtml = ""
@@ -116,7 +126,7 @@ def analyse_ngrammes_chars(chemin, n_grammes=2, n_version=3):
 
 
 # Test
-analyse_ngrammes_mots("./static/textes/1578865117.txt",
-                      n_grammes=5, n_version=2)
-# print(analyse_ngrammes_chars(
-#     "./static/textes/1578865117.txt", n_grammes=3, n_version=2))
+# analyse_ngrammes_mots("./static/textes/1578865117.txt",
+#                       n_grammes=4, n_version=2)
+print(analyse_ngrammes_chars(
+    "./static/textes/1578865117.txt", n_grammes=4, n_version=2))
