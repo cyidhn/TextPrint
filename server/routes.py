@@ -386,6 +386,33 @@ def ngramMots():
     return "Le pré-traitement a bien été crée", 201
 
 
+@app.route("/ngrams-chars-generate", methods=["POST"])
+def ngramChars():
+
+    # Recuperer les donnees
+    idTexte = escape(request.form["id"])
+    fichier = escape(request.form["fichier"])
+    mots = escape(request.form["mots"])
+    mots = int(mots)
+
+    # Convertir en lien de fichier
+    fichier = "./static/textes/" + fichier + ".txt"
+
+    # Executer
+    try:
+        print("Analyse en cours...")
+        fichier = analyse_ngrammes_chars(fichier, n_grammes=mots, n_version=3)
+        # Ajout en BD
+        req = "INSERT INTO tpVersions (pretraitement, specification, idText, linkPretraitement) VALUES ('%s', '%s', %s,'%s')" % (
+            "N-grammes de caractères", str(mots) + " (nombre de N)", idTexte, fichier)
+        db_add(req)
+    except:
+        return "Erreur survenue...", 500
+
+    # Renvoie resultat
+    return "Le pré-traitement a bien été crée", 201
+
+
 @app.route("/lastid-profil", methods=["GET"])
 def lastidprofil():
 

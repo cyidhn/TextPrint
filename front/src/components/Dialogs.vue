@@ -6,6 +6,7 @@
 		<CreateDossier />
 		<CreateTexte />
 		<NgramsMots />
+		<NgramsChars />
 	</div>
 </template>
 
@@ -16,6 +17,7 @@
 	import CreateDossier from "./dialogs/CreateDossier";
 	import CreateTexte from "./dialogs/CreateTexte";
 	import NgramsMots from "./dialogs/NgramsMots";
+	import NgramsChars from "./dialogs/NgramsChars";
 
 	export default {
 		components: {
@@ -25,6 +27,7 @@
 			CreateProfilAnonyme,
 			CreateTexte,
 			NgramsMots,
+			NgramsChars,
 		},
 	};
 </script>

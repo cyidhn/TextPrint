@@ -109,7 +109,7 @@
 					icon: "mdi-keyboard-backspace",
 					link: "versions",
 				},
-				{ title: "N-grammes de caractères", icon: "mdi-file", link: "rien" },
+				{ title: "N-grammes de caractères", icon: "mdi-file", link: "ngchars" },
 				{ title: "N-grammes de mots", icon: "mdi-file", link: "ngmots" },
 				{
 					title: "N-grammes de catégories grammaticales",
@@ -202,6 +202,9 @@
 				}
 				if (ref === "ngmots") {
 					DialogsData.open("ngmots");
+				}
+				if (ref === "ngchars") {
+					DialogsData.open("ngchars");
 				}
 				if (ref === "profil-connu") {
 					DialogsData.open("profil-connu");

@@ -11,6 +11,8 @@ from pathlib import Path
 import os
 import re
 import collections
+import calendar
+import time
 
 
 # Fonction pour générer soi-même son propre nombre de n-grams de mots
@@ -54,11 +56,12 @@ def analyse_ngrammes_mots(chemin, n_grammes, n_version=2):
     content.close()
 
     # Impression
+    ts = calendar.timegm(time.gmtime())
     impressionDoc = os.path.split(os.path.abspath(chemin))
     newDoc = impressionDoc[1].split(".")
-    lienFinal = newDoc[0] + "_ngrammes_" + str(n_version) + ".html"
+    lienFinal = newDoc[0] + "_ngrammes_" + str(ts) + ".html"
     newDoc = impressionDoc[0] + "/" + newDoc[0] + \
-        "_ngrammes_" + str(n_version) + ".html"
+        "_ngrammes_" + str(ts) + ".html"
 
     # Texte
     nlp = spacy.load('fr')
@@ -95,11 +98,12 @@ def analyse_ngrammes_chars(chemin, n_grammes=2, n_version=3):
     content.close()
 
     # Impression
+    ts = calendar.timegm(time.gmtime())
     impressionDoc = os.path.split(os.path.abspath(chemin))
     newDoc = impressionDoc[1].split(".")
-    lienFinal = newDoc[0] + "_ngrammes_chars_" + str(n_version) + ".html"
+    lienFinal = newDoc[0] + "_ngrammes_chars_" + str(ts) + ".html"
     newDoc = impressionDoc[0] + "/" + newDoc[0] + \
-        "_ngrammes_chars_" + str(n_version) + ".html"
+        "_ngrammes_chars_" + str(ts) + ".html"
 
     # Texte
     nlp = spacy.load('fr')

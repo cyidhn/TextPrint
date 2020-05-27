@@ -190,7 +190,7 @@
 							// Appel avec axios
 							console.log(response.data);
 							alert("La version à bien été ajoutée dans le texte.");
-							DialogsData.close("ngmots");
+							DialogsData.close("ngchars");
 						})
 						.catch((error) => {
 							alert(error.response.data);

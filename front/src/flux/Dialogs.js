@@ -13,6 +13,7 @@ export const DialogsData = {
 		dossier: false,
 		texte: false,
 		ngmots: false,
+		ngchars: false,
 		stateInFolder: false,
 		nameFolder: "",
 		numberFolder: 0,
@@ -20,6 +21,9 @@ export const DialogsData = {
 	open(n) {
 		if (n === "ngmots") {
 			this.state.ngmots = true;
+		}
+		if (n === "ngchars") {
+			this.state.ngchars = true;
 		}
 		if (n === "profil-connu") {
 			this.state.profilConnu = true;
@@ -48,6 +52,9 @@ export const DialogsData = {
 	close(n) {
 		if (n === "ngmots") {
 			this.state.ngmots = false;
+		}
+		if (n === "ngchars") {
+			this.state.ngchars = false;
 		}
 		if (n === "profil-connu") {
 			this.state.profilConnu = false;
