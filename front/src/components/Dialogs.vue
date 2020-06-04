@@ -7,6 +7,7 @@
 		<CreateTexte />
 		<NgramsMots />
 		<NgramsChars />
+		<NgramsCatGram />
 	</div>
 </template>
 
@@ -18,6 +19,7 @@
 	import CreateTexte from "./dialogs/CreateTexte";
 	import NgramsMots from "./dialogs/NgramsMots";
 	import NgramsChars from "./dialogs/NgramsChars";
+	import NgramsCatGram from "./dialogs/NgramsCatGram";
 
 	export default {
 		components: {
@@ -28,6 +30,7 @@
 			CreateTexte,
 			NgramsMots,
 			NgramsChars,
+			NgramsCatGram,
 		},
 	};
 </script>

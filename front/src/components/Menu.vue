@@ -114,7 +114,7 @@
 				{
 					title: "N-grammes de catégories grammaticales",
 					icon: "mdi-file",
-					link: "rien",
+					link: "ngpos",
 				},
 				{ title: "// N-grammes de racines", icon: "mdi-file", link: "rien" },
 				{ title: "// N-grammes de lemmes", icon: "mdi-file", link: "rien" },
@@ -202,6 +202,9 @@
 				}
 				if (ref === "ngmots") {
 					DialogsData.open("ngmots");
+				}
+				if (ref === "ngpos") {
+					DialogsData.open("ngpos");
 				}
 				if (ref === "ngchars") {
 					DialogsData.open("ngchars");

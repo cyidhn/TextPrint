@@ -16,7 +16,7 @@ import os.path
 import calendar
 import time
 from analyse import *
-from ngrammes import analyse_ngrammes_mots, analyse_ngrammes_chars
+from ngrammes import analyse_ngrammes_mots, analyse_ngrammes_chars, analyse_ngrammes_pos
 from analyse_idhn import *
 from langdetect import detect
 import chardet
@@ -359,6 +359,33 @@ def imprimerDossier(elementId):
 #
 # Autre
 #
+@app.route("/ngrams-pos-generate", methods=["POST"])
+def ngramPos():
+
+    # Recuperer les donnees
+    idTexte = escape(request.form["id"])
+    fichier = escape(request.form["fichier"])
+    mots = escape(request.form["mots"])
+    mots = int(mots)
+
+    # Convertir en lien de fichier
+    fichier = "./static/textes/" + fichier + ".txt"
+
+    # Executer
+    try:
+        print("Analyse en cours...")
+        fichier = analyse_ngrammes_pos(fichier, n_grammes=mots, n_version=3)
+        # Ajout en BD
+        req = "INSERT INTO tpVersions (pretraitement, specification, idText, linkPretraitement) VALUES ('%s', '%s', %s,'%s')" % (
+            "N-grammes de catégories grammaticales", str(mots) + " (nombre de N)", idTexte, fichier)
+        db_add(req)
+    except:
+        return "Erreur survenue...", 500
+
+    # Renvoie resultat
+    return "Le pré-traitement a bien été crée", 201
+
+
 @app.route("/ngrams-mots-generate", methods=["POST"])
 def ngramMots():
 
