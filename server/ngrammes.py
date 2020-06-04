@@ -13,6 +13,7 @@ import re
 import collections
 import calendar
 import time
+from spacy_lefff import LefffLemmatizer, POSTagger
 
 
 # Fonction pour générer soi-même son propre nombre de n-grams de mots
@@ -38,7 +39,7 @@ def model_n_exists(ngrams, number):
         count = []
         myWords = ""
         for mots in n:
-            myWords += mots + " "
+            myWords += str(mots) + " "
         count.append(myWords)
         # counter.update(set(zip(n[:-1], n[1:])))
         counter.update(set(count))
@@ -143,14 +144,18 @@ def analyse_ngrammes_pos(chemin, n_grammes, n_version=2):
     ts = calendar.timegm(time.gmtime())
     impressionDoc = os.path.split(os.path.abspath(chemin))
     newDoc = impressionDoc[1].split(".")
-    lienFinal = newDoc[0] + "_ngrammes_" + str(ts) + ".html"
+    lienFinal = newDoc[0] + "_ngrammespos_" + str(ts) + ".html"
     newDoc = impressionDoc[0] + "/" + newDoc[0] + \
-        "_ngrammes_" + str(ts) + ".html"
+        "_ngrammespos_" + str(ts) + ".html"
 
     # Texte
     nlp = spacy.load('fr')
+    pos = POSTagger()
+    french_lemmatizer = LefffLemmatizer(after_melt=True, default=True)
+    nlp.add_pipe(pos, name='pos', after='parser')
+    nlp.add_pipe(french_lemmatizer, name='lefff', after='pos')
     tok = nlp(texte)
-    tok = [token.tag_ for token in tok if token.is_alpha]
+    tok = [token._.melt_tagger for token in tok if token.is_alpha and token._.melt_tagger != None]
 
     # Résultats
     N2result = list(ngrams(tok, n_grammes))
@@ -174,5 +179,5 @@ def analyse_ngrammes_pos(chemin, n_grammes, n_version=2):
 # Test
 # analyse_ngrammes_mots("./static/textes/1578865117.txt",
 #                       n_grammes=4, n_version=2)
-# print(analyse_ngrammes_chars(
+# print(analyse_ngrammes_pos(
 #     "./static/textes/1578865117.txt", n_grammes=4, n_version=2))
