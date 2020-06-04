@@ -150,7 +150,7 @@ def analyse_ngrammes_pos(chemin, n_grammes, n_version=2):
     # Texte
     nlp = spacy.load('fr')
     tok = nlp(texte)
-    tok = [token.pos_ for token in tok if token.is_alpha]
+    tok = [token.tag_ for token in tok if token.is_alpha]
 
     # Résultats
     N2result = list(ngrams(tok, n_grammes))
