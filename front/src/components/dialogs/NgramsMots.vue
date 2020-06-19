@@ -68,10 +68,14 @@
 										v-model="nom"
 										label="Nombre de N"
 										autocomplete="nope"
-										hint="Sélectionnez un chiffre entre 2 et 9."
+										hint="Sélectionnez un chiffre entre 2 et 20."
 										:rules="nomRules"
 										required
 									></v-text-field>
+									<h4 class="mt-2" v-if="loadingBtn">
+										Votre demande est en cours de traitement. Merci de patienter
+										quelques instants.
+									</h4>
 								</div>
 							</v-col>
 						</v-row>
@@ -87,7 +91,11 @@
 						@click="checkDialog"
 						>Fermer</v-btn
 					>
-					<v-btn color="blue darken-1" :disabled="!nom" text @click="validate"
+					<v-btn
+						color="blue darken-1"
+						:disabled="!nom || loadingBtn"
+						text
+						@click="validate"
 						>Générer le résultat</v-btn
 					>
 				</v-card-actions>
@@ -105,6 +113,8 @@
 	export default {
 		name: "CreateDossier",
 		data: () => ({
+			// Chargement
+			loadingBtn: false,
 			// Ajouts textes
 			dialogTextes: false,
 			rechercheAjoutsTextes: "",
@@ -122,7 +132,12 @@
 			dialog: false,
 			valid: true,
 			nom: "",
-			nomRules: [(v) => !!v || "Le nombre de N est requis."],
+			nomRules: [
+				(v) => !!v || "Le nombre de N est requis.",
+				(v) =>
+					/^(([2-9])|([1][0-9])|20)$/.test(v) ||
+					"Le nombre doit être compris entre 2 et 20.",
+			],
 		}),
 		computed: {
 			filteredListTextes() {
@@ -178,6 +193,7 @@
 					formData.append("id", this.selectedAjoutsTextes[0].id);
 					formData.append("fichier", this.selectedAjoutsTextes[0].fichier);
 					formData.append("mots", this.nom);
+					this.loadingBtn = true;
 
 					// Appel avec axios
 					axios
@@ -191,10 +207,16 @@
 							console.log(response.data);
 							alert("La version à bien été ajoutée dans le texte.");
 							DialogsData.close("ngmots");
+							this.loadingBtn = false;
 						})
 						.catch((error) => {
 							alert(error.response.data);
+							this.loadingBtn = false;
 						});
+				} else {
+					alert(
+						"Merci de vérifier que les champs soient correctement complétés."
+					);
 				}
 			},
 			resetValidation() {

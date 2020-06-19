@@ -64,14 +64,26 @@
 									<v-btn small color="primary" @click="ajouterTextes"
 										>Modifier le texte sélectionné</v-btn
 									>
+									<br />
+
+									<v-select
+										:items="['French Tagset', 'Pennbaker tagset']"
+										label="Tagset"
+									>
+									</v-select>
+
 									<v-text-field
 										v-model="nom"
 										label="Nombre de N"
-										autocomplete="nope"
+										autocomplete="nope222"
 										hint="Sélectionnez un chiffre entre 2 et 20."
 										:rules="nomRules"
 										required
 									></v-text-field>
+									<h4 class="mt-2" v-if="loadingBtn">
+										Votre demande est en cours de traitement. Merci de patienter
+										quelques instants.
+									</h4>
 								</div>
 							</v-col>
 						</v-row>
@@ -87,7 +99,11 @@
 						@click="checkDialog"
 						>Fermer</v-btn
 					>
-					<v-btn color="blue darken-1" :disabled="!nom" text @click="validate"
+					<v-btn
+						color="blue darken-1"
+						:disabled="!nom || loadingBtn"
+						text
+						@click="validate"
 						>Générer le résultat</v-btn
 					>
 				</v-card-actions>
@@ -105,6 +121,8 @@
 	export default {
 		name: "CreateDossier",
 		data: () => ({
+			// Chargement
+			loadingBtn: false,
 			// Ajouts textes
 			dialogTextes: false,
 			rechercheAjoutsTextes: "",
@@ -183,6 +201,7 @@
 					formData.append("id", this.selectedAjoutsTextes[0].id);
 					formData.append("fichier", this.selectedAjoutsTextes[0].fichier);
 					formData.append("mots", this.nom);
+					this.loadingBtn = true;
 
 					// Appel avec axios
 					axios
@@ -196,8 +215,10 @@
 							console.log(response.data);
 							alert("La version à bien été ajoutée dans le texte.");
 							DialogsData.close("ngpos");
+							this.loadingBtn = false;
 						})
 						.catch((error) => {
+							this.loadingBtn = false;
 							alert(error.response.data);
 						});
 				} else {
