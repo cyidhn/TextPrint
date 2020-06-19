@@ -68,7 +68,7 @@
 										v-model="nom"
 										label="Nombre de N"
 										autocomplete="nope"
-										hint="Sélectionnez un chiffre entre 2 et 9."
+										hint="Sélectionnez un chiffre entre 2 et 20."
 										:rules="nomRules"
 										required
 									></v-text-field>
@@ -122,7 +122,12 @@
 			dialog: false,
 			valid: true,
 			nom: "",
-			nomRules: [(v) => !!v || "Le nombre de N est requis."],
+			nomRules: [
+				(v) => !!v || "Le nombre de N est requis.",
+				(v) =>
+					/^(([2-9])|([1][0-9])|20)$/.test(v) ||
+					"Le nombre doit être compris entre 2 et 20.",
+			],
 		}),
 		computed: {
 			filteredListTextes() {
@@ -195,6 +200,10 @@
 						.catch((error) => {
 							alert(error.response.data);
 						});
+				} else {
+					alert(
+						"Merci de vérifier que les champs soient correctement complétés."
+					);
 				}
 			},
 			resetValidation() {
