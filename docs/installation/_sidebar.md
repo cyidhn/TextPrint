@@ -1,2 +1,0 @@
-- [Présentation](/)
-- [Installation](installation.md "Installation")
