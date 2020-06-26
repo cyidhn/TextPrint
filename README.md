@@ -13,3 +13,9 @@ Pour lancer l'application Web, lancez à la racine de ce dossier la commande sui
 
 Ensuite, pour lancer l'application :
 `make run`
+
+Lien des processus :
+
+- Plateforme Web : http://localhost:8080
+- Plateforme API : http://localhost:5000
+- Documentation interactive : http://localhost:3000
