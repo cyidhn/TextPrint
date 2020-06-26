@@ -71,12 +71,16 @@
 	export default {
 		data: () => ({
 			principal: [
-				{ title: "Fichier", icon: "mdi-file", link: "fichier" },
+				{ title: "Bases de données", icon: "mdi-database", link: "database" },
+				{
+					title: "Importer un fichier",
+					icon: "mdi-file",
+					link: "texte",
+				},
 				{ title: "Nouveau", icon: "mdi-pencil", link: "nouveau" },
+				{ title: "Versions", icon: "mdi-timelapse", link: "versions" },
 				{ title: "Analyses", icon: "mdi-file-find", link: "analyses" },
 				{ title: "Rapports", icon: "mdi-folder-lock", link: "rapports" },
-				{ title: "Bases de données", icon: "mdi-database", link: "database" },
-				{ title: "Versions", icon: "mdi-timelapse", link: "versions" },
 				{ title: "Paramètres", icon: "mdi-message-alert", link: "params" },
 			],
 			analyses: [
