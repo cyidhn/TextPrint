@@ -79,6 +79,14 @@
 				{ title: "Versions", icon: "mdi-timelapse", link: "versions" },
 				{ title: "Paramètres", icon: "mdi-message-alert", link: "params" },
 			],
+			analyses: [
+				{
+					title: "<b>Retour</b>",
+					icon: "mdi-keyboard-backspace",
+					link: "retour",
+				},
+				{ title: "Classification", icon: "mdi-file", link: "classification" },
+			],
 			versions: [
 				{
 					title: "<b>Retour</b>",
@@ -179,6 +187,9 @@
 				if (ref === "retour") {
 					this.items = this.principal;
 				}
+				if (ref === "analyses") {
+					this.items = this.analyses;
+				}
 				if (ref === "egram") {
 					this.items = this.egram;
 				}
@@ -202,6 +213,9 @@
 				}
 				if (ref === "ngmots") {
 					DialogsData.open("ngmots");
+				}
+				if (ref === "classification") {
+					DialogsData.open("classification");
 				}
 				if (ref === "ngpos") {
 					DialogsData.open("ngpos");
