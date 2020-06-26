@@ -4,6 +4,7 @@ node_modules
 /src
 /__pycache__
 /static/textes
+/models
 
 # local env files
 .env.local
