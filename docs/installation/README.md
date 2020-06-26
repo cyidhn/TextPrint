@@ -7,3 +7,5 @@ L'installation en mode serveur fonctionne tout aussi bien pour une utilisation l
 L'installation via un exécutable est simplement une application qui lance un serveur local et qui ouvre l'application en type "WebView".
 
 Pour les deux solutions, Internet n'est pas nécessaire lors de l'utilisation de l'application. Elle peut toutefois être nécessaire lors de l'installation pour le mode serveur.
+
+<img alt="Dossiers du code source" src='/_media/install.png'></img>

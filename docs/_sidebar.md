@@ -3,3 +3,8 @@
   - [Installation sur serveur](/installation/installation-serveur.md "Installation sur serveur")
   - [Installation via exécutable](/installation/installation-executable.md "Installation via exécutable")
   - [Technologies utilisées](/installation/technologies.md "Technologies utilisées")
+- [Guide de démarrage](/guide/ "Guide de démarrage")
+  - [Créer un auteur / profil](/guide/ "Guide de démarrage")
+  - [Créer / importer un texte](/guide/ "Guide de démarrage")
+  - [Créer un dossier / collection](/guide/ "Guide de démarrage")
+- [Plus d'informations](/infos/ "Plus d'informations")
