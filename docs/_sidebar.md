@@ -2,3 +2,4 @@
 - [Installation](/installation/ "Installation")
   - [Installation sur serveur](/installation/installation-serveur.md "Installation sur serveur")
   - [Installation via exécutable](/installation/installation-executable.md "Installation via exécutable")
+  - [Technologies utilisées](/installation/technologies.md "Technologies utilisées")
