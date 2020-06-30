@@ -1,4 +1,4 @@
-run: run-server run-front run-documentation
+run: run-front run-documentation run-server
 
 install:
 	cd ./server && python3.6 -m pip install -r requirements.txt
@@ -6,10 +6,10 @@ install:
 	npm i docsify-cli -g
 
 run-server:
-	cd ./server && python3.6 app.py &
+	cd ./server && python3.6 app.py
 
 run-front:
 	cd ./front && npm run serve &
 
 run-documentation:
-	docsify serve ./docs
+	docsify serve ./docs &
