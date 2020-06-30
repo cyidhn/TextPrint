@@ -8,5 +8,5 @@
   - [Créer un dossier](/guide/creer-dossier.md "Créer un dossier ou une collection")
   - [Créer une version](/guide/creer-version.md "Créer une version")
   - [Base de données](/guide/bdd.md "Base de données")
-  - [Lancer une analyse](/guide/creer-dossier.md "Créer un dossier ou une collection")
+  - [Lancer une analyse](/guide/analyse.md "Créer un dossier ou une collection")
 - [Plus d'informations](/infos/ "Plus d'informations")
