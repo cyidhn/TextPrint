@@ -1,6 +1,6 @@
 # Informations complémentaires
 
-L'application TextPrint a été développé dans le cadre du projet IRITA (Inventaires des Ressources Informatiques et Textométriques pour l’Attribution d’auteurs), par Jérémy DEMANGE, Alexandra FREEMAN, Trang LAM au sein du laboratoire IDHN dirigé par Julien LONGHI.
+L'application TextPrint a été développée dans le cadre du projet IRITA (Inventaires des Ressources Informatiques et Textométriques pour l’Attribution d’auteurs), par Jérémy DEMANGE, Alexandra FREEMAN, Trang LAM au sein du laboratoire IDHN dirigé par Julien LONGHI.
 
 Projet A2CE : « Attribution d’auteur et comparaison d’écrits », financé dans le cadre de l’« INEX
 Paris Seine » 2018, qui fait l’objet d’une thèse de doctorat en linguistique outillée (début décembre
