@@ -6,6 +6,7 @@
 		<CreateDossier />
 		<CreateTexte />
 		<NgramsMots />
+		<Classification />
 		<NgramsChars />
 		<NgramsCatGram />
 	</div>
@@ -20,6 +21,7 @@
 	import NgramsMots from "./dialogs/NgramsMots";
 	import NgramsChars from "./dialogs/NgramsChars";
 	import NgramsCatGram from "./dialogs/NgramsCatGram";
+	import Classification from "./dialogs/Classification";
 
 	export default {
 		components: {
@@ -31,6 +33,7 @@
 			NgramsMots,
 			NgramsChars,
 			NgramsCatGram,
+			Classification,
 		},
 	};
 </script>

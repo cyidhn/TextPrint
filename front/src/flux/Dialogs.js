@@ -15,6 +15,7 @@ export const DialogsData = {
 		ngmots: false,
 		ngchars: false,
 		ngpos: false,
+		classification: false,
 		stateInFolder: false,
 		nameFolder: "",
 		numberFolder: 0,
@@ -22,6 +23,9 @@ export const DialogsData = {
 	open(n) {
 		if (n === "ngmots") {
 			this.state.ngmots = true;
+		}
+		if (n === "classification") {
+			this.state.classification = true;
 		}
 		if (n === "ngpos") {
 			this.state.ngpos = true;
@@ -56,6 +60,9 @@ export const DialogsData = {
 	close(n) {
 		if (n === "ngmots") {
 			this.state.ngmots = false;
+		}
+		if (n === "classification") {
+			this.state.classification = false;
 		}
 		if (n === "ngpos") {
 			this.state.ngpos = false;

@@ -16,6 +16,7 @@ import os.path
 import calendar
 import time
 from analyse import *
+from classification import *
 from ngrammes import analyse_ngrammes_mots, analyse_ngrammes_chars, analyse_ngrammes_pos
 from analyse_idhn import *
 from langdetect import detect
@@ -379,6 +380,30 @@ def ngramPos():
         req = "INSERT INTO tpVersions (pretraitement, specification, idText, linkPretraitement) VALUES ('%s', '%s', %s,'%s')" % (
             "N-grammes de catégories grammaticales", str(mots) + " (nombre de N)", idTexte, fichier)
         db_add(req)
+    except:
+        return "Erreur survenue...", 500
+
+    # Renvoie resultat
+    return "Le pré-traitement a bien été crée", 201
+
+
+@app.route("/analyse-classification", methods=["POST"])
+def analyseClassification():
+
+    # Recuperer les donnees
+    idTexte = escape(request.form["id"])
+    fichier = escape(request.form["fichier"])
+
+    # Convertir en lien de fichier
+    fichier = "./static/textes/" + fichier + ".txt"
+
+    # Executer
+    try:
+        print("Analyse en cours...")
+        fichier = result_classification(
+            chemin=fichier, model="./models/model_twitter.h5")
+        # Affichage
+        return fichier, 201
     except:
         return "Erreur survenue...", 500
 

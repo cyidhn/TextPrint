@@ -1,6 +1,6 @@
 #
 # Classification
-# By Trang LAM & Jérémy DEMANGE
+# By Trang LAM
 #
 
 
@@ -42,8 +42,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.callbacks import ModelCheckpoint
 import nltk
-nltk.download('punkt')
-nltk.download('stopwords')
+# nltk.download('punkt')
+# nltk.download('stopwords')
 
 ############################------#######################
 # AF Import stopword list (Préciser la liste utilisé)
@@ -116,7 +116,7 @@ def tokenize(texte, n_words: int = None, use_stopwords=False):
     # Not working: review after. Currently replaced by if statement below.
     #tokens= [tok.lower() for tok in word_tokenize(text) if tok not in lst_stopwords] if use_stopwords else [tok.lower() for tok in word_tokenize(text)]
     if use_stopwords:
-        lst_stopwords = load_stopwords("stopwords.txt")
+        lst_stopwords = load_stopwords("./models/stopwords.txt")
     else:
         lst_stopwords = []
     if n_words is not None:
@@ -184,8 +184,8 @@ def prepare_data(file_name, n_words=None, use_stopwords=False):
     while True:
         try:
             print(f"Your file has columns: {', '.join(df.columns)} ")
-            auteurs = input("Enter the name of the column containing authors:")
-            textes = input("Enter the name of the column containing textes:")
+            auteurs = "auteur"
+            textes = "tweet"
         except:
             pass
         # If the name of the column doesn't exist, print this error message
@@ -291,3 +291,58 @@ def convert_labels(authors, Y_train, Y_val, Y_test):
     y_val = to_categorical(Y_val, num_classes=len(set(authors)))
     y_test = to_categorical(Y_test, num_classes=len(set(authors)))
     return y_train, y_val, y_test
+
+
+# Gestion des tweets
+# N_words=4: interesting only texts containing more than 4 words
+textes, auteurs, auteurs_encoded = prepare_data(
+    "./models/presidentielle.csv", n_words=5, use_stopwords=False)
+X_train, X_test, X_val, Y_train, Y_test, Y_val = split_data(
+    textes, auteurs_encoded)
+# Use all vocab_size
+# word_index,vocab_size,maxLen,x_train,x_val,x_test=convert_data(textes,X_train,X_test,X_val)
+# Use only 30000 most frequent words
+word_index, vocab_size, maxLen, x_train, x_val, x_test = convert_data(
+    textes, X_train, X_test, X_val)
+y_train, y_val, y_test = convert_labels(auteurs, Y_train, Y_val, Y_test)
+dict_auteurs = dict(zip(auteurs_encoded, auteurs))
+
+# Create a function to convert new data
+tokenizer = Tokenizer(filters='!"$%&()*+,./:;<=>?[\\]^_`{|}~\t\n')
+tokenizer.fit_on_texts(textes)
+
+
+def convert_data_bis(tokenizer, sentences: list(), maxLen: int = 25):
+    # convert to sequence of integers
+    data = tokenizer.texts_to_sequences(sentences)
+    data = pad_sequences(data, padding='post', maxlen=maxLen)
+    return data
+
+
+def result_classification(chemin="./static/textes/00test.txt", model="./models/model_twitter.h5"):
+
+    # Convertir chemin en texte
+    content = open(chemin, "r", encoding='utf8', errors="ignore")
+    textes = content.read()
+    content.close()
+
+    # Ajout algo
+    test = []
+    test.append(textes)
+    test_cleaned = list(map(clean_tweet, test))
+    data = convert_data_bis(tokenizer, test_cleaned)
+
+    # Load all model
+    model2 = load_model(model)
+    predict = model2.predict(data)
+    print(predict)
+
+    # probabilites
+    for sentence, predict_auteur in zip(test, np.argmax(predict, axis=1).tolist()):
+        auteur = dict_auteurs.get(predict_auteur)
+        print(sentence)
+        print("Auteur prédit pour le texte : ", auteur)
+        return str(auteur)
+
+
+result_classification()
