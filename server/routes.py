@@ -17,6 +17,7 @@ import calendar
 import time
 from analyse import *
 from classification import *
+from lemmatisation import *
 from ngrammes import analyse_ngrammes_mots, analyse_ngrammes_chars, analyse_ngrammes_pos
 from analyse_idhn import *
 from langdetect import detect
@@ -430,6 +431,31 @@ def ngramMots():
         # Ajout en BD
         req = "INSERT INTO tpVersions (pretraitement, specification, idText, linkPretraitement) VALUES ('%s', '%s', %s,'%s')" % (
             "N-grammes de mots", str(mots) + " (nombre de N)", idTexte, fichier)
+        db_add(req)
+    except:
+        return "Erreur survenue...", 500
+
+    # Renvoie resultat
+    return "Le pré-traitement a bien été crée", 201
+
+
+@app.route("/traitement-lemmatisation", methods=["POST"])
+def traitementLemmatisation():
+
+    # Recuperer les donnees
+    idTexte = escape(request.form["id"])
+    fichier = escape(request.form["fichier"])
+
+    # Convertir en lien de fichier
+    fichier = "./static/textes/" + fichier + ".txt"
+
+    # Executer
+    try:
+        print("Analyse en cours...")
+        fichier = traitement_lemmatisation(fichier)
+        # Ajout en BD
+        req = "INSERT INTO tpVersions (pretraitement, specification, idText, linkPretraitement) VALUES ('%s', '%s', %s,'%s')" % (
+            "Lemmatisation", "Lemmatisation du texte", idTexte, fichier)
         db_add(req)
     except:
         return "Erreur survenue...", 500

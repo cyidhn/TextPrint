@@ -184,13 +184,12 @@
 					let formData = new FormData();
 					formData.append("id", this.selectedAjoutsTextes[0].id);
 					formData.append("fichier", this.selectedAjoutsTextes[0].fichier);
-					formData.append("mots", this.nom);
 					this.loadingBtn = true;
 
 					// Appel avec axios
 					axios
 						.post(
-							process.env.VUE_APP_SERVEUR + "/ngrams-mots-generate",
+							process.env.VUE_APP_SERVEUR + "/traitement-lemmatisation",
 							formData
 						)
 						.then((response) => {
