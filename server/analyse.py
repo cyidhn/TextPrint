@@ -65,7 +65,7 @@ def analyse_global(chemin, id_texte, n_version):
     # Declaration des variables à analyser
     nbChars = len(texte)
     nbMots = len([token.text for token in doc if token.is_punct != True])
-    nbPhrases = texte.count('.')
+    nbPhrases = len([token.text for token in doc if token.pos_ == 'PUNCT'])
     if nbPhrases == 0:
         nbPhrases = 1
     nbParagraphes = len(texte.split("\n\n"))
