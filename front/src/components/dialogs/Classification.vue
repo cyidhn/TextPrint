@@ -90,7 +90,7 @@
 					>
 					<v-btn
 						color="blue darken-1"
-						:disabled="!selectedAjoutsTextes.length | loadingBtn"
+						:disabled="!selectedAjoutsTextes.length || loadingBtn"
 						text
 						@click="validate"
 						>Générer le résultat</v-btn
@@ -179,8 +179,11 @@
 			},
 			checkDialog() {
 				DialogsData.close("classification");
+				this.$refs.form.reset();
 			},
 			reset() {
+				this.selectedAjoutsTextes = [];
+				this.rechercheAjoutsTextes = "";
 				this.$refs.form.reset();
 			},
 			validate() {
@@ -206,6 +209,7 @@
 									response.data
 							);
 							DialogsData.close("classification");
+							this.reset();
 							this.loadingBtn = false;
 						})
 						.catch((error) => {
