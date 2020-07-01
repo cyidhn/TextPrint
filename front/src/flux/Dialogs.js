@@ -15,6 +15,8 @@ export const DialogsData = {
 		ngmots: false,
 		ngchars: false,
 		ngpos: false,
+		lemmes: false,
+		bagofwords: false,
 		classification: false,
 		stateInFolder: false,
 		nameFolder: "",
@@ -23,6 +25,12 @@ export const DialogsData = {
 	open(n) {
 		if (n === "ngmots") {
 			this.state.ngmots = true;
+		}
+		if (n === "bagofwords") {
+			this.state.bagofwords = true;
+		}
+		if (n === "lemmes") {
+			this.state.lemmes = true;
 		}
 		if (n === "classification") {
 			this.state.classification = true;
@@ -60,6 +68,12 @@ export const DialogsData = {
 	close(n) {
 		if (n === "ngmots") {
 			this.state.ngmots = false;
+		}
+		if (n === "lemmes") {
+			this.state.lemmes = false;
+		}
+		if (n === "bagofwords") {
+			this.state.bagofwords = false;
 		}
 		if (n === "classification") {
 			this.state.classification = false;

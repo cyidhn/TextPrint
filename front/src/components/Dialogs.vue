@@ -7,6 +7,8 @@
 		<CreateTexte />
 		<NgramsMots />
 		<Classification />
+		<Lemmes />
+		<BagOfWords />
 		<NgramsChars />
 		<NgramsCatGram />
 	</div>
@@ -22,6 +24,8 @@
 	import NgramsChars from "./dialogs/NgramsChars";
 	import NgramsCatGram from "./dialogs/NgramsCatGram";
 	import Classification from "./dialogs/Classification";
+	import Lemmes from "./dialogs/Lemmes";
+	import BagOfWords from "./dialogs/BagOfWords";
 
 	export default {
 		components: {
@@ -34,6 +38,8 @@
 			NgramsChars,
 			NgramsCatGram,
 			Classification,
+			BagOfWords,
+			Lemmes,
 		},
 	};
 </script>

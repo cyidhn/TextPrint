@@ -85,7 +85,7 @@
 					>
 					<v-btn
 						color="blue darken-1"
-						:disabled="!nom || loadingBtn"
+						:disabled="!selectedAjoutsTextes.length || loadingBtn"
 						text
 						@click="validate"
 						>Générer le résultat</v-btn
