@@ -40,7 +40,7 @@ def traitement_lemmatisation(chemin):
 
     baseHtml = "<p>"
     for t in tok:
-        baseHtml += t
+        baseHtml += t + " "
     baseHtml += "</p>"
 
     # Enregistrement des résultats
