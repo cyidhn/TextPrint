@@ -223,6 +223,9 @@
 				if (ref === "ngmots") {
 					DialogsData.open("ngmots");
 				}
+				if (ref === "racines") {
+					DialogsData.open("racines");
+				}
 				if (ref === "bagofwords") {
 					DialogsData.open("bagofwords");
 				}
