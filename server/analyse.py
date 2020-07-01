@@ -21,22 +21,24 @@ import os
 
 # Thread
 from threading import Thread
-import re 
+import re
 
 # Fonction analyse global
+
+
 def analyse_global(chemin, id_texte, n_version):
 
     # Texte que l'on va analyser
-    content = open(chemin, "r", encoding='utf8',errors="ignore")
+    content = open(chemin, "r", encoding='utf8', errors="ignore")
     texte = content.read()
-    texte = re.sub(r'[!"’«»#$%&()*+,-./:;<=>?@[\]^_`{|}~]','',texte)
+    texte = re.sub(r'[!"’«»#$%&()*+,-./:;<=>?@[\]^_`{|}~]', '', texte)
     content.close()
 
     # Impression
     impressionDoc = os.path.split(os.path.abspath(chemin))
     newDoc = impressionDoc[1].split(".")
     newDoc = impressionDoc[0] + "/" + newDoc[0] + "_analyse.html"
-    #print(newDoc)
+    # print(newDoc)
 
     # Determiner la langue du document
     langue = detect(texte)
@@ -51,8 +53,9 @@ def analyse_global(chemin, id_texte, n_version):
         nlp = spacy.load('en')
     else:
         nlp = spacy.load('fr')
-        print("ERREUR - La langue du texte doit être en français, en anglais ou en espagnol.")
-        #message_langue_inconnue()
+        print(
+            "ERREUR - La langue du texte doit être en français, en anglais ou en espagnol.")
+        # message_langue_inconnue()
 
     # Texte
     doc = nlp(texte)
@@ -62,27 +65,36 @@ def analyse_global(chemin, id_texte, n_version):
     # Declaration des variables à analyser
     nbChars = len(texte)
     nbMots = len([token.text for token in doc if token.is_punct != True])
-    nbPhrases = len([sent.string.strip() for sent in doc.sents])
-    nbParagraphes = len(texte.split("\n\n"))
+    nbPhrases = len(re.split(r'[.!?]+', texte))
+    if nbPhrases == 0:
+        nbPhrases = 1
+    nbParagraphes = len(texte.split("\n"))
 
     nbNomsCommuns = len([token.text for token in doc if token.pos_ == 'NOUN'])
     nbVerbes = len([token.text for token in doc if token.pos_ == 'VERB'])
     nbAdjectifs = len([token.text for token in doc if token.pos_ == 'ADJ'])
     nbAdverbes = len([token.text for token in doc if token.pos_ == 'ADV'])
 
-    nbArticlesDefinis = len([token.text for token in doc if (token.pos_ == 'DET' and (token.tag_).find('Definite=Def') != -1)])
-    nbArticlesIndefinis = len([token.text for token in doc if (token.pos_ == 'DET' and (token.tag_).find('Definite=Ind') != -1)])
-    nbPronomsPersonnels = len([token.text for token in doc if (token.pos_ == 'PRON' and (token.tag_).find('Person') != -1)])
-    nbPronomsPossessifs = len([token.text for token in doc if (token.pos_ == 'PRON' and (token.tag_).find('Poss=Yes') != -1)])
-    nbPronomsDemonstratifs = len([token.text for token in doc if (token.pos_ == 'PRON' and (token.tag_).find('PronType=Dem') != -1)])
-    nbPronomsRelatifs = len([token.text for token in doc if (token.pos_ == 'PRON' and (token.tag_).find('PronType=Rel') != -1)])
-    nbPronomsInterrogatifs = len([token.text for token in doc if (token.pos_ == 'PRON' and (token.tag_).find('PronType=Int') != -1)])
-    nbPronomsIndefinis = len([token.text for token in doc if (token.pos_ == 'PRON' and (token.tag_).find('Dem') != -1)])
+    nbArticlesDefinis = len([token.text for token in doc if (
+        token.pos_ == 'DET' and (token.tag_).find('Definite=Def') != -1)])
+    nbArticlesIndefinis = len([token.text for token in doc if (
+        token.pos_ == 'DET' and (token.tag_).find('Definite=Ind') != -1)])
+    nbPronomsPersonnels = len([token.text for token in doc if (
+        token.pos_ == 'PRON' and (token.tag_).find('Person') != -1)])
+    nbPronomsPossessifs = len([token.text for token in doc if (
+        token.pos_ == 'PRON' and (token.tag_).find('Poss=Yes') != -1)])
+    nbPronomsDemonstratifs = len([token.text for token in doc if (
+        token.pos_ == 'PRON' and (token.tag_).find('PronType=Dem') != -1)])
+    nbPronomsRelatifs = len([token.text for token in doc if (
+        token.pos_ == 'PRON' and (token.tag_).find('PronType=Rel') != -1)])
+    nbPronomsInterrogatifs = len([token.text for token in doc if (
+        token.pos_ == 'PRON' and (token.tag_).find('PronType=Int') != -1)])
+    nbPronomsIndefinis = len([token.text for token in doc if (
+        token.pos_ == 'PRON' and (token.tag_).find('Dem') != -1)])
     nbPrepositions = len([token.text for token in doc if token.pos_ == 'ADP'])
     nbConjonctions = len([token.text for token in doc if token.pos_ == 'CONJ'])
 
     nbNombres = len([token.text for token in doc if token.pos_ == 'NUM'])
-
 
     # Sortie du texte
     """
@@ -193,14 +205,15 @@ def analyse_global(chemin, id_texte, n_version):
     output_path = Path(newDoc)
     linkDoc = "file://" + str(output_path)
     print(linkDoc)
-    output_path.open("w", encoding="utf-8",errors="ignore").write("<meta charset='utf-8'>" + baseHtml)
+    output_path.open("w", encoding="utf-8",
+                     errors="ignore").write("<meta charset='utf-8'>" + baseHtml)
 
     # Afficher le texte du fichier
-    #init_window(f)
+    # init_window(f)
     #fichier = open(newDoc, "r")
     #label = Label(f, text="ANALYSE DE TEXTES")
     #label.pack(side=TOP, padx=10, pady=30)
-    #fichier.close()
+    # fichier.close()
 
     # On lance un Thread pour continuer a voir la fenetre
     # webview.create_window('Analyse de texte', linkDoc)
