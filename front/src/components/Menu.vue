@@ -77,11 +77,11 @@
 					icon: "mdi-file",
 					link: "texte",
 				},
-				{ title: "Nouveau", icon: "mdi-pencil", link: "nouveau" },
-				{ title: "Versions", icon: "mdi-apps", link: "versions" },
-				{ title: "Analyses", icon: "mdi-file-find", link: "analyses" },
+				{ title: "> Nouveau", icon: "mdi-pencil", link: "nouveau" },
+				{ title: "> Versions", icon: "mdi-apps", link: "versions" },
+				{ title: "> Analyses", icon: "mdi-file-find", link: "analyses" },
 				{ title: "Rapports", icon: "mdi-folder-lock", link: "rapports" },
-				{ title: "Paramètres", icon: "mdi-message-alert", link: "params" },
+				{ title: "> Paramètres", icon: "mdi-message-alert", link: "params" },
 			],
 			analyses: [
 				{
@@ -100,8 +100,12 @@
 				{ title: "Racines", icon: "mdi-file", link: "racines" },
 				{ title: "Lemmes", icon: "mdi-file", link: "lemmes" },
 				{ title: "Bag of Words", icon: "mdi-file", link: "bagofwords" },
-				{ title: "Étiquettes grammaticales", icon: "mdi-file", link: "egram" },
-				{ title: "N-grammes", icon: "mdi-file", link: "ngrammes" },
+				{
+					title: "> Étiquettes grammaticales",
+					icon: "mdi-file",
+					link: "egram",
+				},
+				{ title: "> N-grammes", icon: "mdi-file", link: "ngrammes" },
 			],
 			egram: [
 				{

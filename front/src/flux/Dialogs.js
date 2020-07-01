@@ -14,6 +14,7 @@ export const DialogsData = {
 		texte: false,
 		ngmots: false,
 		ngchars: false,
+		racines: false,
 		ngpos: false,
 		lemmes: false,
 		bagofwords: false,
@@ -25,6 +26,9 @@ export const DialogsData = {
 	open(n) {
 		if (n === "ngmots") {
 			this.state.ngmots = true;
+		}
+		if (n === "racines") {
+			this.state.racines = true;
 		}
 		if (n === "bagofwords") {
 			this.state.bagofwords = true;
@@ -68,6 +72,9 @@ export const DialogsData = {
 	close(n) {
 		if (n === "ngmots") {
 			this.state.ngmots = false;
+		}
+		if (n === "racines") {
+			this.state.racines = false;
 		}
 		if (n === "lemmes") {
 			this.state.lemmes = false;

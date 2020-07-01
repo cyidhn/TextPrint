@@ -85,7 +85,7 @@
 					>
 					<v-btn
 						color="blue darken-1"
-						:disabled="!nom || loadingBtn"
+						:disabled="!selectedAjoutsTextes.length || loadingBtn"
 						text
 						@click="validate"
 						>Générer le résultat</v-btn
@@ -184,15 +184,11 @@
 					let formData = new FormData();
 					formData.append("id", this.selectedAjoutsTextes[0].id);
 					formData.append("fichier", this.selectedAjoutsTextes[0].fichier);
-					formData.append("mots", this.nom);
 					this.loadingBtn = true;
 
 					// Appel avec axios
 					axios
-						.post(
-							process.env.VUE_APP_SERVEUR + "/ngrams-mots-generate",
-							formData
-						)
+						.post(process.env.VUE_APP_SERVEUR + "/traitement-racines", formData)
 						.then((response) => {
 							// begin
 							// Appel avec axios

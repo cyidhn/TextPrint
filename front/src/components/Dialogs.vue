@@ -8,6 +8,7 @@
 		<NgramsMots />
 		<Classification />
 		<Lemmes />
+		<Racines />
 		<BagOfWords />
 		<NgramsChars />
 		<NgramsCatGram />
@@ -26,6 +27,7 @@
 	import Classification from "./dialogs/Classification";
 	import Lemmes from "./dialogs/Lemmes";
 	import BagOfWords from "./dialogs/BagOfWords";
+	import Racines from "./dialogs/Racines";
 
 	export default {
 		components: {
@@ -40,6 +42,7 @@
 			Classification,
 			BagOfWords,
 			Lemmes,
+			Racines,
 		},
 	};
 </script>
