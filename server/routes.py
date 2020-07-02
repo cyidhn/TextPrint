@@ -1483,7 +1483,8 @@ def verifierTexte():
             elif (result['encoding'] == "UTF-8-SIG"):
                 return "Fichier conforme", 200
             else:
-                return "Le fichier doit être codé en UTF-8", 405
+                # return "Le fichier doit être codé en UTF-8", 405
+                return "Fichier conforme", 200
         content = content.decode('utf8')
 
         # Texte que l'on va ouvrir
@@ -1620,8 +1621,8 @@ def importerTexte():
             elif (result['encoding'] == "UTF-8-SIG"):
                 print("Alright")
                 # return "Fichier conforme", 200
-            else:
-                return "Le fichier doit être codé en UTF-8", 405
+            # else:
+            #     return "Le fichier doit être codé en UTF-8", 405
         content = content.decode('utf8')
         fi = open(fa, "w")
         fi.write(content)
