@@ -213,7 +213,7 @@
 							// begin
 							// Appel avec axios
 							console.log(response.data);
-							alert("La version à bien été ajoutée dans le texte.");
+							alert("La version a bien été ajoutée dans le texte.");
 							DialogsData.close("ngpos");
 							this.loadingBtn = false;
 						})

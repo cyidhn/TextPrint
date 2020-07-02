@@ -39,9 +39,9 @@
 			</v-card>
 		</v-dialog>
 		<!-- /Modal ajouter un texte -->
-		<v-dialog v-model="data.catgram" persistent scrollable max-width="500px">
+		<v-dialog v-model="data.reinert" persistent scrollable max-width="500px">
 			<v-card>
-				<v-card-title>Catégories grammaticales (POS)</v-card-title>
+				<v-card-title>Reinert</v-card-title>
 				<v-divider></v-divider>
 				<v-card-text style="height: 200px;">
 					<v-form ref="form" v-model="valid" lazy-validation>
@@ -64,14 +64,6 @@
 									<v-btn small color="primary" @click="ajouterTextes"
 										>Modifier le texte sélectionné</v-btn
 									>
-									<v-text-field
-										v-model="nom"
-										label="Nombre de N"
-										autocomplete="nope"
-										hint="Sélectionnez un chiffre entre 2 et 20."
-										:rules="nomRules"
-										required
-									></v-text-field>
 									<h4 class="mt-2" v-if="loadingBtn">
 										Votre demande est en cours de traitement. Merci de patienter
 										quelques instants.
@@ -93,7 +85,7 @@
 					>
 					<v-btn
 						color="blue darken-1"
-						:disabled="!nom || loadingBtn"
+						:disabled="!selectedAjoutsTextes.length || loadingBtn"
 						text
 						@click="validate"
 						>Générer le résultat</v-btn
@@ -181,7 +173,7 @@
 				console.log("Ok");
 			},
 			checkDialog() {
-				DialogsData.close("catgram");
+				DialogsData.close("reinert");
 			},
 			reset() {
 				this.$refs.form.reset();
@@ -192,21 +184,17 @@
 					let formData = new FormData();
 					formData.append("id", this.selectedAjoutsTextes[0].id);
 					formData.append("fichier", this.selectedAjoutsTextes[0].fichier);
-					formData.append("mots", this.nom);
 					this.loadingBtn = true;
 
 					// Appel avec axios
 					axios
-						.post(
-							process.env.VUE_APP_SERVEUR + "/ngrams-chars-generate",
-							formData
-						)
+						.post(process.env.VUE_APP_SERVEUR + "/traitement-reinert", formData)
 						.then((response) => {
 							// begin
 							// Appel avec axios
 							console.log(response.data);
-							alert("La version a bien été ajoutée dans le texte.");
-							DialogsData.close("catgram");
+							alert("L'analyse a bien été ajoutée dans le texte.");
+							DialogsData.close("reinert");
 							this.loadingBtn = false;
 						})
 						.catch((error) => {
