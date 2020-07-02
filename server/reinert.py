@@ -346,6 +346,3 @@ def analyse_reinert(chemin, LEM=True, NB_ARBRES=4, NB_MOTS=10, NB_ITERATIONS=100
     generate_html(saveTerms, newDoc1)
 
     return lienFinal
-
-
-analyse_reinert("./static/textes/1578865117.txt")

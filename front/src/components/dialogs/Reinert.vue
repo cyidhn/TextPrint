@@ -188,7 +188,7 @@
 
 					// Appel avec axios
 					axios
-						.post(process.env.VUE_APP_SERVEUR + "/traitement-reinert", formData)
+						.post(process.env.VUE_APP_SERVEUR + "/analyse-reinert", formData)
 						.then((response) => {
 							// begin
 							// Appel avec axios

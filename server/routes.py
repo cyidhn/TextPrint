@@ -19,6 +19,7 @@ from analyse import *
 from classification import *
 from lemmatisation import *
 from bag_of_words import *
+from reinert import *
 from ngrammes import analyse_ngrammes_mots, analyse_ngrammes_chars, analyse_ngrammes_pos
 from analyse_idhn import *
 from langdetect import detect
@@ -436,6 +437,31 @@ def traitementBow():
 
     # Renvoie resultat
     return "Le pré-traitement a bien été crée", 201
+
+
+@app.route("/analyse-reinert", methods=["POST"])
+def analysereinert():
+
+    # Recuperer les donnees
+    idTexte = escape(request.form["id"])
+    fichier = escape(request.form["fichier"])
+
+    # Convertir en lien de fichier
+    fichier = "./static/textes/" + fichier + ".txt"
+
+    # Executer
+    try:
+        print("Analyse en cours...")
+        fichier = analyse_reinert(fichier)
+        # Ajout en BD
+        req = "INSERT INTO tpAnalyses (analyse, specification, idText, linkAnalyse) VALUES ('%s', '%s', %s,'%s')" % (
+            "Analyse Reinert", "4 arbres générés", idTexte, fichier)
+        db_add(req)
+    except:
+        return "Erreur survenue...", 500
+
+    # Renvoie resultat
+    return "L'analyse a bien été créée", 201
 
 
 @app.route("/ngrams-mots-generate", methods=["POST"])

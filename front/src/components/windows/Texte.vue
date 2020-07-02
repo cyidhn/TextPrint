@@ -451,14 +451,24 @@
 				no-data-text="Aucun élément trouvé"
 				no-results-text="Aucun élément trouvé"
 				loading-text="Chargement en cours..."
-				v-model="selectedCollections"
 				:headers="headersAnalyses"
 				:items="analyses"
 				:search="searchAnalyses"
 				item-key="id"
 				show-select
 				class="elevation-1"
-			></v-data-table>
+			>
+				<!-- Template view -->
+				<template v-slot:item.actions="{ item }">
+					<v-icon
+						small
+						class="ml-1"
+						@click="viewIframe(item.link, item.pretraitement)"
+					>
+						mdi-eye
+					</v-icon>
+				</template>
+			</v-data-table>
 			<hr class="mt-8 mb-8" />
 			<!-- /Analyses -->
 			<!-- Rapports -->
@@ -535,9 +545,9 @@
 			searchAnalyses: "",
 			selectedAnalyses: [],
 			headersAnalyses: [
-				{ text: "Titre", value: "titre" },
-				{ text: "Type d'analyse", value: "type" },
-				{ text: "Ressources de l'auteur", value: "ressources" },
+				{ text: "Titre", value: "analyse" },
+				{ text: "Spécifications", value: "specification" },
+				{ text: "Voir", value: "actions", sortable: false },
 			],
 			analyses: [],
 			// Ajout d'un rapport
@@ -912,6 +922,26 @@
 					.then((response) => {
 						console.log("Les versions :");
 						this.versions = response.data;
+					})
+					.catch((error) => {
+						console.log("Erreur dans les versions...");
+						console.error(error);
+					});
+				// /Versions
+			},
+			addAnalyses() {
+				// Versions
+				// Ajout en formulaire
+				let formData = new FormData();
+				// formData.append("reqText", this.content.id);
+				formData.append("reqText", this.content.id);
+
+				// Appel avec axios
+				axios
+					.post(process.env.VUE_APP_SERVEUR + "/search-analyses", formData)
+					.then((response) => {
+						console.log("Les analyses :");
+						this.analyses = response.data;
 					})
 					.catch((error) => {
 						console.log("Erreur dans les versions...");
