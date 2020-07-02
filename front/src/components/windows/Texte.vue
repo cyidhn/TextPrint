@@ -335,6 +335,54 @@
 			<hr class="mt-8 mb-8" />
 			<!-- /Ajout un element -->
 			<!-- /Versions -->
+			<!-- Analyses -->
+			<v-row>
+				<v-col cols="6" align="start">
+					<h2>Analyses</h2>
+				</v-col>
+				<!-- <v-col cols="6" align="end">
+          <v-btn small class="mx-2" color="primary">Ajouter une analyse</v-btn>
+          <v-btn small color="error" :disabled="true"
+            >Supprimer la sélection</v-btn
+          >
+        </v-col> -->
+			</v-row>
+			<v-row>
+				<v-col cols="12" align="start">
+					<v-text-field
+						class="mx-2"
+						v-model="searchAnalyses"
+						label="Filtrer"
+						single-line
+						hide-details
+					></v-text-field>
+				</v-col>
+			</v-row>
+			<br />
+			<v-data-table
+				no-data-text="Aucun élément trouvé"
+				no-results-text="Aucun élément trouvé"
+				loading-text="Chargement en cours..."
+				:headers="headersAnalyses"
+				:items="analyses"
+				:search="searchAnalyses"
+				item-key="id"
+				show-select
+				class="elevation-1"
+			>
+				<!-- Template view -->
+				<template v-slot:item.actions="{ item }">
+					<v-icon
+						small
+						class="ml-1"
+						@click="viewIframe(item.link, item.analyse)"
+					>
+						mdi-eye
+					</v-icon>
+				</template>
+			</v-data-table>
+			<hr class="mt-8 mb-8" />
+			<!-- /Analyses -->
 			<!-- Collections -->
 			<v-row>
 				<v-col cols="6" align="start">
@@ -423,54 +471,6 @@
 			></v-data-table>
 			<hr class="mt-8 mb-8" />
 			<!-- /Dossiers -->
-			<!-- Analyses -->
-			<v-row>
-				<v-col cols="6" align="start">
-					<h2>Analyses</h2>
-				</v-col>
-				<!-- <v-col cols="6" align="end">
-          <v-btn small class="mx-2" color="primary">Ajouter une analyse</v-btn>
-          <v-btn small color="error" :disabled="true"
-            >Supprimer la sélection</v-btn
-          >
-        </v-col> -->
-			</v-row>
-			<v-row>
-				<v-col cols="12" align="start">
-					<v-text-field
-						class="mx-2"
-						v-model="searchAnalyses"
-						label="Filtrer"
-						single-line
-						hide-details
-					></v-text-field>
-				</v-col>
-			</v-row>
-			<br />
-			<v-data-table
-				no-data-text="Aucun élément trouvé"
-				no-results-text="Aucun élément trouvé"
-				loading-text="Chargement en cours..."
-				:headers="headersAnalyses"
-				:items="analyses"
-				:search="searchAnalyses"
-				item-key="id"
-				show-select
-				class="elevation-1"
-			>
-				<!-- Template view -->
-				<template v-slot:item.actions="{ item }">
-					<v-icon
-						small
-						class="ml-1"
-						@click="viewIframe(item.link, item.pretraitement)"
-					>
-						mdi-eye
-					</v-icon>
-				</template>
-			</v-data-table>
-			<hr class="mt-8 mb-8" />
-			<!-- /Analyses -->
 			<!-- Rapports -->
 			<v-row>
 				<v-col cols="6" align="start">
@@ -1119,6 +1119,7 @@
 		},
 		created() {
 			this.addVersions();
+			this.addAnalyses();
 			this.handleChangeType1();
 			console.log(this.content);
 			this.titre = this.content.titre;
