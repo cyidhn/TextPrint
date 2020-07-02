@@ -12,6 +12,7 @@
 		<BagOfWords />
 		<NgramsChars />
 		<NgramsCatGram />
+		<Reinert />
 	</div>
 </template>
 
@@ -28,6 +29,7 @@
 	import Lemmes from "./dialogs/Lemmes";
 	import BagOfWords from "./dialogs/BagOfWords";
 	import Racines from "./dialogs/Racines";
+	import Reinert from "./dialogs/Reinert";
 
 	export default {
 		components: {
@@ -41,6 +43,7 @@
 			NgramsCatGram,
 			Classification,
 			BagOfWords,
+			Reinert,
 			Lemmes,
 			Racines,
 		},

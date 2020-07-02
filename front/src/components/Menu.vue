@@ -90,6 +90,7 @@
 					link: "retour",
 				},
 				{ title: "Classification", icon: "mdi-file", link: "classification" },
+				{ title: "Reinert", icon: "mdi-file", link: "reinert" },
 			],
 			versions: [
 				{
@@ -240,6 +241,9 @@
 				}
 				if (ref === "ngchars") {
 					DialogsData.open("ngchars");
+				}
+				if (ref === "reinert") {
+					DialogsData.open("reinert");
 				}
 				if (ref === "profil-connu") {
 					DialogsData.open("profil-connu");

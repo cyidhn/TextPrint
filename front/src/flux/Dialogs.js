@@ -15,6 +15,7 @@ export const DialogsData = {
 		ngmots: false,
 		ngchars: false,
 		racines: false,
+		reinert: false,
 		ngpos: false,
 		lemmes: false,
 		bagofwords: false,
@@ -26,6 +27,9 @@ export const DialogsData = {
 	open(n) {
 		if (n === "ngmots") {
 			this.state.ngmots = true;
+		}
+		if (n === "reinert") {
+			this.state.reinert = true;
 		}
 		if (n === "racines") {
 			this.state.racines = true;
@@ -72,6 +76,9 @@ export const DialogsData = {
 	close(n) {
 		if (n === "ngmots") {
 			this.state.ngmots = false;
+		}
+		if (n === "reinert") {
+			this.state.reinert = false;
 		}
 		if (n === "racines") {
 			this.state.racines = false;
