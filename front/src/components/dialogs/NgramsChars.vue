@@ -135,7 +135,7 @@
 			nomRules: [
 				(v) => !!v || "Le nombre de N est requis.",
 				(v) =>
-					/^(([2-9])|([1][0-9])|20)$/.test(v) ||
+					/^(([1-9])|([1][0-9])|20)$/.test(v) ||
 					"Le nombre doit être compris entre 2 et 20.",
 			],
 		}),
